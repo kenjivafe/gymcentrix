@@ -4,8 +4,8 @@ import { AppShell } from "@/components/layout/app-shell";
 import { MembersPage } from "@/components/members/members-page";
 
 export const metadata: Metadata = {
-  title: "Members Directory | Elevate",
-  description: "Browse mock member profiles, filters, and detail drawers for the Elevate dashboard preview.",
+  title: "Members Directory | Gymcentrix",
+  description: "Browse mock member profiles, filters, and detail drawers for the Gymcentrix dashboard preview.",
 };
 
 export default function MembersRoute() {

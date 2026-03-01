@@ -86,3 +86,12 @@ export const initialCardTemplate = {
   accentColor: "#f97316",
   avatarSeed: "jr",
 };
+
+/** Default brand identity (system name Gymcentrix; used by BrandProvider defaults). */
+export const defaultBrandState = {
+  systemName: "Gymcentrix",
+  gymName: "Elevate Lifestyle & Fitness",
+  logoUrl: "/brand/elevate-logo.png",
+  primaryColor: "#4c8dff",
+  secondaryColor: "#f97316",
+};

@@ -4,8 +4,8 @@ import { AppShell } from "@/components/layout/app-shell";
 import { EmployeesPage } from "@/components/employees/employees-page";
 
 export const metadata: Metadata = {
-  title: "Employees Attendance | Elevate",
-  description: "Preview staff attendance tracking with mock biometric logs inside the Elevate dashboard.",
+  title: "Employees Attendance | Gymcentrix",
+  description: "Preview staff attendance tracking with mock biometric logs inside the Gymcentrix dashboard.",
 };
 
 export default function EmployeesRoute() {

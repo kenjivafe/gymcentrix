@@ -4,7 +4,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { LockersPage } from "@/components/lockers/lockers-page";
 
 export const metadata: Metadata = {
-  title: "Lockers | Elevate",
+  title: "Lockers | Gymcentrix",
   description: "Track locker occupancy sessions claimed by RFID and released at cashier logout.",
 };
 

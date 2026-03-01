@@ -1,8 +1,11 @@
+"use client";
+
 import type { Route } from "next";
 import Link from "next/link";
 import type { ComponentType, ReactNode } from "react";
 import {
   BadgeCheck,
+  Calculator,
   CreditCard,
   GaugeCircle,
   KeyRound,
@@ -13,26 +16,38 @@ import {
   Users,
 } from "lucide-react";
 
+import { useBrand } from "@/components/brand/brand-context";
+import { useFeatureFlags } from "@/components/settings/feature-flags-context";
+
+type FeatureKey = "lockers" | "employees" | "attendance" | "cardDesigner";
+
 type NavItem = {
   label: string;
   icon: ComponentType<{ className?: string }>;
   href?: Route;
+  featureKey?: FeatureKey;
 };
 
 const dashboardRoute = "/dashboard" as Route;
 const membersRoute = "/dashboard/members" as Route;
 const employeesRoute = "/dashboard/employees" as Route;
 const lockersRoute = "/dashboard/lockers" as Route;
+const accountingRoute = "/dashboard/accounting" as Route;
+const cardDesignerRoute = "/dashboard/card-designer" as Route;
+const brandStudioRoute = "/dashboard/brand-studio" as Route;
+const attendanceRoute = "/dashboard/attendance" as Route;
+const settingsRoute = "/dashboard/settings" as Route;
 
 const navItems: NavItem[] = [
   { label: "Dashboard", icon: LayoutDashboard, href: dashboardRoute },
   { label: "Members", icon: Users, href: membersRoute },
-  { label: "Employees", icon: UserCog, href: employeesRoute },
-  { label: "Lockers", icon: KeyRound, href: lockersRoute },
-  { label: "Card Designer", icon: CreditCard },
-  { label: "Attendance", icon: GaugeCircle },
-  { label: "Brand Studio", icon: Palette },
-  { label: "Settings", icon: Settings },
+  { label: "Employees", icon: UserCog, href: employeesRoute, featureKey: "employees" },
+  { label: "Lockers", icon: KeyRound, href: lockersRoute, featureKey: "lockers" },
+  { label: "Accounting", icon: Calculator, href: accountingRoute },
+  { label: "Card Designer", icon: CreditCard, href: cardDesignerRoute, featureKey: "cardDesigner" },
+  { label: "Attendance", icon: GaugeCircle, href: attendanceRoute, featureKey: "attendance" },
+  { label: "Brand Studio", icon: Palette, href: brandStudioRoute },
+  { label: "Settings", icon: Settings, href: settingsRoute },
 ];
 
 export function AppShell({
@@ -42,19 +57,60 @@ export function AppShell({
   children: ReactNode;
   activeHref?: Route;
 }) {
+  const { flags } = useFeatureFlags();
+  const { brand } = useBrand();
+  const visibleNavItems = navItems.filter(
+    (item) => !item.featureKey || flags[item.featureKey]
+  );
+
   return (
     <div className="min-h-screen text-white bg-canvas">
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
         <aside className="px-6 py-8 border-r bg-canvas-subtle border-border-subtle/40">
-          <Link href={dashboardRoute} className="flex gap-3 items-center text-lg font-semibold tracking-tight">
-            <div className="p-2 rounded-xl bg-primary/10 text-primary">
-              <BadgeCheck className="w-5 h-5" />
+          <Link
+            href={dashboardRoute}
+            className="flex flex-col gap-3 text-left"
+          >
+            {/* System name: Gymcentrix logo at top */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/app/gymcentrix-logo.png"
+              alt="Gymcentrix"
+              className="h-8 w-auto max-w-full object-contain object-left"
+            />
+            {/* Gym logo + gym name below */}
+            <div className="flex items-center gap-3">
+              {brand.logoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={brand.logoUrl}
+                  alt=""
+                  className="h-9 w-9 shrink-0 rounded-lg object-contain"
+                  onError={(e) => {
+                    const el = e.currentTarget;
+                    el.style.display = "none";
+                    const fallback = el.nextElementSibling;
+                    if (fallback) (fallback as HTMLElement).style.display = "flex";
+                  }}
+                />
+              ) : null}
+              <div
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white"
+                style={{
+                  backgroundColor: brand.primaryColor,
+                  display: brand.logoUrl ? "none" : "flex",
+                }}
+              >
+                <BadgeCheck className="h-4 w-4" />
+              </div>
+              <span className="text-sm font-semibold tracking-tight text-white/90">
+                {brand.gymName}
+              </span>
             </div>
-            Elevate Lifestyle & Fitness
           </Link>
           <p className="mt-1 text-xs uppercase tracking-[0.4em] text-white/40">Ops preview</p>
           <nav className="mt-8 space-y-1">
-            {navItems.map((item) => {
+            {visibleNavItems.map((item) => {
               const Icon = item.icon;
               const isActive = item.href && item.href === activeHref;
               const baseClasses =

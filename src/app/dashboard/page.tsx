@@ -7,7 +7,7 @@ import { AnalyticsSection } from "@/components/dashboard/analytics-section";
 import { ActivityTimeline } from "@/components/dashboard/activity-timeline";
 
 export const metadata = {
-  title: "Dashboard Preview | Elevate",
+  title: "Dashboard Preview | Gymcentrix",
   description: "Mock dashboard experience for internal stakeholders and UI review.",
 };
 
@@ -16,10 +16,11 @@ export default function DashboardPage() {
   const membersPath = "/dashboard/members" as Route;
   const employeesPath = "/dashboard/employees" as Route;
   const lockersPath = "/dashboard/lockers" as Route;
+  const accountingPath = "/dashboard/accounting" as Route;
   return (
     <AppShell>
       <header className="space-y-2">
-        <p className="text-sm uppercase text-white/60">Elevate dashboard preview</p>
+        <p className="text-sm uppercase text-white/60">Gymcentrix dashboard preview</p>
         <h1 className="text-4xl font-semibold tracking-tight">Operations at a glance</h1>
         <p className="text-lg text-white/70">
           All content below is driven by deterministic mock data. Interactions are limited to
@@ -49,6 +50,12 @@ export default function DashboardPage() {
             className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/15"
           >
             Track locker occupancy
+          </Link>
+          <Link
+            href={accountingPath}
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/15"
+          >
+            Review accounting
           </Link>
         </div>
       </header>
