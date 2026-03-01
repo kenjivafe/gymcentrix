@@ -1,8 +1,9 @@
 "use client";
 
 import type { Route } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import type { ComponentType, ReactNode } from "react";
+import { useCallback, useEffect, useState, type ComponentType, type ReactNode } from "react";
 import {
   BadgeCheck,
   Calculator,
@@ -10,10 +11,12 @@ import {
   GaugeCircle,
   KeyRound,
   LayoutDashboard,
+  Menu,
   Palette,
   Settings,
   UserCog,
   Users,
+  X,
 } from "lucide-react";
 
 import { useBrand } from "@/components/brand/brand-context";
@@ -57,57 +60,119 @@ export function AppShell({
   children: ReactNode;
   activeHref?: Route;
 }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { flags } = useFeatureFlags();
   const { brand } = useBrand();
   const visibleNavItems = navItems.filter(
     (item) => !item.featureKey || flags[item.featureKey]
   );
 
+  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeSidebar();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [closeSidebar]);
+
   return (
-    <div className="min-h-screen text-white bg-canvas">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
-        <aside className="px-6 py-8 border-r bg-canvas-subtle border-border-subtle/40">
-          <Link
-            href={dashboardRoute}
-            className="flex flex-col gap-3 text-left"
+    <div className="relative min-h-screen text-white bg-canvas">
+      <div className="absolute inset-0 z-0 opacity-80 bg-mesh-glow" aria-hidden />
+      {/* Mobile: hamburger button in header */}
+      <header
+        className={`fixed top-0 left-0 right-0 ${sidebarOpen ? "z-30" : "z-50"} lg:hidden border-b border-white/10 px-4 py-3 backdrop-blur bg-transparent`}
+      >
+        <div className="flex justify-between items-center">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 rounded-lg transition text-white/80 hover:bg-white/10 hover:text-white"
+            aria-label="Open menu"
           >
-            {/* System name: Gymcentrix logo at top */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/app/gymcentrix-logo.png"
-              alt="Gymcentrix"
-              className="h-8 w-auto max-w-full object-contain object-left"
-            />
-            {/* Gym logo + gym name below */}
-            <div className="flex items-center gap-3">
-              {brand.logoUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={brand.logoUrl}
-                  alt=""
-                  className="h-9 w-9 shrink-0 rounded-lg object-contain"
-                  onError={(e) => {
-                    const el = e.currentTarget;
-                    el.style.display = "none";
-                    const fallback = el.nextElementSibling;
-                    if (fallback) (fallback as HTMLElement).style.display = "flex";
+            <Menu className="w-6 h-6" />
+          </button>
+          <Image
+            src="/app/gymcentrix-logo.png"
+            alt="Gymcentrix"
+            width={160}
+            height={32}
+            className="object-contain w-auto h-8"
+            priority
+          />
+          <div className="w-10" aria-hidden />
+        </div>
+      </header>
+
+      {/* Mobile: backdrop when sidebar open */}
+      {sidebarOpen && (
+        <button
+          type="button"
+          onClick={closeSidebar}
+          className="fixed inset-0 z-40 bg-black/60 lg:hidden"
+          aria-hidden
+          tabIndex={-1}
+        />
+      )}
+
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr] relative pt-14 lg:pt-0">
+        <aside
+          className={`fixed inset-y-0 left-0 z-50 w-[280px] transform border-r border-white/10 bg-canvas-subtle/95 px-6 py-8 backdrop-blur lg:bg-canvas-subtle lg:backdrop-blur-none lg:static lg:z-auto lg:translate-x-0 lg:transform-none ${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="flex gap-4 justify-between items-start">
+            <Link
+              href={dashboardRoute}
+              className="flex flex-col gap-3 text-left"
+            >
+              {/* System name: Gymcentrix logo at top */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/app/gymcentrix-logo.png"
+                alt="Gymcentrix"
+                className="object-contain object-left w-auto max-w-full h-8"
+              />
+              {/* Gym logo + gym name below */}
+              <div className="flex gap-3 items-center">
+                {brand.logoUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={brand.logoUrl}
+                    alt=""
+                    className="object-contain w-9 h-9 rounded-lg shrink-0"
+                    onError={(e) => {
+                      const el = e.currentTarget;
+                      el.style.display = "none";
+                      const fallback = el.nextElementSibling;
+                      if (fallback) (fallback as HTMLElement).style.display = "flex";
+                    }}
+                  />
+                ) : null}
+                <div
+                  className="flex justify-center items-center w-9 h-9 text-white rounded-lg shrink-0"
+                  style={{
+                    backgroundColor: brand.primaryColor,
+                    display: brand.logoUrl ? "none" : "flex",
                   }}
-                />
-              ) : null}
-              <div
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white"
-                style={{
-                  backgroundColor: brand.primaryColor,
-                  display: brand.logoUrl ? "none" : "flex",
-                }}
-              >
-                <BadgeCheck className="h-4 w-4" />
+                >
+                  <BadgeCheck className="w-4 h-4" />
+                </div>
+                <span className="text-sm font-semibold tracking-tight text-white/90">
+                  {brand.gymName}
+                </span>
               </div>
-              <span className="text-sm font-semibold tracking-tight text-white/90">
-                {brand.gymName}
-              </span>
-            </div>
-          </Link>
+            </Link>
+            <button
+              type="button"
+              onClick={closeSidebar}
+              className="p-2 mt-0 rounded-lg transition text-white/70 hover:bg-white/10 hover:text-white lg:hidden"
+              aria-label="Close menu"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
           <p className="mt-1 text-xs uppercase tracking-[0.4em] text-white/40">Ops preview</p>
           <nav className="mt-8 space-y-1">
             {visibleNavItems.map((item) => {
@@ -121,8 +186,9 @@ export function AppShell({
                   <Link
                     key={item.label}
                     href={item.href}
+                    onClick={closeSidebar}
                     className={`${baseClasses} ${
-                      isActive ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5"
+                      isActive ? "text-white bg-white/10" : "text-white/70 hover:bg-white/5"
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -134,7 +200,7 @@ export function AppShell({
               return (
                 <button
                   key={item.label}
-                  className={`${baseClasses} text-white/40 opacity-60 cursor-not-allowed`}
+                  className={`opacity-60 cursor-not-allowed ${baseClasses} text-white/40`}
                   type="button"
                   disabled
                 >
@@ -151,8 +217,7 @@ export function AppShell({
             </p>
           </div>
         </aside>
-        <main className="overflow-hidden relative bg-canvas">
-          <div className="absolute inset-0 opacity-80 bg-mesh-glow" aria-hidden />
+        <main className="overflow-hidden overflow-x-hidden relative">
           <div className="flex relative z-10 flex-col gap-8 p-6 lg:p-10">
             {children}
           </div>

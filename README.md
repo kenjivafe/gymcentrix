@@ -1,4 +1,4 @@
-# Gymcentrix — Gym Membership Card System
+# Gymcentrix — Gym Membership Management System
 
 Gym membership and RFID operations UI for **Gymcentrix**. The admin panel is branded with the Gymcentrix app logo; each gym configures its own logo, name, and colors in Brand Studio.
 
