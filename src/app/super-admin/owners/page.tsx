@@ -15,83 +15,87 @@ export default async function OwnersManagementPage() {
   });
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+    <div className="space-y-10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+        <div className="space-y-1">
+          <p className="text-sm uppercase tracking-widest text-accent font-bold">Access Control</p>
+          <h2 className="text-4xl font-bold tracking-tight text-white">
             Gym Owners
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-lg text-white/60">
             Manage administrative access for gym owners and their linked tenants.
           </p>
         </div>
-        <button className="flex items-center gap-2 px-6 py-3 bg-slate-950 dark:bg-indigo-600 hover:bg-slate-800 dark:hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg active:scale-95">
+        <button className="whitespace-nowrap flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/15 text-white font-bold rounded-2xl transition-all border border-white/10 active:scale-95">
           <UserPlus className="size-5" />
           Invite New Owner
         </button>
       </div>
 
-      <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 overflow-hidden shadow-sm">
+      <div className="bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden shadow-card backdrop-blur-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-700">
-                <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+              <tr className="bg-white/5 border-b border-white/5">
+                <th className="px-8 py-6 text-xs font-bold text-white/40 uppercase tracking-[0.2em]">
                   Owner
                 </th>
-                <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                  Role
+                <th className="px-8 py-6 text-xs font-bold text-white/40 uppercase tracking-[0.2em]">
+                  Security Status
                 </th>
-                <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
-                  Linked Gym
+                <th className="px-8 py-6 text-xs font-bold text-white/40 uppercase tracking-[0.2em]">
+                  Assigned Entity
                 </th>
-                <th className="px-6 py-4 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-right">
-                  Actions
+                <th className="px-8 py-6 text-xs font-bold text-white/40 uppercase tracking-[0.2em] text-right">
+                  Control
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50 dark:divide-slate-700">
+            <tbody className="divide-y divide-white/5">
               {owners.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
-                    No gym owners found in the system.
+                  <td colSpan={4} className="px-8 py-20 text-center text-white/30">
+                    <div className="flex flex-col items-center gap-4">
+                        <Shield className="size-10 opacity-20" />
+                        <p className="text-lg">No gym owners found in the central registry.</p>
+                    </div>
                   </td>
                 </tr>
               ) : (
                 owners.map((owner) => (
-                  <tr key={owner.id} className="hover:bg-slate-50/30 dark:hover:bg-slate-700/30 transition-colors">
-                    <td className="px-6 py-5">
-                      <div className="flex items-center gap-3">
-                        <div className="size-10 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center font-bold">
+                  <tr key={owner.id} className="group hover:bg-white/[0.02] transition-colors">
+                    <td className="px-8 py-6">
+                      <div className="flex items-center gap-4">
+                        <div className="size-12 bg-white/5 text-white rounded-2xl flex items-center justify-center font-bold group-hover:bg-primary/20 group-hover:text-primary transition-colors">
                           {owner.name?.[0] || owner.email?.[0]}
                         </div>
                         <div>
-                          <p className="font-semibold text-slate-900 dark:text-white">
+                          <p className="font-bold text-white group-hover:text-primary transition-colors">
                             {owner.name}
                           </p>
-                          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                          <div className="flex items-center gap-2 text-xs text-white/40 mt-1">
                             <Mail className="size-3" />
                             {owner.email}
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-5">
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full border border-emerald-100 dark:border-emerald-900/30 uppercase tracking-wider">
+                    <td className="px-8 py-6">
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full border border-primary/20 uppercase tracking-widest">
                         <Shield className="size-3" />
                         {owner.role}
                       </div>
                     </td>
-                    <td className="px-6 py-5">
-                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-                        <Building className="size-4 text-slate-400" />
-                        <span className="text-sm font-medium">
+                    <td className="px-8 py-6">
+                      <div className="flex items-center gap-3 text-white/70">
+                        <Building className="size-4 text-white/30" />
+                        <span className="text-sm font-semibold">
                           {owner.gymsOwned?.[0]?.name || "Unassigned"}
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-5 text-right">
-                      <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg transition-colors text-slate-400 hover:text-slate-600 dark:hover:text-white">
+                    <td className="px-8 py-6 text-right">
+                      <button className="p-3 hover:bg-white/10 rounded-xl transition-all text-white/30 hover:text-white">
                         <MoreVertical className="size-5" />
                       </button>
                     </td>

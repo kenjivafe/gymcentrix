@@ -30,56 +30,65 @@ export default async function SuperAdminDashboard() {
   ];
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+    <div className="space-y-10">
+      <header className="space-y-2">
+        <p className="text-sm uppercase tracking-widest text-primary/80 font-bold">Multitenant Infrastructure</p>
+        <h2 className="text-4xl font-bold tracking-tight text-white">
           System Overview
         </h2>
-        <p className="text-slate-500 dark:text-slate-400 mt-1">
-          Monitor your multitenant infrastructure and tenant growth.
+        <p className="text-lg text-white/60 max-w-2xl">
+          Monitor your multitenant infrastructure and tenant growth across all registered gym facilities.
         </p>
-      </div>
+      </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {stats.map((stat) => (
           <Link
             key={stat.label}
             href={stat.href as any}
-            className="group p-6 bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-all"
+            className="group relative overflow-hidden p-8 bg-white/5 border border-white/10 rounded-[2.5rem] shadow-card hover:bg-white/10 transition-all duration-500"
           >
-            <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl">
-                {stat.icon}
-              </div>
-              <ArrowUpRight className="size-5 text-slate-300 group-hover:text-slate-600 dark:group-hover:text-slate-400 transition-colors" />
+            <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity">
+                <ArrowUpRight className="size-8" />
             </div>
-            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">
+            <div className="size-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                {stat.icon}
+            </div>
+            <p className="text-white/50 text-sm font-medium tracking-wide uppercase">
               {stat.label}
             </p>
-            <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+            <p className="text-4xl font-bold text-white mt-2">
               {stat.value}
             </p>
           </Link>
         ))}
       </div>
 
-      <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 p-8">
-        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6">
-          Quick Actions
-        </h3>
-        <div className="flex flex-wrap gap-4">
-          <Link
-            href={"/super-admin/gyms" as any}
-            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-colors"
-          >
-            Register New Gym
-          </Link>
-          <Link
-            href={"/super-admin/owners" as any}
-            className="px-6 py-3 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-white font-semibold rounded-xl transition-colors"
-          >
-            Manage Owners
-          </Link>
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary/10 to-accent/5 border border-white/10 rounded-[3rem] p-10 lg:p-14">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] rounded-full -mr-32 -mt-32" />
+        <div className="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
+            <div className="space-y-4">
+                <h3 className="text-3xl font-bold text-white">
+                  Developer Quick Actions
+                </h3>
+                <p className="text-white/60 max-w-md">
+                    Instantly deploy new gym environments or manage administrative credentials for existing tenant owners.
+                </p>
+            </div>
+            <div className="flex flex-wrap gap-4 w-full lg:w-auto">
+              <Link
+                href={"/super-admin/gyms" as any}
+                className="flex-1 lg:flex-none text-center px-10 py-5 bg-primary hover:bg-primary/90 text-white font-bold rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95"
+              >
+                Register Gym
+              </Link>
+              <Link
+                href={"/super-admin/owners" as any}
+                className="flex-1 lg:flex-none text-center px-10 py-5 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold rounded-2xl transition-all"
+              >
+                Manage Owners
+              </Link>
+            </div>
         </div>
       </div>
     </div>
