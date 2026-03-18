@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: "Gymcentrix | The OS for Modern Gyms",
   description:
     "Professional gym management SaaS with RFID sign-in, analytics, and member engagement.",
+  icons: {
+    icon: "/app/gymcentrix-logo.png",
+  },
 };
 
 export default function RootLayout({

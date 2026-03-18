@@ -124,7 +124,13 @@ export function AppShell({
               className="flex flex-col gap-6"
             >
               <div className="flex items-center gap-3 mb-8 group">
-                <img src="/app/gymcentrix-logo.png" alt="" className="h-8 w-auto logo-glow" aria-hidden />
+                <Image 
+                  src="/app/gymcentrix-logo.png" 
+                  alt="Gymcentrix" 
+                  width={128} 
+                  height={32} 
+                  className="h-8 w-auto logo-glow" 
+                />
                 <span className="text-xl font-display font-bold tracking-tighter text-white group-hover:text-primary transition-colors text-glow">
                   Gymcentrix
                 </span>

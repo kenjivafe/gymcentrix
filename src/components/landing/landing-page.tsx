@@ -1,5 +1,6 @@
 import type { Route } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   ArrowUpRight, 
   Sparkles, 
@@ -65,7 +66,14 @@ function Navbar() {
   return (
     <nav className="flex items-center justify-between px-6 py-8 mx-auto max-w-7xl lg:px-14">
       <Link href="/" className="flex items-center gap-4 group cursor-pointer transition-transform hover:scale-[1.02] active:scale-95">
-        <img src="/app/gymcentrix-logo.png" alt="" className="h-10 w-auto logo-glow" aria-hidden />
+        <Image 
+          src="/app/gymcentrix-logo.png" 
+          alt="Gymcentrix" 
+          width={160} 
+          height={40} 
+          className="h-10 w-auto logo-glow" 
+          priority 
+        />
         <span className="text-2xl font-display font-bold tracking-tighter text-white group-hover:text-primary transition-colors text-glow">
           GYMCENTRIX
         </span>
