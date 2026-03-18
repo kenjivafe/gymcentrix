@@ -21,7 +21,7 @@ const defaultBrand: BrandState = {
   systemName: "Gymcentrix",
   gymName: "Elevate Lifestyle & Fitness",
   logoUrl: "/brand/elevate-logo.png",
-  primaryColor: "#4c8dff",
+  primaryColor: "#87f100",
   secondaryColor: "#f97316",
 };
 

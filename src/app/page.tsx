@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { LandingPage } from "@/components/landing/landing-page";
 
 export const metadata: Metadata = {
-  title: "Elevate Lifestyle & Fitness | RFID-first wellness",
+  title: "Gymcentrix | All-in-One Gym Management SaaS",
   description:
-    "Explore Elevate Lifestyle & Fitness – premium memberships, personal training, and wellness labs with RFID convenience.",
+    "Empower your gym with Gymcentrix – the premium SaaS for member management, real-time analytics, and seamless RFID sign-in.",
 };
 
 export default function HomePage() {

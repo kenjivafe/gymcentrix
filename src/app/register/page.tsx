@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { RegistrationExperience } from "@/components/registration/registration-experience";
 
 export const metadata: Metadata = {
-  title: "Register for Membership | GymPulse",
+  title: "Register | Gymcentrix",
   description:
-    "Public enrollment page for GymPulse memberships and personal training add-ons. Submit goals and our team will confirm within one business day.",
+    "Join the Gymcentrix community. Professional enrollment for modern fitness studios.",
 };
 
 export default function RegisterPage() {

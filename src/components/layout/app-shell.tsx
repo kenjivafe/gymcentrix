@@ -78,147 +78,122 @@ export function AppShell({
   }, [closeSidebar]);
 
   return (
-    <div className="relative min-h-screen text-white bg-canvas">
-      <div className="absolute inset-0 z-0 opacity-80 bg-mesh-glow" aria-hidden />
-      {/* Mobile: hamburger button in header */}
+    <div className="relative min-h-screen text-white bg-canvas font-sans">
+      <div className="absolute inset-0 z-0 opacity-20 bg-mesh-glow pointer-events-none" aria-hidden />
+      
+      {/* Mobile: header */}
       <header
-        className={`fixed top-0 left-0 right-0 ${sidebarOpen ? "z-30" : "z-50"} lg:hidden border-b border-white/10 px-4 py-3 backdrop-blur bg-transparent`}
+        className={`fixed top-0 left-0 right-0 ${sidebarOpen ? "z-30" : "z-50"} lg:hidden border-b border-white/5 px-4 py-4 backdrop-blur-xl bg-black/20`}
       >
         <div className="flex justify-between items-center">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-lg transition text-white/80 hover:bg-white/10 hover:text-white"
+            className="p-2 rounded-xl transition text-white/50 hover:bg-white/10 hover:text-white"
             aria-label="Open menu"
           >
             <Menu className="w-6 h-6" />
           </button>
-          <Image
-            src="/app/gymcentrix-logo.png"
-            alt="Gymcentrix"
-            width={160}
-            height={32}
-            className="object-contain w-auto h-8"
-            priority
-          />
+          <span className="text-xl font-display font-bold tracking-tighter text-primary text-glow">
+            Gymcentrix
+          </span>
           <div className="w-10" aria-hidden />
         </div>
       </header>
 
-      {/* Mobile: backdrop when sidebar open */}
+      {/* Mobile: backdrop */}
       {sidebarOpen && (
         <button
           type="button"
           onClick={closeSidebar}
-          className="fixed inset-0 z-40 bg-black/60 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/80 lg:hidden backdrop-blur-sm transition-all"
           aria-hidden
           tabIndex={-1}
         />
       )}
 
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr] relative pt-14 lg:pt-0">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr] relative pt-16 lg:pt-0">
         <aside
-          className={`fixed inset-y-0 left-0 z-50 w-[280px] transform border-r border-white/10 bg-canvas-subtle/95 px-6 py-8 backdrop-blur lg:bg-canvas-subtle lg:backdrop-blur-none lg:static lg:z-auto lg:translate-x-0 lg:transform-none ${
+          className={`fixed inset-y-0 left-0 z-50 w-[280px] transform border-r border-white/5 bg-canvas px-8 py-10 transition-transform duration-500 lg:static lg:z-auto lg:translate-x-0 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="flex gap-4 justify-between items-start">
+          <div className="flex flex-col gap-10">
             <Link
               href={dashboardRoute}
-              className="flex flex-col gap-3 text-left"
+              className="flex flex-col gap-6"
             >
-              {/* System name: Gymcentrix logo at top */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/app/gymcentrix-logo.png"
-                alt="Gymcentrix"
-                className="object-contain object-left w-auto max-w-full h-8"
-              />
-              {/* Gym logo + gym name below */}
-              <div className="flex gap-3 items-center">
-                {brand.logoUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={brand.logoUrl}
-                    alt=""
-                    className="object-contain w-9 h-9 rounded-lg shrink-0"
-                    onError={(e) => {
-                      const el = e.currentTarget;
-                      el.style.display = "none";
-                      const fallback = el.nextElementSibling;
-                      if (fallback) (fallback as HTMLElement).style.display = "flex";
-                    }}
-                  />
-                ) : null}
+              <span className="text-2xl font-display font-bold tracking-tighter text-primary text-glow">
+                Gymcentrix
+              </span>
+              
+              <div className="flex gap-4 items-center p-3 rounded-2xl bg-white/[0.03] border border-white/5 shadow-glow">
                 <div
-                  className="flex justify-center items-center w-9 h-9 text-white rounded-lg shrink-0"
-                  style={{
-                    backgroundColor: brand.primaryColor,
-                    display: brand.logoUrl ? "none" : "flex",
-                  }}
+                  className="flex justify-center items-center size-10 text-black rounded-xl shrink-0 bg-primary shadow-glow-strong"
                 >
-                  <BadgeCheck className="w-4 h-4" />
+                  <BadgeCheck className="size-5 font-bold" />
                 </div>
-                <span className="text-sm font-semibold tracking-tight text-white/90">
-                  {brand.gymName}
-                </span>
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold uppercase tracking-widest text-white/30">Active Gym</span>
+                  <span className="text-sm font-display font-bold tracking-tight text-white leading-tight">
+                    {brand.gymName}
+                  </span>
+                </div>
               </div>
             </Link>
-            <button
-              type="button"
-              onClick={closeSidebar}
-              className="p-2 mt-0 rounded-lg transition text-white/70 hover:bg-white/10 hover:text-white lg:hidden"
-              aria-label="Close menu"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-          <p className="mt-1 text-xs uppercase tracking-[0.4em] text-white/40">Ops preview</p>
-          <nav className="mt-8 space-y-1">
-            {visibleNavItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = item.href && item.href === activeHref;
-              const baseClasses =
-                "flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition";
 
-              if (item.href) {
+            <nav className="space-y-1">
+              <p className="px-4 mb-4 text-[10px] uppercase tracking-[0.4em] text-white/20 font-bold">Main Navigation</p>
+              {visibleNavItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = item.href && item.href === activeHref;
+                const baseClasses =
+                  "flex w-full items-center gap-4 rounded-2xl px-4 py-3.5 text-left text-sm font-bold transition-all uppercase tracking-widest";
+
+                if (item.href) {
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={closeSidebar}
+                      className={`${baseClasses} ${
+                        isActive 
+                          ? "text-primary bg-primary/10 border border-primary/20 shadow-glow" 
+                          : "text-white/40 hover:text-white hover:bg-white/5 border border-transparent"
+                      }`}
+                    >
+                      <Icon className={`size-4 ${isActive ? "text-primary" : ""}`} />
+                      {item.label}
+                    </Link>
+                  );
+                }
+
                 return (
-                  <Link
+                  <div
                     key={item.label}
-                    href={item.href}
-                    onClick={closeSidebar}
-                    className={`${baseClasses} ${
-                      isActive ? "text-white bg-white/10" : "text-white/70 hover:bg-white/5"
-                    }`}
+                    className={`${baseClasses} opacity-30 cursor-not-allowed text-white/40`}
                   >
-                    <Icon className="w-4 h-4" />
+                    <Icon className="size-4" />
                     {item.label}
-                  </Link>
+                  </div>
                 );
-              }
+              })}
+            </nav>
 
-              return (
-                <button
-                  key={item.label}
-                  className={`opacity-60 cursor-not-allowed ${baseClasses} text-white/40`}
-                  type="button"
-                  disabled
-                >
-                  <Icon className="w-4 h-4" />
-                  {item.label}
-                </button>
-              );
-            })}
-          </nav>
-          <div className="p-4 mt-10 text-sm bg-gradient-to-br rounded-2xl from-primary/20 to-accent/20 text-white/80">
-            <p className="font-semibold text-white">UI Preview Build</p>
-            <p className="mt-1 text-xs">
-              Interactions are limited to mock flows until services are wired.
-            </p>
+            <div className="p-6 mt-6 rounded-3xl bg-primary shadow-glow-strong text-black space-y-3 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition duration-500">
+                <GaugeCircle className="size-16" />
+              </div>
+              <p className="font-display font-bold text-lg tracking-tighter leading-tight relative z-10">UI Preview Build</p>
+              <p className="text-xs font-bold leading-relaxed opacity-70 relative z-10 font-sans">
+                Interactions are limited to mock flows until backend services are finalized.
+              </p>
+            </div>
           </div>
         </aside>
-        <main className="overflow-hidden overflow-x-hidden relative">
-          <div className="flex relative z-10 flex-col gap-8 p-6 lg:p-10">
+
+        <main className="overflow-hidden overflow-x-hidden relative bg-grid">
+          <div className="flex relative z-10 flex-col gap-10 p-8 lg:p-14">
             {children}
           </div>
         </main>

@@ -18,13 +18,13 @@ export function KpiGrid() {
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
-        <LoadingState label="Loading KPI tiles..." />
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="space-y-6">
+        <LoadingState label="Synchronizing Metrics..." />
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {Array.from({ length: 4 }).map((_, index) => (
             <div
               key={`kpi-skeleton-${index}`}
-              className="h-32 rounded-3xl border border-white/5 bg-white/5/30 shadow-card backdrop-blur animate-pulse"
+              className="h-32 rounded-[2rem] border border-white/5 bg-white/[0.02] shadow-glow animate-pulse"
             />
           ))}
         </div>
@@ -33,26 +33,26 @@ export function KpiGrid() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
       {kpis.map((kpi: Kpi) => (
         <article
           key={kpi.label}
-          className="rounded-3xl border border-white/5 bg-white/5/30 p-5 shadow-card backdrop-blur"
+          className="rounded-[2rem] border border-white/5 bg-white/[0.02] p-8 shadow-glow hover:bg-white/[0.05] hover:border-primary/20 transition-all duration-500 group"
         >
-          <p className="text-sm font-medium text-white/70">{kpi.label}</p>
-          <p className="mt-3 text-3xl font-semibold tracking-tight text-white">
+          <p className="text-xs font-bold text-white/30 uppercase tracking-[0.2em] font-sans transition-colors group-hover:text-primary/60">{kpi.label}</p>
+          <p className="mt-4 text-4xl font-display font-bold tracking-tighter text-white">
             {kpi.value}
           </p>
           <div
             className={cn(
-              "mt-4 flex items-center gap-1.5 text-sm font-semibold",
-              kpi.trend === "up" ? "text-primary" : "text-red-400"
+              "mt-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest",
+              kpi.trend === "up" ? "text-primary transition-all group-hover:text-glow" : "text-rose-500"
             )}
           >
             {kpi.trend === "up" ? (
-              <ArrowUpRight className="h-4 w-4" />
+              <ArrowUpRight className="h-4 w-4 stroke-[3px]" />
             ) : (
-              <ArrowDownRight className="h-4 w-4" />
+              <ArrowDownRight className="h-4 w-4 stroke-[3px]" />
             )}
             <span>{kpi.delta}</span>
           </div>

@@ -1,152 +1,137 @@
 import type { Route } from "next";
 import Link from "next/link";
-import { ArrowUpRight, Sparkles, Star, Users } from "lucide-react";
+import { 
+  ArrowUpRight, 
+  Sparkles, 
+  BarChart3, 
+  Users, 
+  CreditCard, 
+  Zap, 
+  ShieldCheck,
+  Smartphone
+} from "lucide-react";
 
 const registerHref = "/register" as Route;
 const dashboardHref = "/dashboard" as Route;
 
-const programs = [
+const features = [
   {
-    title: "Membership Tiers",
-    description: "RFID-enabled access, locker service, and community events across Standard, Premium, and Elite tiers.",
-    badge: "New member promo",
+    title: "Owner Insights",
+    description: "Real-time analytics on member churn, peak hours, and revenue growth. Command your gym with data.",
+    icon: BarChart3,
   },
   {
-    title: "Personal Training",
-    description: "Goal-driven 1:1 coaching with biometric check-ins and tailored programming for every lifestyle.",
-    badge: "Limited slots",
+    title: "Member Management",
+    description: "Automated billing, digital contracts, and personalized growth tracking for every athlete.",
+    icon: Users,
   },
   {
-    title: "Wellness Lab",
-    description: "Recovery lounge, mobility labs, and nutrition intensives guided by Elevate specialists.",
-    badge: "Coming soon",
-  },
-];
-
-const testimonials = [
-  {
-    quote:
-      "Elevate blends tech and human coaching better than any studio we’ve piloted. Our members love tap-and-train simplicity.",
-    name: "Lara Mendoza",
-    role: "Studio Director, Pulse Collective",
+    title: "RFID Infrastructure",
+    description: "Low-latency sign-in systems for members. Tap-and-go access that syncs instantly with your records.",
+    icon: CreditCard,
   },
   {
-    quote: "The RFID locker + dashboard concept gives our trainers real context before each session. Huge unlock.",
-    name: "Jared Singh",
-    role: "Head Coach",
+    title: "Workflow Automation",
+    description: "Reduce manual tasks by 60% with automated member onboarding and staff scheduling.",
+    icon: Zap,
   },
 ];
 
 export function LandingPage() {
   return (
-    <div className="overflow-hidden relative text-white bg-canvas">
-      <div className="absolute inset-0 opacity-70 bg-mesh-glow" aria-hidden />
-      <div className="relative z-10">
+    <div className="overflow-hidden relative text-white bg-canvas min-h-screen font-sans bg-grid">
+      {/* Background decoration */}
+      <div className="absolute inset-0 opacity-20 bg-mesh-glow pointer-events-none" aria-hidden />
+      
+      <main className="relative z-10">
+        <Navbar />
         <HeroSection />
-        <ProgramSection />
-        <TestimonialSection />
-        <CtaBand />
-      </div>
+        <StatsSection />
+        <FeaturesGrid />
+        <RfidHighlight />
+        <CtaSection />
+      </main>
+
+      <footer className="relative z-10 px-6 py-12 border-t border-white/5 bg-black/20 text-center">
+        <p className="text-white/40 text-sm font-sans">
+          © {new Date().getFullYear()} Gymcentrix. The Operating System for Modern Gyms.
+        </p>
+      </footer>
     </div>
+  );
+}
+
+function Navbar() {
+  return (
+    <nav className="flex items-center justify-between px-6 py-8 mx-auto max-w-7xl lg:px-14">
+      <div className="flex items-center group cursor-pointer">
+        <span className="text-2xl font-display font-bold tracking-tighter text-primary text-glow">
+          GYMCENTRIX
+        </span>
+      </div>
+      <div className="hidden md:flex gap-8 text-sm font-medium text-white/70 font-sans uppercase tracking-widest">
+        <Link href="#" className="hover:text-primary transition">Features</Link>
+        <Link href="#" className="hover:text-primary transition">Pricing</Link>
+        <Link href="#" className="hover:text-primary transition">Enterprise</Link>
+      </div>
+      <div className="flex items-center gap-4">
+        <Link href={dashboardHref} className="text-sm font-medium hover:text-primary transition font-sans uppercase tracking-widest">Sign In</Link>
+        <PrimaryCta href={registerHref}>Start Free trial</PrimaryCta>
+      </div>
+    </nav>
   );
 }
 
 function HeroSection() {
   return (
-    <section className="px-6 pt-16 pb-12 lg:px-14 lg:pb-20">
-      <div className="mx-auto max-w-6xl grid gap-8 lg:grid-cols-[1.1fr_0.9fr] items-center">
-        <div className="space-y-6">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white/70">
-            <Sparkles className="w-4 h-4 text-accent" /> Elevate Lifestyle & Fitness
-          </span>
-          <h1 className="text-4xl font-semibold tracking-tight leading-tight sm:text-5xl">
-            Unlock premium wellness with RFID convenience and hybrid coaching.
-          </h1>
-          <p className="text-lg text-white/75">
-            Elevate combines a frictionless check-in experience with curated training pathways, biometric attendance, and
-            concierge-level service. Preview the experience or join the waitlist below.
+    <section className="px-6 pt-12 pb-20 lg:px-14 lg:pt-26">
+      <div className="mx-auto max-w-6xl text-center space-y-12">
+        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-xs uppercase tracking-[0.4em] text-primary font-bold">
+          <Sparkles className="w-4 h-4" /> Professional Gym Management
+        </div>
+        <h1 className="text-5xl font-display font-bold tracking-tighter leading-[1] sm:text-8xl lg:text-9xl">
+          The OS for <br />
+          <span className="text-primary text-glow italic">Modern Gyms.</span>
+        </h1>
+        <p className="text-xl text-white/50 max-w-2xl mx-auto leading-relaxed font-sans">
+          Gymcentrix empowers owners with a unified platform for billing, analytics, and member engagement. 
+          Automate the boring stuff and focus on building your community.
+        </p>
+        <div className="flex flex-wrap gap-4 justify-center pt-4">
+          <PrimaryCta href={registerHref}>Get Started Now</PrimaryCta>
+          <SecondaryCta href={dashboardHref}>View Platform Demo</SecondaryCta>
+        </div>
+        
+        <div className="flex items-center justify-center gap-6 pt-12 border-t border-white/5 max-w-xs mx-auto">
+          <div className="flex -space-x-3">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="w-10 h-10 rounded-full border-2 border-canvas bg-white/5" aria-hidden />
+            ))}
+          </div>
+          <p className="text-xs text-white/30 uppercase tracking-widest font-bold">
+            Trusted by <span className="text-white">200+</span> Studios
           </p>
-          <div className="flex flex-wrap gap-4">
-            <PrimaryCta href={registerHref}>Join Elevate</PrimaryCta>
-            <SecondaryCta href={dashboardHref}>View Dashboard Preview</SecondaryCta>
-          </div>
-          <dl className="grid gap-4 text-sm sm:grid-cols-3 text-white/70">
-            <div>
-              <dt className="text-xs uppercase tracking-[0.3em]">Members Served</dt>
-              <dd className="text-2xl font-semibold text-white">1.2k+</dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-[0.3em]">RFID Lockers</dt>
-              <dd className="text-2xl font-semibold text-white">85</dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-[0.3em]">Trainers Online</dt>
-              <dd className="text-2xl font-semibold text-white">32</dd>
-            </div>
-          </dl>
         </div>
-        <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 shadow-card backdrop-blur">
-          <div className="rounded-[28px] border border-white/10 bg-black/30 p-6">
-            <p className="text-sm uppercase tracking-[0.4em] text-white/60">RFID journey</p>
-            <h2 className="mt-3 text-2xl font-semibold">Tap in, train, and recover</h2>
-            <ul className="mt-6 space-y-4 text-sm text-white/70">
-              <li className="flex gap-3 items-start">
-                <span className="mt-1 w-2 h-2 rounded-full bg-primary" aria-hidden />
-                Seamless RFID card unlocks lockers, attendance, and PT studio access.
-              </li>
-              <li className="flex gap-3 items-start">
-                <span className="mt-1 w-2 h-2 rounded-full bg-accent" aria-hidden />
-                Dashboard surfaces KPIs for owners while members follow guided routines.
-              </li>
-              <li className="flex gap-3 items-start">
-                <span className="mt-1 w-2 h-2 rounded-full bg-white/60" aria-hidden />
-                Concierge follow-up confirms plans, PT match, and wellness add-ons.
-              </li>
-            </ul>
-            <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 text-xs uppercase tracking-[0.4em] text-white/60">
-              <Users className="mb-3 w-5 h-5 text-white" /> Trusted by hybrid studios
-            </div>
-          </div>
-        </div>
-        {/* <div className="flex items-center justify-center rounded-[32px] border border-white/10 bg-black/20 p-6 shadow-card backdrop-blur">
-          <Image
-            src="/brand/elevate-logo.png"
-            alt="Elevate Lifestyle & Fitness logo"
-            width={360}
-            height={240}
-            className="h-auto w-full object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.45)]"
-            priority
-          />
-        </div> */}
       </div>
     </section>
   );
 }
 
-function ProgramSection() {
+function StatsSection() {
   return (
-    <section className="px-6 py-16 bg-canvas-subtle lg:px-14">
-      <div className="mx-auto max-w-6xl">
-        <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-[0.4em] text-white/50">Programs</p>
-            <h2 className="text-3xl font-semibold tracking-tight">Design your flow</h2>
-            <p className="text-white/70">Mix-and-match membership tiers with optional personal training and wellness labs.</p>
-          </div>
-          <SecondaryCta href={registerHref} icon>
-            Compare tiers
-          </SecondaryCta>
-        </header>
-        <div className="grid gap-6 mt-10 md:grid-cols-3">
-          {programs.map((program) => (
-            <article
-              key={program.title}
-              className="p-6 rounded-3xl border backdrop-blur transition border-white/10 bg-white/5 shadow-card hover:-translate-y-1 hover:border-white/30"
-            >
-              <p className="text-xs uppercase tracking-[0.4em] text-white/50">{program.badge}</p>
-              <h3 className="mt-4 text-2xl font-semibold">{program.title}</h3>
-              <p className="mt-3 text-sm text-white/70">{program.description}</p>
-            </article>
+    <section className="px-6 py-12 lg:px-14">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 p-12 rounded-[3rem] border border-primary/20 bg-white/[0.02] backdrop-blur-3xl shadow-glow">
+          {[
+            { label: "Check-ins Today", value: "2.4k+" },
+            { label: "Revenue Growth", value: "+32%" },
+            { label: "Admin Hours Freed", value: "14h/wk" },
+            { label: "Client Retention", value: "94%" },
+          ].map((stat, i) => (
+            <div key={i} className="space-y-1">
+              <p className="text-xs uppercase tracking-[0.3em] text-white/30 font-bold font-sans">{stat.label}</p>
+              <p className="text-4xl font-display font-bold text-white tracking-tighter">{stat.value}</p>
+            </div>
           ))}
         </div>
       </div>
@@ -154,31 +139,67 @@ function ProgramSection() {
   );
 }
 
-function TestimonialSection() {
+function FeaturesGrid() {
   return (
-    <section className="px-6 py-16 lg:px-14">
-      <div className="mx-auto max-w-6xl rounded-[32px] border border-white/10 bg-gradient-to-br from-primary/20 to-accent/20 p-8 shadow-card">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-          <div className="max-w-sm">
-            <p className="text-xs uppercase tracking-[0.4em] text-white/60">Testimonials</p>
-            <h2 className="mt-3 text-3xl font-semibold">Clinics + studios trust Elevate</h2>
-            <p className="mt-3 text-white/75">
-              Pilot partners use our dashboard to anticipate demand, review attendance, and schedule PT talent before guests
-              arrive.
-            </p>
+    <section className="px-6 py-24 lg:px-14 overflow-hidden">
+      <div className="mx-auto max-w-7xl">
+        <div className="max-w-3xl mb-16">
+          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-6xl mb-6">Designed for scale.</h2>
+          <p className="text-lg text-white/40 font-sans leading-relaxed">Everything you need to run a high-performance fitness business without the technical debt.</p>
+        </div>
+        
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {features.map((feature, i) => (
+            <div key={i} className="group p-10 rounded-[2.5rem] border border-white/5 bg-white/[0.03] hover:bg-white/[0.08] hover:border-primary/20 transition duration-500 hover:shadow-glow">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-8 border border-primary/20 group-hover:scale-110 transition duration-500">
+                <feature.icon className="w-7 h-7 text-primary" />
+              </div>
+              <h3 className="text-2xl font-display font-bold mb-4 tracking-tighter">{feature.title}</h3>
+              <p className="text-sm text-white/40 leading-relaxed font-sans">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function RfidHighlight() {
+  return (
+    <section className="px-6 py-24 lg:px-14">
+      <div className="mx-auto max-w-7xl rounded-[4rem] overflow-hidden border border-primary/20 bg-white/[0.02] p-12 lg:p-24 group relative backdrop-blur-sm shadow-glow">
+        <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none group-hover:opacity-10 transition duration-700">
+          <Smartphone className="w-96 h-96 -rotate-12 text-primary" />
+        </div>
+        
+        <div className="max-w-2xl relative z-10">
+          <div className="w-16 h-16 rounded-3xl bg-primary/10 flex items-center justify-center mb-10 border border-primary/20 shadow-glow">
+            <ShieldCheck className="w-8 h-8 text-primary font-bold" />
           </div>
-          <div className="grid flex-1 gap-6 md:grid-cols-2">
-            {testimonials.map((testimonial) => (
-              <figure key={testimonial.name} className="p-5 rounded-3xl border border-white/20 bg-black/30 text-white/80">
-                <Star className="w-5 h-5 text-accent" />
-                <blockquote className="mt-3 text-sm leading-relaxed">“{testimonial.quote}”</blockquote>
-                <figcaption className="mt-4 text-xs uppercase tracking-[0.3em] text-white/60">
-                  {testimonial.name}
-                  <br />
-                  <span className="tracking-normal normal-case text-white/50">{testimonial.role}</span>
-                </figcaption>
-              </figure>
-            ))}
+          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-6xl mb-8 leading-[1.1]">
+            Frictionless Sign-In with <span className="text-primary italic">RFID.</span>
+          </h2>
+          <p className="text-xl text-white/40 mb-12 leading-relaxed font-sans">
+            Eliminate bottlenecks at the front desk. Our RFID integration allows members to sign in with a simple tap, 
+            instantaneously updating your attendance metrics.
+          </p>
+          <div className="grid gap-6 sm:grid-cols-2 text-white/50 text-sm font-sans uppercase tracking-[0.2em] font-bold">
+            <div className="flex gap-4 items-center">
+              <div className="w-2 h-2 rounded-full bg-primary" />
+              Instant Validation
+            </div>
+            <div className="flex gap-4 items-center">
+              <div className="w-2 h-2 rounded-full bg-primary" />
+              Locker Sync
+            </div>
+            <div className="flex gap-4 items-center">
+              <div className="w-2 h-2 rounded-full bg-primary" />
+              PT Tracking
+            </div>
+            <div className="flex gap-4 items-center">
+              <div className="w-2 h-2 rounded-full bg-primary" />
+              Safe Access
+            </div>
           </div>
         </div>
       </div>
@@ -186,21 +207,21 @@ function TestimonialSection() {
   );
 }
 
-function CtaBand() {
+function CtaSection() {
   return (
-    <section className="px-6 pb-16 lg:px-14">
-      <div className="mx-auto max-w-5xl rounded-[32px] border border-white/10 bg-white/5 p-8 text-center shadow-card">
-        <p className="text-xs uppercase tracking-[0.4em] text-white/60">Ready?</p>
-        <h2 className="mt-3 text-3xl font-semibold">Step into Elevate Lifestyle & Fitness</h2>
-        <p className="mt-2 text-white/70">
-          Use the dashboard preview to align stakeholders, then invite members to register using the public form.
+    <section className="px-6 py-24 lg:px-14">
+      <div className="mx-auto max-w-5xl text-center space-y-12">
+        <h2 className="text-5xl font-display font-bold tracking-tighter sm:text-7xl lg:text-8xl">
+          Scale your <br /><span className="text-primary italic">Ambition.</span>
+        </h2>
+        <p className="text-xl text-white/40 max-w-2xl mx-auto font-sans">
+          Join hundreds of owners who have switched to Gymcentrix to streamline their operations.
         </p>
-        <div className="flex flex-wrap gap-4 justify-center mt-6">
-          <PrimaryCta href={registerHref}>Join Elevate</PrimaryCta>
-          <SecondaryCta href={dashboardHref} icon>
-            View Dashboard Preview
-          </SecondaryCta>
+        <div className="flex flex-wrap gap-4 justify-center pt-6">
+          <PrimaryCta href={registerHref}>Start 14-day Free Trial</PrimaryCta>
+          <SecondaryCta href={dashboardHref}>Request custom Demo</SecondaryCta>
         </div>
+        <p className="text-xs text-white/20 uppercase tracking-[0.3em] font-bold">No credit card required</p>
       </div>
     </section>
   );
@@ -210,22 +231,28 @@ function PrimaryCta({ href, children }: { href: Route; children: React.ReactNode
   return (
     <Link
       href={href}
-      className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-primary/20 px-6 py-3 text-sm font-semibold text-white shadow-card transition hover:-translate-y-0.5"
+      className="inline-flex items-center gap-2 rounded-2xl bg-primary px-8 py-5 text-sm font-bold text-black hover:scale-105 active:scale-95 transition shadow-glow-strong uppercase tracking-widest"
     >
       {children}
-      <ArrowUpRight className="w-4 h-4" />
+      <ArrowUpRight className="w-4 h-4 stroke-[3px]" />
     </Link>
   );
 }
 
-function SecondaryCta({ href, children, icon }: { href: Route; children: React.ReactNode; icon?: boolean }) {
+function SecondaryCta({ 
+  href, 
+  children, 
+}: { 
+  href: Route; 
+  children: React.ReactNode; 
+}) {
   return (
     <Link
       href={href}
-      className="inline-flex gap-2 items-center px-6 py-3 text-sm font-semibold text-white rounded-full border transition border-white/20 bg-white/10 hover:bg-white/15"
+      className="inline-flex gap-2 items-center px-8 py-5 text-sm font-bold text-white rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 transition uppercase tracking-widest"
     >
       {children}
-      {icon ? <ArrowUpRight className="w-4 h-4" /> : null}
     </Link>
   );
 }
+

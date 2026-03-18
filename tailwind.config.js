@@ -4,32 +4,34 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["'Space Grotesk'", "'Segoe UI'", "sans-serif"],
-        sans: ["'Space Grotesk'", "'Segoe UI'", "sans-serif"],
+        display: ["var(--font-unbounded)", "system-ui", "sans-serif"],
+        sans: ["var(--font-geist)", "system-ui", "sans-serif"],
       },
       colors: {
         canvas: {
-          DEFAULT: "#05060a",
-          subtle: "#0c111d",
+          DEFAULT: "#050505",
+          subtle: "#0a0a0b",
         },
         primary: {
-          DEFAULT: "#4c8dff",
-          muted: "#d5e4ff",
+          DEFAULT: "#87f100",
+          muted: "#1a2e00",
         },
         accent: {
-          DEFAULT: "#f97316",
-          soft: "#ffe6d7",
+          DEFAULT: "#87f100",
+          soft: "#dfffc7",
         },
         border: {
-          subtle: "rgba(255,255,255,0.08)",
+          subtle: "rgba(255,255,255,0.05)",
         },
       },
       boxShadow: {
-        card: "0 20px 45px -30px rgba(12,17,29,0.45)",
+        card: "0 20px 45px -30px rgba(0,0,0,0.8)",
+        glow: "0 0 25px -5px rgba(135, 241, 0, 0.15), 0 0 10px -2px rgba(135, 241, 0, 0.1)",
+        'glow-strong': "0 0 40px -5px rgba(135, 241, 0, 0.25), 0 0 15px -2px rgba(135, 241, 0, 0.2), 0 0 60px -10px rgba(135, 241, 0, 0.1)",
       },
       backgroundImage: {
         'mesh-glow':
-          "radial-gradient(circle at 20% 20%, rgba(76, 141, 255, 0.25), transparent 45%), radial-gradient(circle at 80% 0%, rgba(249, 115, 22, 0.2), transparent 40%)",
+          "radial-gradient(circle at 20% 20%, rgba(135, 241, 0, 0.15), transparent 45%), radial-gradient(circle at 80% 0%, rgba(135, 241, 0, 0.1), transparent 40%)",
       },
     },
   },

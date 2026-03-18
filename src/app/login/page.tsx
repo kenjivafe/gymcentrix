@@ -38,62 +38,62 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-canvas p-4 font-sans">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center size-16 bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-500/20 mb-6">
-            <ShieldCheck className="size-8 text-white" />
+          <div className="inline-flex items-center justify-center size-16 bg-primary/10 rounded-2xl shadow-glow mb-6 border border-primary/20">
+            <ShieldCheck className="size-8 text-primary" />
           </div>
-          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">
-            Gymcentrix
+          <h1 className="text-4xl font-display font-bold tracking-tighter text-white">
+            Gym<span className="text-primary italic">centrix</span>
           </h1>
-          <p className="mt-2 text-slate-500 dark:text-slate-400">
+          <p className="mt-4 text-white/40 uppercase tracking-[0.2em] text-xs font-bold">
             Internal Access Portal
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 p-8">
+        <div className="bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] shadow-glow border border-white/5 p-10">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-xs font-bold text-white/40 uppercase tracking-widest mb-3">
                 Email Address
               </label>
-              <div className="relative">
+              <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Mail className="size-5 text-slate-400" />
+                  <Mail className="size-5 text-white/20 group-focus-within:text-primary transition-colors" />
                 </div>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-indigo-600 dark:text-white transition-all outline-none"
+                  className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary/50 text-white transition-all outline-none font-sans"
                   placeholder="admin@gymcentrix.com"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-xs font-bold text-white/40 uppercase tracking-widest mb-3">
                 Password
               </label>
-              <div className="relative">
+              <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="size-5 text-slate-400" />
+                  <Lock className="size-5 text-white/20 group-focus-within:text-primary transition-colors" />
                 </div>
                 <input
                   type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-indigo-600 dark:text-white transition-all outline-none"
+                  className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary/50 text-white transition-all outline-none font-sans"
                   placeholder="••••••••"
                 />
               </div>
             </div>
 
             {error && (
-              <div className="p-4 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 text-sm font-medium rounded-xl border border-rose-100 dark:border-rose-900/30 text-center">
+              <div className="p-4 bg-primary/5 text-primary text-sm font-bold rounded-xl border border-primary/20 text-center uppercase tracking-tight">
                 {error}
               </div>
             )}
@@ -101,7 +101,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-slate-900 dark:bg-indigo-600 hover:bg-slate-800 dark:hover:bg-indigo-500 text-white font-bold py-4 rounded-xl shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:scale-[1.02] active:scale-95 text-black font-bold py-5 rounded-2xl shadow-glow-strong transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase tracking-widest text-sm"
             >
               {loading ? (
                 <Loader2 className="size-5 animate-spin" />

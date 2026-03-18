@@ -1,19 +1,23 @@
 import type { Metadata } from "next";
+import { Unbounded, Host_Grotesk } from "next/font/google";
 import "./globals.css";
-import { Space_Grotesk } from "next/font/google";
+import { Providers } from "@/components/providers";
 
-const spaceGrotesk = Space_Grotesk({
+const unbounded = Unbounded({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-unbounded",
+});
+
+const geist = Host_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-geist",
 });
 
 export const metadata: Metadata = {
-  title: "Gym Membership UI Preview",
+  title: "Gymcentrix | The OS for Modern Gyms",
   description:
-    "UI-only experience for the Gym Membership Card System to validate layout and flows before backend wiring.",
+    "Professional gym management SaaS with RFID sign-in, analytics, and member engagement.",
 };
-
-import { Providers } from "@/components/providers";
 
 export default function RootLayout({
   children,
@@ -21,8 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={spaceGrotesk.variable} suppressHydrationWarning>
-      <body className="bg-canvas text-white antialiased min-h-screen">
+    <html lang="en" className={`${unbounded.variable} ${geist.variable} font-sans`} suppressHydrationWarning>
+      <body className="bg-canvas text-white antialiased min-h-screen font-sans" suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>

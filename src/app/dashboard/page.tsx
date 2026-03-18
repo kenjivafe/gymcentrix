@@ -1,6 +1,7 @@
 import type { Route } from "next";
 import Link from "next/link";
 
+import { ArrowUpRight } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { KpiGrid } from "@/components/dashboard/kpi-grid";
 import { AnalyticsSection } from "@/components/dashboard/analytics-section";
@@ -19,43 +20,48 @@ export default function DashboardPage() {
   const accountingPath = "/dashboard/accounting" as Route;
   return (
     <AppShell>
-      <header className="space-y-2">
-        <p className="text-sm uppercase text-white/60">Gymcentrix dashboard preview</p>
-        <h1 className="text-4xl font-semibold tracking-tight">Operations at a glance</h1>
-        <p className="text-lg text-white/70">
+      <header className="space-y-6">
+        <div>
+          <p className="text-xs uppercase tracking-[0.4em] text-white/20 font-bold font-sans">Strategic Operations</p>
+          <h1 className="text-5xl font-display font-bold tracking-tighter text-white mt-2 sm:text-7xl">
+            Operations <br /><span className="text-primary italic">Intelligence.</span>
+          </h1>
+        </div>
+        <p className="text-xl text-white/40 max-w-3xl font-sans leading-relaxed">
           All content below is driven by deterministic mock data. Interactions are limited to
           client-side previews while backend integrations are under construction.
         </p>
-        <div className="flex flex-wrap gap-3 pt-2">
+        <div className="flex flex-wrap gap-4 pt-4">
           <Link
             href={registerPath}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-semibold text-white transition hover:bg-white/15"
+            className="group inline-flex items-center gap-3 rounded-2xl bg-primary px-8 py-4 text-sm font-bold text-black transition-all hover:scale-[1.02] active:scale-[0.98] shadow-glow-strong uppercase tracking-widest"
           >
-            Launch public registration preview
+            Launch Public Registration
+            <ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </Link>
           <Link
             href={membersPath}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/15"
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/5 bg-white/[0.03] px-6 py-4 text-xs font-bold text-white/40 transition hover:bg-white/10 hover:text-white uppercase tracking-[0.2em] font-sans"
           >
-            View members directory
+            Members Directory
           </Link>
           <Link
             href={employeesPath}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/15"
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/5 bg-white/[0.03] px-6 py-4 text-xs font-bold text-white/40 transition hover:bg-white/10 hover:text-white uppercase tracking-[0.2em] font-sans"
           >
-            Monitor employees attendance
+            Employees
           </Link>
           <Link
             href={lockersPath}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/15"
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/5 bg-white/[0.03] px-6 py-4 text-xs font-bold text-white/40 transition hover:bg-white/10 hover:text-white uppercase tracking-[0.2em] font-sans"
           >
-            Track locker occupancy
+            Locker Occupancy
           </Link>
           <Link
             href={accountingPath}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm font-semibold text-white/80 transition hover:bg-white/15"
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/5 bg-white/[0.03] px-6 py-4 text-xs font-bold text-white/40 transition hover:bg-white/10 hover:text-white uppercase tracking-[0.2em] font-sans"
           >
-            Review accounting
+            Accounting
           </Link>
         </div>
       </header>

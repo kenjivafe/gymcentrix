@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { ArrowUpRight } from "lucide-react";
 import {
   membershipPlans,
   type RegistrationFormData,
@@ -97,36 +98,37 @@ export function RegistrationExperience() {
   }
 
   return (
-    <div className="space-y-12">
-      <section className="rounded-3xl border border-white/5 bg-white/5/40 p-8 shadow-card backdrop-blur">
-        <p className="text-sm uppercase tracking-[0.4em] text-white/60">Join the experience</p>
-        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white">
-          Membership + Personal Training Registration
+    <div className="space-y-16 pb-24">
+      <section className="rounded-[3rem] border border-white/5 bg-white/[0.02] p-12 lg:p-16 shadow-glow backdrop-blur-3xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] rounded-full -mr-32 -mt-32 pointer-events-none" />
+        <p className="text-xs uppercase tracking-[0.4em] text-primary font-bold">Join the movement</p>
+        <h1 className="mt-6 text-5xl font-display font-bold tracking-tighter text-white sm:text-7xl">
+          Membership <br /><span className="text-primary italic">Registration.</span>
         </h1>
-        <p className="mt-4 text-lg text-white/70">
+        <p className="mt-6 text-xl text-white/40 max-w-2xl font-sans leading-relaxed">
           Tell us about your goals, choose a membership tier, and optionally reserve a personal training slot.
           Our team will review and follow up within one business day.
         </p>
-        <div className="mt-6 flex flex-wrap gap-4 text-sm text-white/60">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-primary" aria-hidden /> Real human onboarding
+        <div className="mt-10 flex flex-wrap gap-6 text-xs text-white/30 uppercase tracking-[0.2em] font-bold">
+          <div className="flex items-center gap-3">
+            <span className="h-2 w-2 rounded-full bg-primary shadow-glow" aria-hidden /> Real human onboarding
           </div>
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-accent" aria-hidden /> RFID-ready memberships
+          <div className="flex items-center gap-3">
+            <span className="h-2 w-2 rounded-full bg-primary shadow-glow" aria-hidden /> RFID-ready access
           </div>
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-white/70" aria-hidden /> Cancel anytime prior to activation
+          <div className="flex items-center gap-3">
+            <span className="h-2 w-2 rounded-full bg-white/20" aria-hidden /> Cancel anytime
           </div>
         </div>
       </section>
 
-      <section className="grid gap-8 lg:grid-cols-[1.3fr_0.7fr]">
-        <div className="space-y-6">
-          <div>
-            <h2 className="text-2xl font-semibold tracking-tight">Choose your membership</h2>
-            <p className="text-white/70">All plans include unlimited gym access, locker usage, and member events.</p>
+      <section className="grid gap-12 lg:grid-cols-[1.3fr_0.7fr]">
+        <div className="space-y-12">
+          <div className="space-y-4">
+            <h2 className="text-3xl font-display font-bold tracking-tighter sm:text-4xl text-white">Choose your tier.</h2>
+            <p className="text-lg text-white/40 font-sans">All plans include unlimited gym access, locker usage, and member events.</p>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-3">
             {membershipPlans.map((plan) => {
               const isSelected = formData.membershipPlan === plan.id;
               return (
@@ -134,21 +136,21 @@ export function RegistrationExperience() {
                   key={plan.id}
                   type="button"
                   onClick={() => updateField("membershipPlan", plan.id)}
-                  className={`rounded-3xl border px-5 py-6 text-left transition ${
+                  className={`rounded-[2.5rem] border p-8 text-left transition duration-500 ${
                     isSelected
-                      ? "border-primary bg-primary/10 text-white"
-                      : "border-white/10 bg-black/30 text-white/70 hover:border-white/40"
+                      ? "border-primary bg-primary/10 text-white shadow-glow"
+                      : "border-white/5 bg-white/[0.02] text-white/50 hover:border-white/20 hover:bg-white/[0.05]"
                   }`}
                 >
-                  <p className="text-sm uppercase tracking-widest text-white/60">{plan.name}</p>
-                  <p className="mt-3 text-3xl font-semibold text-white">
+                  <p className="text-xs uppercase tracking-[0.2em] font-bold text-primary/60">{plan.name}</p>
+                  <p className="mt-4 text-4xl font-display font-bold text-white tracking-tighter">
                     {plan.price}
-                    <span className="text-sm font-normal text-white/60"> {plan.cadence}</span>
+                    <span className="text-sm font-normal text-white/30"> {plan.cadence}</span>
                   </p>
-                  <ul className="mt-4 space-y-1 text-sm">
+                  <ul className="mt-6 space-y-2 text-sm font-sans">
                     {plan.perks.map((perk) => (
-                      <li key={perk} className="flex items-center gap-2">
-                        <span className="h-1.5 w-1.5 rounded-full bg-white/60" aria-hidden />
+                      <li key={perk} className="flex items-center gap-3">
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary/40" aria-hidden />
                         {perk}
                       </li>
                     ))}
@@ -158,150 +160,146 @@ export function RegistrationExperience() {
             })}
           </div>
           {errors.membershipPlan ? (
-            <p className="text-sm text-red-300">{errors.membershipPlan}</p>
+            <p className="text-sm text-primary font-bold uppercase tracking-tight">{errors.membershipPlan}</p>
           ) : null}
 
-          <form onSubmit={handleSubmit} className="space-y-6" aria-live="polite">
-            <div className="grid gap-4 md:grid-cols-2">
-              <Field
-                label="First name"
-                id="firstName"
-                value={formData.firstName}
-                onChange={(event) => updateField("firstName", event.target.value)}
-                error={errors.firstName}
-              />
-              <Field
-                label="Last name"
-                id="lastName"
-                value={formData.lastName}
-                onChange={(event) => updateField("lastName", event.target.value)}
-                error={errors.lastName}
-              />
+          <form onSubmit={handleSubmit} className="space-y-10" aria-live="polite">
+            <div className="space-y-6">
+               <h3 className="text-2xl font-display font-bold text-white tracking-tighter underline decoration-primary/20 underline-offset-8">Personal Details</h3>
+               <div className="grid gap-6 md:grid-cols-2">
+                <Field
+                  label="First name"
+                  id="firstName"
+                  value={formData.firstName}
+                  onChange={(event) => updateField("firstName", event.target.value)}
+                  error={errors.firstName}
+                />
+                <Field
+                  label="Last name"
+                  id="lastName"
+                  value={formData.lastName}
+                  onChange={(event) => updateField("lastName", event.target.value)}
+                  error={errors.lastName}
+                />
+              </div>
+              <div className="grid gap-6 md:grid-cols-2">
+                <Field
+                  label="Email Address"
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(event) => updateField("email", event.target.value)}
+                  error={errors.email}
+                />
+                <Field
+                  label="Phone Number"
+                  id="phone"
+                  value={formData.phone}
+                  onChange={(event) => updateField("phone", event.target.value)}
+                  error={errors.phone}
+                />
+              </div>
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <Field
-                label="Email"
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={(event) => updateField("email", event.target.value)}
-                error={errors.email}
-              />
-              <Field
-                label="Phone"
-                id="phone"
-                value={formData.phone}
-                onChange={(event) => updateField("phone", event.target.value)}
-                error={errors.phone}
-              />
-            </div>
-            <div>
-              <label className="text-sm text-white/70" htmlFor="goals">
-                Tell us about your goals
+
+            <div className="space-y-4">
+              <label className="text-xs font-bold text-white/30 uppercase tracking-widest font-sans" htmlFor="goals">
+                Your Fitness Ambition
               </label>
               <textarea
                 id="goals"
                 value={formData.goals}
                 onChange={(event) => updateField("goals", event.target.value)}
-                className="mt-2 w-full rounded-3xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/30 focus:border-primary focus:outline-none"
-                rows={4}
+                className="w-full rounded-3xl border border-white/10 bg-white/[0.03] px-6 py-4 text-white placeholder:text-white/20 focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none font-sans transition-all min-h-[120px]"
                 placeholder="e.g., Build strength, improve mobility, prepare for competition"
               />
-              {errors.goals ? <p className="mt-1 text-sm text-red-300">{errors.goals}</p> : null}
+              {errors.goals ? <p className="text-sm text-primary font-bold font-sans">{errors.goals}</p> : null}
             </div>
 
-            <div className="rounded-3xl border border-white/10 bg-black/20 p-5">
-              <div className="flex flex-wrap items-center gap-3">
-                <p className="text-base font-semibold text-white">Add personal training</p>
-                <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-white/70">
+            <div className="rounded-[3rem] border border-white/5 bg-white/[0.02] p-10 space-y-8">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <p className="text-xl font-display font-bold text-white tracking-tighter">Add Personal Training</p>
+                  <p className="text-sm text-white/30 font-sans">Maximize your results with expert coaching.</p>
+                </div>
+                <label className="relative inline-flex cursor-pointer items-center gap-4 group">
                   <input
                     type="checkbox"
                     checked={formData.addTraining}
                     onChange={(event) => toggleTraining(event.target.checked)}
-                    className="h-4 w-4 rounded border-white/30 bg-transparent"
+                    className="size-6 rounded-lg border-white/20 bg-transparent text-primary focus:ring-primary accent-primary"
                   />
-                  Include personal training
+                  <span className="text-sm font-bold uppercase tracking-widest text-white/60 group-hover:text-primary transition-colors">Include Training</span>
                 </label>
               </div>
               {formData.addTraining ? (
-                <div className="mt-4 space-y-4">
+                <div className="grid gap-6 animate-in fade-in slide-in-from-top-4 duration-500">
                   <Field
-                    label="Training focus"
+                    label="Focus Area"
                     id="trainingFocus"
                     value={formData.trainingFocus ?? ""}
                     onChange={(event) => updateField("trainingFocus", event.target.value)}
                     error={errors.trainingFocus}
                     placeholder="Mobility, strength, conditioning..."
                   />
-                  <Field
-                    label="Trainer preference"
-                    id="trainerPreference"
-                    value={formData.trainerPreference ?? ""}
-                    onChange={(event) => updateField("trainerPreference", event.target.value)}
-                    error={errors.trainerPreference}
-                    placeholder="Energy level, coaching style, certification"
-                  />
-                  <Field
-                    label="Availability windows"
-                    id="availability"
-                    value={formData.availability ?? ""}
-                    onChange={(event) => updateField("availability", event.target.value)}
-                    error={errors.availability}
-                    placeholder="Weekday mornings, weekends after 2pm, etc."
-                  />
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <Field
+                      label="Coach Preference"
+                      id="trainerPreference"
+                      value={formData.trainerPreference ?? ""}
+                      onChange={(event) => updateField("trainerPreference", event.target.value)}
+                      error={errors.trainerPreference}
+                      placeholder="Energy level, style..."
+                    />
+                    <Field
+                      label="Availability"
+                      id="availability"
+                      value={formData.availability ?? ""}
+                      onChange={(event) => updateField("availability", event.target.value)}
+                      error={errors.availability}
+                      placeholder="Weekday mornings, etc."
+                    />
+                  </div>
                 </div>
               ) : null}
             </div>
 
-            <div className="space-y-3">
-              <label className="flex items-start gap-3 text-sm text-white/70">
+            <div className="space-y-4 pt-4">
+              <label className="flex items-start gap-4 text-sm text-white/50 group cursor-pointer font-sans">
                 <input
                   type="checkbox"
                   checked={formData.consentPolicies}
                   onChange={(event) => updateField("consentPolicies", event.target.checked)}
-                  className="mt-1 h-4 w-4 rounded border-white/30 bg-transparent"
+                  className="mt-1 size-5 rounded border-white/20 bg-transparent text-primary focus:ring-primary accent-primary"
                 />
-                I agree to the gym policies, membership agreement, and acknowledge that final activation occurs after staff review.
+                <span className="group-hover:text-white transition-colors">I agree to the gym policies and acknowledge that final activation occurs after staff review.</span>
               </label>
               {errors.consentPolicies ? (
-                <p className="text-sm text-red-300">{errors.consentPolicies}</p>
+                <p className="text-sm text-primary font-bold">{errors.consentPolicies}</p>
               ) : null}
-              <label className="flex items-start gap-3 text-sm text-white/70">
+              <label className="flex items-start gap-4 text-sm text-white/50 group cursor-pointer font-sans">
                 <input
                   type="checkbox"
                   checked={formData.consentComms}
                   onChange={(event) => updateField("consentComms", event.target.checked)}
-                  className="mt-1 h-4 w-4 rounded border-white/30 bg-transparent"
+                  className="mt-1 size-5 rounded border-white/20 bg-transparent text-primary focus:ring-primary accent-primary"
                 />
-                Keep me posted on events and personal training availability.
+                <span className="group-hover:text-white transition-colors">Keep me posted on community events and personal training availability.</span>
               </label>
             </div>
-
-            {/* Honeypot */}
-            <input
-              type="text"
-              name="company"
-              value={formData.honeypot ?? ""}
-              onChange={(event) => updateField("honeypot", event.target.value)}
-              className="hidden"
-              tabIndex={-1}
-              autoComplete="off"
-            />
-
-            {errors.form ? <p className="text-sm text-red-300">{errors.form}</p> : null}
 
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="flex w-full items-center justify-center rounded-3xl border border-white/20 bg-white/10 px-6 py-4 text-base font-semibold text-white transition hover:bg-white/15 disabled:opacity-60"
+              className="group flex w-full items-center justify-center rounded-2xl bg-primary px-8 py-6 text-sm font-bold text-black transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-glow-strong uppercase tracking-[0.2em]"
             >
-              {status === "submitting" ? "Submitting..." : "Submit registration"}
+              {status === "submitting" ? "Processing..." : "Submit Registration"}
+              <ArrowUpRight className="ml-2 size-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </button>
 
             {status === "success" ? (
-              <div className="rounded-3xl border border-primary/30 bg-primary/10 p-5 text-white">
-                <p className="text-lg font-semibold">Thank you! 🎉</p>
-                <p className="text-sm text-white/80">
+              <div className="rounded-[2.5rem] border border-primary/20 bg-primary/5 p-10 text-white shadow-glow animate-in zoom-in duration-500">
+                <p className="text-2xl font-display font-bold tracking-tighter underline decoration-primary underline-offset-8">Thank you! 🎉</p>
+                <p className="mt-6 text-sm text-white/60 font-sans leading-relaxed">
                   Your registration is in our queue. Expect a confirmation call or email within one business day.
                   You can continue exploring the site while we prepare your onboarding kit.
                 </p>
@@ -310,28 +308,36 @@ export function RegistrationExperience() {
           </form>
         </div>
 
-        <aside className="space-y-6">
-          <div className="rounded-3xl border border-white/10 bg-black/30 p-6">
-            <p className="text-sm uppercase text-white/60">Why train with us</p>
-            <h3 className="mt-2 text-2xl font-semibold text-white">Hybrid coaching for real life</h3>
-            <p className="mt-3 text-white/70">
-              Combine RFID-enabled gym access with personalized programming and biometric check-ins. Share your availability
-              and we will line up the right coach before your first visit.
+        <aside className="space-y-8">
+          <div className="rounded-[3rem] border border-white/5 bg-white/[0.02] p-10 shadow-glow">
+            <p className="text-xs uppercase tracking-[0.3em] font-bold text-primary/60 font-sans">Why Gymcentrix</p>
+            <h3 className="mt-4 text-3xl font-display font-bold text-white tracking-tighter">Hybrid coaching for <span className="text-primary italic">real life.</span></h3>
+            <p className="mt-6 text-white/40 leading-relaxed font-sans">
+              Combine RFID-enabled gym access with personalized programming and biometric check-ins.
             </p>
-            <ul className="mt-4 space-y-2 text-sm text-white/70">
-              <li>• 1:1 onboarding session</li>
-              <li>• Locker + towel service included on Premium+</li>
-              <li>• Custom progress dashboard in development</li>
+            <ul className="mt-8 space-y-4 text-sm text-white/60 font-sans">
+              <li className="flex items-center gap-3">
+                <div className="size-1.5 rounded-full bg-primary" />
+                1:1 onboarding session
+              </li>
+              <li className="flex items-center gap-3">
+                <div className="size-1.5 rounded-full bg-primary" />
+                Locker + towel service included
+              </li>
+              <li className="flex items-center gap-3">
+                <div className="size-1.5 rounded-full bg-primary" />
+                Custom progress dashboard
+              </li>
             </ul>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-black/30 p-6">
-            <p className="text-sm uppercase text-white/60">FAQs</p>
-            <div className="mt-4 space-y-4">
+          <div className="rounded-[3rem] border border-white/5 bg-white/[0.02] p-10">
+            <p className="text-xs uppercase tracking-[0.3em] font-bold text-white/30 font-sans">FAQs</p>
+            <div className="mt-8 space-y-8">
               {faqs.map((faq) => (
-                <div key={faq.question}>
-                  <p className="font-semibold text-white">{faq.question}</p>
-                  <p className="text-sm text-white/70">{faq.answer}</p>
+                <div key={faq.question} className="space-y-3">
+                  <p className="text-lg font-display font-bold text-white tracking-tighter">{faq.question}</p>
+                  <p className="text-sm text-white/40 font-sans leading-relaxed">{faq.answer}</p>
                 </div>
               ))}
             </div>
@@ -354,8 +360,8 @@ type FieldProps = {
 
 function Field({ label, id, value, onChange, error, type = "text", placeholder }: FieldProps) {
   return (
-    <div>
-      <label className="text-sm text-white/70" htmlFor={id}>
+    <div className="space-y-3">
+      <label className="text-xs font-bold text-white/30 uppercase tracking-widest font-sans" htmlFor={id}>
         {label}
       </label>
       <input
@@ -364,9 +370,9 @@ function Field({ label, id, value, onChange, error, type = "text", placeholder }
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="mt-2 w-full rounded-3xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/30 focus:border-primary focus:outline-none"
+        className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-4 text-white placeholder:text-white/20 focus:border-primary focus:ring-1 focus:ring-primary/20 focus:outline-none font-sans transition-all"
       />
-      {error ? <p className="mt-1 text-sm text-red-300">{error}</p> : null}
+      {error ? <p className="text-sm text-primary font-bold font-sans">{error}</p> : null}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Users, Activity, ArrowUpRight } from "lucide-react";
+import { Users, Activity, ArrowUpRight, Plus } from "lucide-react";
 import Link from "next/link";
 
 export default async function SuperAdminDashboard() {
@@ -12,79 +12,86 @@ export default async function SuperAdminDashboard() {
     {
       label: "Total Gyms",
       value: gymCount,
-      icon: <Buildings className="size-6 text-indigo-600" />,
+      icon: <Buildings className="size-6 text-primary" />,
       href: "/super-admin/gyms",
     },
     {
       label: "Gym Owners",
       value: ownerCount,
-      icon: <Users className="size-6 text-emerald-600" />,
+      icon: <Users className="size-6 text-primary" />,
       href: "/super-admin/owners",
     },
     {
       label: "System Status",
       value: "Healthy",
-      icon: <Activity className="size-6 text-blue-600" />,
+      icon: <Activity className="size-6 text-primary" />,
       href: "#",
     },
   ];
 
   return (
-    <div className="space-y-10">
-      <header className="space-y-2">
-        <p className="text-sm uppercase tracking-widest text-primary/80 font-bold">Multitenant Infrastructure</p>
-        <h2 className="text-4xl font-bold tracking-tight text-white">
-          System Overview
+    <div className="space-y-12">
+      <header className="space-y-4">
+        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs uppercase tracking-[0.3em] text-primary font-bold">
+          System Command
+        </div>
+        <h2 className="text-5xl font-display font-bold tracking-tighter text-white">
+          System <span className="text-primary italic">Overview</span>
         </h2>
-        <p className="text-lg text-white/60 max-w-2xl">
-          Monitor your multitenant infrastructure and tenant growth across all registered gym facilities.
+        <p className="text-lg text-white/40 max-w-2xl font-sans">
+          Monitor your multitenant infrastructure and tenant growth across all registered gym facilities globally.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {stats.map((stat) => (
           <Link
             key={stat.label}
             href={stat.href as any}
-            className="group relative overflow-hidden p-8 bg-white/5 border border-white/10 rounded-[2.5rem] shadow-card hover:bg-white/10 transition-all duration-500"
+            className="group relative overflow-hidden p-10 bg-white/[0.02] border border-white/5 rounded-[3rem] shadow-glow hover:bg-white/[0.06] hover:border-primary/20 transition-all duration-500"
           >
-            <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity">
-                <ArrowUpRight className="size-8" />
+            <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-40 transition-opacity">
+                <ArrowUpRight className="size-8 text-primary" />
             </div>
-            <div className="size-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+            <div className="size-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 border border-primary/20 group-hover:scale-110 transition-transform duration-500">
                 {stat.icon}
             </div>
-            <p className="text-white/50 text-sm font-medium tracking-wide uppercase">
+            <p className="text-white/30 text-xs font-bold uppercase tracking-[0.2em] font-sans">
               {stat.label}
             </p>
-            <p className="text-4xl font-bold text-white mt-2">
+            <p className="text-5xl font-display font-bold text-white mt-4 tracking-tighter">
               {stat.value}
             </p>
           </Link>
         ))}
       </div>
 
-      <div className="relative overflow-hidden bg-gradient-to-br from-primary/10 to-accent/5 border border-white/10 rounded-[3rem] p-10 lg:p-14">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] rounded-full -mr-32 -mt-32" />
-        <div className="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
-            <div className="space-y-4">
-                <h3 className="text-3xl font-bold text-white">
-                  Developer Quick Actions
-                </h3>
-                <p className="text-white/60 max-w-md">
-                    Instantly deploy new gym environments or manage administrative credentials for existing tenant owners.
-                </p>
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary/10 to-transparent border border-white/5 rounded-[4rem] p-12 lg:p-20 shadow-glow">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[120px] rounded-full -mr-48 -mt-48 pointer-events-none" />
+        <div className="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-12">
+            <div className="space-y-6">
+                <div className="w-16 h-16 rounded-3xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-glow">
+                  <Plus className="size-8 text-primary" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-4xl font-display font-bold text-white tracking-tighter">
+                    Quick <span className="text-primary">Actions</span>
+                  </h3>
+                  <p className="text-white/40 max-w-md font-sans">
+                      Instantly deploy new gym environments or manage administrative credentials for existing tenant owners.
+                  </p>
+                </div>
             </div>
-            <div className="flex flex-wrap gap-4 w-full lg:w-auto">
+            <div className="flex flex-wrap gap-6 w-full lg:w-auto">
               <Link
                 href={"/super-admin/gyms" as any}
-                className="flex-1 lg:flex-none text-center px-10 py-5 bg-primary hover:bg-primary/90 text-white font-bold rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95"
+                className="flex-1 lg:flex-none text-center px-12 py-6 bg-primary hover:scale-105 active:scale-95 text-black font-bold rounded-2xl shadow-glow-strong transition-all uppercase tracking-widest text-sm"
               >
                 Register Gym
               </Link>
               <Link
                 href={"/super-admin/owners" as any}
-                className="flex-1 lg:flex-none text-center px-10 py-5 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold rounded-2xl transition-all"
+                className="flex-1 lg:flex-none text-center px-12 py-6 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold rounded-2xl transition-all uppercase tracking-widest text-sm font-sans"
               >
                 Manage Owners
               </Link>
@@ -95,7 +102,6 @@ export default async function SuperAdminDashboard() {
   );
 }
 
-// Minimal icon shims because lucide-react might not have Buildings in the exact version
 function Buildings({ className }: { className?: string }) {
   return (
     <svg
