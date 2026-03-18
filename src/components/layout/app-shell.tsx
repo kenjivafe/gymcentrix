@@ -123,7 +123,12 @@ export function AppShell({
               href={dashboardRoute}
               className="flex flex-col gap-6"
             >
-              <img src="/app/gymcentrix-logo.png" alt="Gymcentrix" className="h-8 w-auto mb-4" />
+              <div className="flex items-center gap-3 mb-8 group">
+                <img src="/app/gymcentrix-logo.png" alt="" className="h-8 w-auto" aria-hidden />
+                <span className="text-xl font-display font-bold tracking-tighter text-white group-hover:text-primary transition-colors text-glow">
+                  Gymcentrix
+                </span>
+              </div>
               
               <div className="flex gap-4 items-center p-3 rounded-2xl bg-white/[0.03] border border-white/5 shadow-glow">
                 <div

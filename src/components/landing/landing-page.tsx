@@ -64,8 +64,11 @@ export function LandingPage() {
 function Navbar() {
   return (
     <nav className="flex items-center justify-between px-6 py-8 mx-auto max-w-7xl lg:px-14">
-      <Link href="/" className="flex items-center group cursor-pointer transition-transform hover:scale-105 active:scale-95">
-        <img src="/app/gymcentrix-logo.png" alt="Gymcentrix" className="h-10 w-auto" />
+      <Link href="/" className="flex items-center gap-4 group cursor-pointer transition-transform hover:scale-[1.02] active:scale-95">
+        <img src="/app/gymcentrix-logo.png" alt="" className="h-10 w-auto" aria-hidden />
+        <span className="text-2xl font-display font-bold tracking-tighter text-white group-hover:text-primary transition-colors text-glow">
+          GYMCENTRIX
+        </span>
       </Link>
       <div className="hidden md:flex gap-8 text-sm font-medium text-white/70 font-sans uppercase tracking-widest">
         <Link href="#" className="hover:text-primary transition">Features</Link>
