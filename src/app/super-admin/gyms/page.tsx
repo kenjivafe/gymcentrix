@@ -26,7 +26,7 @@ export default async function GymsManagementPage() {
             <p className="text-white/50 mt-2 max-w-sm">Get started by creating your first gym tenant in the system infrastructure.</p>
           </div>
         ) : (
-          gyms.map((gym) => (
+          gyms.map((gym: any) => (
             <div
               key={gym.id}
               className="group relative bg-white/5 border border-white/10 rounded-[2.5rem] p-8 flex flex-col hover:bg-white/10 transition-all duration-500 shadow-card"

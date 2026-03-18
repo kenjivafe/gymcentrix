@@ -62,7 +62,7 @@ export default async function OwnersManagementPage() {
                   </td>
                 </tr>
               ) : (
-                owners.map((owner) => (
+                owners.map((owner: any) => (
                   <tr key={owner.id} className="group hover:bg-white/[0.02] transition-colors">
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-4">
