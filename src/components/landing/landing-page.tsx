@@ -123,7 +123,7 @@ function HeroSection() {
       <div className="relative z-10 mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-24 items-center">
         {/* Left Side: Text Content */}
         <div className="text-center lg:text-left space-y-6 lg:space-y-12 order-2 lg:order-1">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-xs uppercase tracking-[0.4em] text-primary font-bold mx-auto lg:mx-0">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.4em] text-primary font-bold mx-auto lg:mx-0">
             <Dumbbell className="w-4 h-4" /> Professional Gym Management
           </div>
           <h1 className="text-5xl font-display font-bold tracking-tighter leading-[1.1] sm:text-8xl lg:text-6xl xl:text-7xl">
