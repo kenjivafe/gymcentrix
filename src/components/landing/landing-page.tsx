@@ -65,16 +65,16 @@ export function LandingPage() {
 function Navbar() {
   return (
     <nav className="flex items-center justify-between px-6 py-8 mx-auto max-w-7xl lg:px-14">
-      <Link href="/" className="flex items-center gap-4 group cursor-pointer transition-transform hover:scale-[1.02] active:scale-95">
+      <Link href="/" className="flex items-center gap-3 sm:gap-4 group cursor-pointer transition-transform hover:scale-[1.02] active:scale-95">
         <Image 
           src="/app/gymcentrix-logo.png" 
           alt="Gymcentrix" 
           width={160} 
           height={40} 
-          className="h-10 w-auto logo-glow" 
+          className="h-8 sm:h-10 w-auto logo-glow" 
           priority 
         />
-        <span className="text-2xl font-display font-bold tracking-tighter text-white group-hover:text-primary transition-colors text-glow">
+        <span className="text-lg sm:text-2xl font-display font-bold tracking-tighter text-white group-hover:text-primary transition-colors text-glow">
           GYMCENTRIX
         </span>
       </Link>
@@ -83,9 +83,16 @@ function Navbar() {
         <Link href="#" className="hover:text-primary transition">Pricing</Link>
         <Link href="#" className="hover:text-primary transition">Enterprise</Link>
       </div>
-      <div className="flex items-center gap-4">
-        <Link href={dashboardHref} className="text-sm font-medium hover:text-primary transition font-sans uppercase tracking-widest">Sign In</Link>
-        <PrimaryCta href={registerHref}>Start Free trial</PrimaryCta>
+      <div className="flex items-center gap-4 sm:gap-6">
+        <Link href={dashboardHref} className="hidden sm:block text-sm font-medium hover:text-primary transition font-sans uppercase tracking-widest">Sign In</Link>
+        <Link
+          href={registerHref}
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 sm:px-8 sm:py-5 text-[10px] sm:text-sm font-bold text-black hover:scale-105 active:scale-95 transition shadow-glow-strong uppercase tracking-widest"
+        >
+          <span className="hidden sm:inline">Start Free trial</span>
+          <span className="sm:hidden">Join Now</span>
+          <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 stroke-[3px]" />
+        </Link>
       </div>
     </nav>
   );
@@ -98,15 +105,15 @@ function HeroSection() {
         <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-xs uppercase tracking-[0.4em] text-primary font-bold">
           <Sparkles className="w-4 h-4" /> Professional Gym Management
         </div>
-        <h1 className="text-5xl font-display font-bold tracking-tighter leading-[1] sm:text-8xl lg:text-9xl">
-          The OS for <br />
+        <h1 className="text-5xl font-display font-bold tracking-tighter leading-[1.1] sm:text-8xl lg:text-9xl">
+          The OS for <br className="hidden sm:block" />
           <span className="text-primary text-glow italic">Modern Gyms.</span>
         </h1>
         <p className="text-xl text-white/50 max-w-2xl mx-auto leading-relaxed font-sans">
           Gymcentrix empowers owners with a unified platform for billing, analytics, and member engagement. 
           Automate the boring stuff and focus on building your community.
         </p>
-        <div className="flex flex-wrap gap-4 justify-center pt-4">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 px-4 sm:px-0">
           <PrimaryCta href={registerHref}>Get Started Now</PrimaryCta>
           <SecondaryCta href={dashboardHref}>View Platform Demo</SecondaryCta>
         </div>
@@ -130,16 +137,16 @@ function StatsSection() {
   return (
     <section className="px-6 py-12 lg:px-14">
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 p-12 rounded-[3rem] border border-primary/20 bg-white/[0.02] backdrop-blur-3xl shadow-glow">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[4rem] border border-primary/20 bg-white/[0.02] backdrop-blur-3xl shadow-glow">
           {[
             { label: "Check-ins Today", value: "2.4k+" },
             { label: "Revenue Growth", value: "+32%" },
             { label: "Admin Hours Freed", value: "14h/wk" },
             { label: "Client Retention", value: "94%" },
           ].map((stat, i) => (
-            <div key={i} className="space-y-1">
-              <p className="text-xs uppercase tracking-[0.3em] text-white/30 font-bold font-sans">{stat.label}</p>
-              <p className="text-4xl font-display font-bold text-white tracking-tighter">{stat.value}</p>
+            <div key={i} className="space-y-1 text-center sm:text-left">
+              <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-white/30 font-bold font-sans">{stat.label}</p>
+              <p className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tighter">{stat.value}</p>
             </div>
           ))}
         </div>
@@ -152,9 +159,9 @@ function FeaturesGrid() {
   return (
     <section className="px-6 py-24 lg:px-14 overflow-hidden">
       <div className="mx-auto max-w-7xl">
-        <div className="max-w-3xl mb-16">
-          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-6xl mb-6">Designed for scale.</h2>
-          <p className="text-lg text-white/40 font-sans leading-relaxed">Everything you need to run a high-performance fitness business without the technical debt.</p>
+        <div className="max-w-3xl mb-12 sm:mb-16 text-center sm:text-left">
+          <h2 className="text-3xl font-display font-bold tracking-tighter sm:text-6xl mb-6">Designed for scale.</h2>
+          <p className="text-base sm:text-lg text-white/40 font-sans leading-relaxed">Everything you need to run a high-performance fitness business without the technical debt.</p>
         </div>
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -176,19 +183,19 @@ function FeaturesGrid() {
 function RfidHighlight() {
   return (
     <section className="px-6 py-24 lg:px-14">
-      <div className="mx-auto max-w-7xl rounded-[4rem] overflow-hidden border border-primary/20 bg-white/[0.02] p-12 lg:p-24 group relative backdrop-blur-sm shadow-glow">
-        <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none group-hover:opacity-10 transition duration-700">
+      <div className="mx-auto max-w-7xl rounded-[2.5rem] sm:rounded-[4rem] overflow-hidden border border-primary/20 bg-white/[0.02] p-8 sm:p-24 group relative backdrop-blur-sm shadow-glow text-center sm:text-left">
+        <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none group-hover:opacity-10 transition duration-700 hidden sm:block">
           <Smartphone className="w-96 h-96 -rotate-12 text-primary" />
         </div>
         
         <div className="max-w-2xl relative z-10">
-          <div className="w-16 h-16 rounded-3xl bg-primary/10 flex items-center justify-center mb-10 border border-primary/20 shadow-glow">
-            <ShieldCheck className="w-8 h-8 text-primary font-bold" />
+          <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-primary/10 flex items-center justify-center mb-6 sm:mb-10 border border-primary/20 shadow-glow mx-auto sm:mx-0">
+            <ShieldCheck className="w-6 h-6 sm:w-8 sm:h-8 text-primary font-bold" />
           </div>
-          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-6xl mb-8 leading-[1.1]">
+          <h2 className="text-3xl font-display font-bold tracking-tighter sm:text-6xl mb-6 sm:mb-8 leading-[1.2] sm:leading-[1.1]">
             Frictionless Sign-In with <span className="text-primary italic">RFID.</span>
           </h2>
-          <p className="text-xl text-white/40 mb-12 leading-relaxed font-sans">
+          <p className="text-base sm:text-xl text-white/40 mb-8 sm:mb-12 leading-relaxed font-sans">
             Eliminate bottlenecks at the front desk. Our RFID integration allows members to sign in with a simple tap, 
             instantaneously updating your attendance metrics.
           </p>
@@ -219,8 +226,8 @@ function RfidHighlight() {
 function CtaSection() {
   return (
     <section className="px-6 py-24 lg:px-14">
-      <div className="mx-auto max-w-5xl text-center space-y-12">
-        <h2 className="text-5xl font-display font-bold tracking-tighter sm:text-7xl lg:text-8xl">
+      <div className="mx-auto max-w-5xl text-center space-y-8 sm:space-y-12">
+        <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-7xl lg:text-8xl leading-tight">
           Scale your <br /><span className="text-primary italic">Ambition.</span>
         </h2>
         <p className="text-xl text-white/40 max-w-2xl mx-auto font-sans">

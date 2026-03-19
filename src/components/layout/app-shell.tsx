@@ -94,9 +94,19 @@ export function AppShell({
           >
             <Menu className="w-6 h-6" />
           </button>
-          <span className="text-xl font-display font-bold tracking-tighter text-primary text-glow">
-            Gymcentrix
-          </span>
+          <Link href="/" className="flex items-center gap-3 group transition-transform hover:scale-[1.02]">
+            <Image 
+              src="/app/gymcentrix-logo.png" 
+              alt="" 
+              width={80} 
+              height={20} 
+              className="h-5 w-auto logo-glow" 
+              aria-hidden
+            />
+            <span className="text-lg font-display font-bold tracking-tighter text-white text-glow">
+              Gymcentrix
+            </span>
+          </Link>
           <div className="w-10" aria-hidden />
         </div>
       </header>
