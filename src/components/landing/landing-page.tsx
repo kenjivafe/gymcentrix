@@ -118,7 +118,7 @@ function HeroSection() {
           <SecondaryCta href={dashboardHref}>View Platform Demo</SecondaryCta>
         </div>
         
-        <div className="flex items-center justify-center gap-6 pt-12 border-t border-white/5 max-w-xs mx-auto">
+        <div className="flex items-center justify-center gap-6 pt-12 border-t border-white/5 max-w-xs mx-auto mb-20">
           <div className="flex -space-x-3">
             {[1, 2, 3, 4].map(i => (
               <div key={i} className="w-10 h-10 rounded-full border-2 border-canvas bg-white/5" aria-hidden />
@@ -127,6 +127,21 @@ function HeroSection() {
           <p className="text-xs text-white/30 uppercase tracking-widest font-bold">
             Trusted by <span className="text-white">200+</span> Studios
           </p>
+        </div>
+
+        {/* Product Mockup */}
+        <div className="relative mx-auto mt-20 max-w-5xl group">
+          <div className="absolute -inset-1 bg-primary/20 rounded-[2.5rem] blur-3xl opacity-20 group-hover:opacity-40 transition duration-1000" aria-hidden />
+          <div className="relative rounded-[2.5rem] border border-white/10 bg-canvas/30 backdrop-blur-3xl overflow-hidden shadow-2xl transition-transform duration-700 hover:scale-[1.01] hover:rotate-x-1">
+             <Image 
+               src="/app/gymcentrix-mockup.png" 
+               alt="Gymcentrix Platform Interface" 
+               width={1200} 
+               height={800} 
+               className="w-full h-auto"
+               priority
+             />
+          </div>
         </div>
       </div>
     </section>
