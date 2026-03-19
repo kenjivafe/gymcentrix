@@ -64,7 +64,7 @@ export function LandingPage() {
 
 function Navbar() {
   return (
-    <nav className="flex items-center justify-between px-6 py-8 mx-auto max-w-7xl lg:px-14">
+    <nav className="flex items-center justify-between px-6 py-8 mx-auto max-w-7xl lg:px-0">
       <Link href="/" className="flex items-center gap-3 sm:gap-4 group cursor-pointer transition-transform hover:scale-[1.02] active:scale-95">
         <Image 
           src="/app/gymcentrix-logo.png" 
@@ -133,7 +133,7 @@ function HeroSection() {
         </div>
 
         {/* Right Side: Product Mockup */}
-        <div className="relative order-1 lg:order-2 group lg:pl-10">
+        <div className="relative order-1 lg:order-2 group lg:pl-10 mb-0 lg:mb-0">
           <div className="absolute -inset-4 bg-primary/20 rounded-[2.5rem] blur-[100px] opacity-20 group-hover:opacity-40 transition duration-1000" aria-hidden />
           <div className="relative transition-all duration-1000 [perspective:2000px] group-hover:[transform:rotateY(-5deg)rotateX(2deg)]">
              <Image 
@@ -141,7 +141,7 @@ function HeroSection() {
                alt="Gymcentrix Platform Interface" 
                width={1200} 
                height={800} 
-               className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] scale-110 lg:scale-[1.15] origin-center"
+               className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] scale-100 lg:scale-[1.15] origin-center"
                priority
              />
           </div>
