@@ -130,7 +130,7 @@ function HeroSection() {
             The OS for <br className="hidden sm:block" />
             <span className="text-primary text-glow italic">Modern Gyms.</span>
           </h1>
-          <p className="text-xl text-white/50 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-sans">
+          <p className="text-base sm:text-lg lg:text-xl text-white/50 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-sans">
             Gymcentrix empowers owners with a unified platform for billing, analytics, and member engagement. 
             Automate the boring stuff and focus on building your community.
           </p>
