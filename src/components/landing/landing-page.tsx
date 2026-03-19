@@ -100,7 +100,7 @@ function Navbar() {
 
 function HeroSection() {
   return (
-    <section className="px-6 pt-12 pb-24 lg:px-14 lg:pt-32">
+    <section className="px-6 pt-12 pb-24 lg:px-14 lg:pt-14">
       <div className="mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
         {/* Left Side: Text Content */}
         <div className="text-center lg:text-left space-y-10 lg:space-y-12 order-2 lg:order-1">
@@ -133,7 +133,7 @@ function HeroSection() {
         </div>
 
         {/* Right Side: Product Mockup */}
-        <div className="relative order-1 lg:order-2 group">
+        <div className="relative order-1 lg:order-2 group lg:pl-10">
           <div className="absolute -inset-4 bg-primary/20 rounded-[2.5rem] blur-[100px] opacity-20 group-hover:opacity-40 transition duration-1000" aria-hidden />
           <div className="relative transition-all duration-1000 [perspective:2000px] group-hover:[transform:rotateY(-5deg)rotateX(2deg)]">
              <Image 
@@ -141,7 +141,7 @@ function HeroSection() {
                alt="Gymcentrix Platform Interface" 
                width={1200} 
                height={800} 
-               className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] scale-110 lg:scale-[1.3] origin-center lg:origin-left"
+               className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] scale-110 lg:scale-[1.15] origin-center"
                priority
              />
           </div>
