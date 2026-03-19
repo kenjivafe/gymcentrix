@@ -9,7 +9,7 @@ module.exports = {
       },
       colors: {
         canvas: {
-          DEFAULT: "#131313",
+          DEFAULT: "#111111",
           subtle: "#0a0a0b",
         },
         primary: {
