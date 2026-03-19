@@ -65,37 +65,39 @@ export function LandingPage() {
 
 function Navbar() {
   return (
-    <nav className="flex items-center justify-between px-3 py-4 mx-auto max-w-7xl lg:px-0">
-      <Link href="/" className="flex items-center gap-3 sm:gap-4 group cursor-pointer transition-transform hover:scale-[1.02] active:scale-95">
-        <Image 
-          src="/app/gymcentrix-logo.png" 
-          alt="Gymcentrix" 
-          width={160} 
-          height={40} 
-          className="h-8 sm:h-10 w-auto logo-glow" 
-          priority 
-        />
-        <span className="text-lg sm:text-2xl font-display font-bold tracking-tighter text-white group-hover:text-primary transition-colors text-glow">
-          GYMCENTRIX
-        </span>
-      </Link>
-      <div className="hidden md:flex gap-8 text-sm font-medium text-white/70 font-sans uppercase tracking-widest">
-        <Link href="#" className="hover:text-primary transition">Features</Link>
-        <Link href="#" className="hover:text-primary transition">Pricing</Link>
-        <Link href="#" className="hover:text-primary transition">Enterprise</Link>
-      </div>
-      <div className="flex items-center gap-4 sm:gap-6">
-        <Link href={dashboardHref} className="hidden sm:block text-sm font-medium hover:text-primary transition font-sans uppercase tracking-widest">Sign In</Link>
-        <Link
-          href={registerHref}
-          className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 sm:px-8 sm:py-5 text-[10px] sm:text-sm font-bold text-black hover:scale-105 active:scale-95 transition shadow-glow-strong uppercase tracking-widest"
-        >
-          <span className="hidden sm:inline">Start Free trial</span>
-          <span className="sm:hidden">Join Now</span>
-          <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 stroke-[3px]" />
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-zinc-500/5 backdrop-blur-md">
+      <nav className="flex items-center justify-between px-6 lg:px-0 py-4 mx-auto max-w-7xl">
+        <Link href="/" className="flex items-center gap-3 sm:gap-4 group cursor-pointer transition-transform hover:scale-[1.02] active:scale-95">
+          <Image 
+            src="/app/gymcentrix-logo.png" 
+            alt="Gymcentrix" 
+            width={160} 
+            height={40} 
+            className="h-8 sm:h-10 w-auto logo-glow" 
+            priority 
+          />
+          <span className="text-lg sm:text-2xl font-display font-bold tracking-tighter text-white group-hover:text-primary transition-colors text-glow text-shadow-glow">
+            GYMCENTRIX
+          </span>
         </Link>
-      </div>
-    </nav>
+        <div className="hidden md:flex gap-8 text-sm font-medium text-white/70 font-sans uppercase tracking-widest">
+          <Link href="#" className="hover:text-primary transition">Features</Link>
+          <Link href="#" className="hover:text-primary transition">Pricing</Link>
+          <Link href="#" className="hover:text-primary transition">Enterprise</Link>
+        </div>
+        <div className="flex items-center gap-4 sm:gap-6">
+          <Link href={dashboardHref} className="hidden sm:block text-sm font-medium hover:text-primary transition font-sans uppercase tracking-widest">Sign In</Link>
+          <Link
+            href={registerHref}
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 sm:px-8 sm:py-5 text-[10px] sm:text-sm font-bold text-black hover:scale-105 active:scale-95 transition shadow-glow-strong uppercase tracking-widest"
+          >
+            <span className="hidden sm:inline">Start Free trial</span>
+            <span className="sm:hidden">Join Now</span>
+            <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 stroke-[3px]" />
+          </Link>
+        </div>
+      </nav>
+    </header>
   );
 }
 
@@ -118,9 +120,9 @@ function HeroSection() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-24 items-center">
+      <div className="relative z-10 mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-24 items-center">
         {/* Left Side: Text Content */}
-        <div className="text-center lg:text-left space-y-10 lg:space-y-12 order-2 lg:order-1">
+        <div className="text-center lg:text-left space-y-6 lg:space-y-12 order-2 lg:order-1">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-xs uppercase tracking-[0.4em] text-primary font-bold mx-auto lg:mx-0">
             <Dumbbell className="w-4 h-4" /> Professional Gym Management
           </div>
@@ -172,7 +174,7 @@ function StatsSection() {
   return (
     <section className="px-6 py-12 lg:px-14">
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[4rem] border border-primary/20 bg-white/[0.02] backdrop-blur-3xl shadow-glow">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[4rem] border border-white/10 bg-white/5 backdrop-blur-md shadow-glow">
           {[
             { label: "Check-ins Today", value: "2.4k+" },
             { label: "Revenue Growth", value: "+32%" },
