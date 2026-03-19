@@ -100,7 +100,7 @@ function Navbar() {
 
 function HeroSection() {
   return (
-    <section className="relative px-6 pt-12 pb-24 lg:px-14 lg:pt-14 overflow-hidden">
+    <section className="relative px-6 pt-6 pb-24 lg:px-14 lg:pt-14 overflow-hidden">
       {/* Background Hero Image with Mask */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-canvas/40 z-10" aria-hidden />
@@ -117,13 +117,13 @@ function HeroSection() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-5 gap-16 lg:gap-24 items-center">
+      <div className="relative z-10 mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
         {/* Left Side: Text Content */}
-        <div className="text-center lg:text-left space-y-10 lg:space-y-12 order-2 lg:order-1 lg:col-span-3">
+        <div className="text-center lg:text-left space-y-10 lg:space-y-12 order-2 lg:order-1">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-xs uppercase tracking-[0.4em] text-primary font-bold mx-auto lg:mx-0">
             <Sparkles className="w-4 h-4" /> Professional Gym Management
           </div>
-          <h1 className="text-5xl font-display font-bold tracking-tighter leading-[1.1] sm:text-8xl lg:text-7xl xl:text-8xl">
+          <h1 className="text-5xl font-display font-bold tracking-tighter leading-[1.1] sm:text-8xl lg:text-6xl xl:text-7xl">
             The OS for <br className="hidden sm:block" />
             <span className="text-primary text-glow italic">Modern Gyms.</span>
           </h1>
@@ -149,15 +149,15 @@ function HeroSection() {
         </div>
 
         {/* Right Side: Product Mockup */}
-        <div className="relative order-1 lg:order-2 group mb-0 lg:mb-0 lg:col-span-2">
+        <div className="relative order-1 lg:order-2 group px-12 lg:pl-10 mb-0 lg:mb-0">
           <div className="absolute -inset-4 bg-primary/20 rounded-[2.5rem] blur-[100px] opacity-20 group-hover:opacity-40 transition duration-1000" aria-hidden />
-          <div className="relative transition-all duration-1000 [perspective:2000px] group-hover:[transform:rotateY(-5deg)rotateX(2deg)]">
+          <div className="relative transition-all duration-1000 [perspective:2000px] group-hover:[transform:rotateY(-15deg)rotateX(-15deg)]">
              <Image 
                src="/app/gymcentrix-mockup.png" 
                alt="Gymcentrix Platform Interface" 
                width={1200} 
                height={800} 
-               className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] scale-100 lg:scale-[1.1] origin-center"
+               className="w-full h-auto drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] scale-100 lg:scale-[1.15] origin-center"
                priority
              />
           </div>
