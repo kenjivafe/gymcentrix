@@ -86,7 +86,7 @@ export function LandingPage() {
               </Link>
               <div className="space-y-2 text-sm font-sans font-medium tracking-widest text-white/40 uppercase">
                 <p>The Operating System for Modern Gyms.</p>
-                <p>Manila, Philippines.</p>
+                <p>Kalinga, Philippines.</p>
               </div>
             </div>
 
@@ -148,7 +148,7 @@ export function LandingPage() {
           {/* Copyright Row */}
           <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-center gap-4">
             <p className="text-white/20 text-[10px] font-bold font-sans uppercase tracking-[0.3em] text-center">
-              © {new Date().getFullYear()} Gymcentrix Software Development Services. Engineering Reality.
+              © {new Date().getFullYear()} GYMCENTRIX. For Gyms by Northernware.
             </p>
           </div>
         </div>
@@ -197,7 +197,7 @@ function Navbar() {
 
 function HeroSection() {
   return (
-    <section className="relative px-6 pt-6 pb-24 lg:px-14 lg:pt-24 overflow-hidden">
+    <section className="relative px-6 pt-6 pb-24 lg:px-14 lg:pt-24 lg:pb-28 overflow-hidden">
       {/* Background Hero Image with Mask */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-canvas/40 z-10" aria-hidden />
