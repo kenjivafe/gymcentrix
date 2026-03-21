@@ -342,7 +342,7 @@ function ProblemSection() {
           <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-primary">PROBLEM</h3>
           <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-7xl leading-[1.1] max-w-4xl mx-auto">
             Running a Gym <br className="hidden sm:block" />
-            <span className="text-white/50">Shouldn't Be This</span> <span className="text-primary italic">Messy.</span>
+            <span className="text-white/50">Shouldn&apos;t Be This</span> <span className="text-primary italic">Messy.</span>
           </h2>
           <p className="text-base sm:text-xl text-white/50 max-w-3xl mx-auto leading-relaxed font-sans">
             Managing a growing gym with manual systems quickly becomes difficult. 
@@ -381,7 +381,7 @@ function ProblemSection() {
              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
              <div className="space-y-6 relative z-10 w-full">
                 <h3 className="text-2xl sm:text-3xl font-display font-bold tracking-tighter">
-                  There's a <span className="text-primary italic">Better Way.</span>
+                  There&apos;s a <span className="text-primary italic">Better Way.</span>
                 </h3>
                 <p className="text-base text-white/50 max-w-2xl mx-auto leading-relaxed font-sans">
                   Gymcentrix centralizes member management, automates attendance, tracks payments, and provides clear insights into member activity and gym performance.
@@ -415,9 +415,10 @@ function ProblemContent({ problem }: { problem: any }) {
     <div className="h-full flex flex-col justify-end gap-6 relative z-10">
       {problem.image && (
         <div className="absolute inset-x-[-2.5rem] inset-y-[-2.5rem] md:inset-x-[-3rem] md:inset-y-[-3rem] z-[-1]">
-          <img 
+          <Image 
             src={problem.image} 
             alt={problem.title}
+            fill
             className="w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity duration-700"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
