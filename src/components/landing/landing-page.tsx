@@ -316,7 +316,7 @@ function ProblemSection() {
         </div>
 
         {/* Bento Problem Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-6 mb-24 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-6 max-w-7xl mx-auto">
           {problems.map((problem, i) => (
             <div 
               key={i} 
@@ -333,30 +333,30 @@ function ProblemSection() {
               </div>
             </div>
           ))}
-        </div>
 
-        {/* Transition to solution */}
-        <div className="relative p-12 sm:p-20 rounded-[3rem] border border-primary/20 bg-black/20 backdrop-blur-xl overflow-hidden text-center max-w-5xl mx-auto shadow-glow group">
-           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-           <div className="space-y-6 relative z-10">
-              <h3 className="text-2xl sm:text-4xl font-display font-bold tracking-tighter">
-                There's a <span className="text-primary italic">Better Way.</span>
-              </h3>
-              <p className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed font-sans">
-                Gymcentrix automates member management, attendance tracking, and payment monitoring 
-                so you can focus on running your gym instead of managing paperwork.
-              </p>
-              <div className="pt-4">
-                 <Link 
-                   href={registerHref} 
-                   className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-xs hover:gap-4 transition-all"
-                 >
-                   Discover the Solution <ArrowUpRight className="w-4 h-4" />
-                 </Link>
-              </div>
-           </div>
-           {/* Abstract Decoration */}
-           <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-primary/10 blur-[100px] rounded-full group-hover:bg-primary/20 transition-colors duration-1000" />
+          {/* Transition to solution as a full-width bento card */}
+          <div className="md:col-span-6 relative p-12 sm:p-20 rounded-[2.5rem] sm:rounded-[4rem] border border-primary/20 bg-black/20 backdrop-blur-xl overflow-hidden text-center shadow-glow group mt-2">
+             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+             <div className="space-y-6 relative z-10">
+                <h3 className="text-2xl sm:text-4xl font-display font-bold tracking-tighter">
+                  There's a <span className="text-primary italic">Better Way.</span>
+                </h3>
+                <p className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed font-sans">
+                  Gymcentrix automates member management, attendance tracking, and payment monitoring 
+                  so you can focus on running your gym instead of managing paperwork.
+                </p>
+                <div className="pt-4">
+                   <Link 
+                     href={registerHref} 
+                     className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-xs hover:gap-4 transition-all"
+                   >
+                     Discover the Solution <ArrowUpRight className="w-4 h-4" />
+                   </Link>
+                </div>
+             </div>
+             {/* Abstract Decoration */}
+             <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-primary/10 blur-[100px] rounded-full group-hover:bg-primary/20 transition-colors duration-1000" />
+          </div>
         </div>
       </div>
     </section>
