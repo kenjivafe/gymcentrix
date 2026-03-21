@@ -14,7 +14,12 @@ import {
   Github,
   Twitter,
   Linkedin,
-  Send
+  Send,
+  ClipboardList,
+  AlertCircle,
+  UserSearch,
+  Clock,
+  CheckCircle2
 } from "lucide-react";
 
 const registerHref = "/register" as Route;
@@ -52,7 +57,7 @@ export function LandingPage() {
       <main className="relative z-10 pt-[72px] sm:pt-[88px]">
         <Navbar />
         <HeroSection />
-        <StatsSection />
+        <ProblemSection />
         <FeaturesGrid />
         <RfidHighlight />
         <CtaSection />
@@ -264,27 +269,100 @@ function HeroSection() {
   );
 }
 
-function StatsSection() {
+function ProblemSection() {
+  const problems = [
+    {
+      title: "Manual Attendance",
+      description: "Staff still track check-ins using logbooks or paper sheets.",
+      icon: ClipboardList,
+    },
+    {
+      title: "Missed Payments",
+      description: "Without a proper system, it's easy to lose track of memberships and payment dates.",
+      icon: AlertCircle,
+    },
+    {
+      title: "Member Tracking",
+      description: "No clear way to see who actually visits the gym and how often.",
+      icon: UserSearch,
+    },
+    {
+      title: "Too Much Admin Work",
+      description: "Staff spend hours handling records instead of helping members.",
+      icon: Clock,
+    },
+    {
+      title: "No Real Insights",
+      description: "Gym owners struggle to understand attendance trends, active members, and business performance.",
+      icon: BarChart3,
+    },
+  ];
+
   return (
-    <section className="px-6 py-12 lg:px-14">
+    <section className="px-6 py-24 lg:px-14 relative overflow-hidden">
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-8 sm:p-12 rounded-[2.5rem] sm:rounded-[4rem] border border-white/10 bg-white/5 backdrop-blur-md shadow-glow">
-          {[
-            { label: "Check-ins Today", value: "2.4k+" },
-            { label: "Revenue Growth", value: "+32%" },
-            { label: "Admin Hours Freed", value: "14h/wk" },
-            { label: "Client Retention", value: "94%" },
-          ].map((stat, i) => (
-            <div key={i} className="space-y-1 text-center sm:text-left">
-              <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-white/30 font-bold font-sans">{stat.label}</p>
-              <p className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tighter">{stat.value}</p>
+        {/* Header Section */}
+        <div className="text-center mb-20 space-y-6">
+          <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-primary">PROBLEM</h3>
+          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-7xl leading-[1.1] max-w-4xl mx-auto">
+            Running a Gym <br className="hidden sm:block" />
+            <span className="text-white/50">Shouldn't Be This</span> <span className="text-primary italic">Messy.</span>
+          </h2>
+          <p className="text-base sm:text-xl text-white/50 max-w-3xl mx-auto leading-relaxed font-sans">
+            Managing a growing gym with manual systems quickly becomes difficult. 
+            Attendance logs, membership tracking, and payment monitoring often end up 
+            scattered across notebooks, spreadsheets, and staff memory.
+          </p>
+        </div>
+
+        {/* Bento Problem Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-6 mb-24 max-w-7xl mx-auto">
+          {problems.map((problem, i) => (
+            <div 
+              key={i} 
+              className={`group flex flex-col gap-6 p-10 rounded-[2.5rem] border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] transition-all duration-500 shadow-sm ${
+                i < 2 ? "md:col-span-3" : "md:col-span-2"
+              }`}
+            >
+              <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
+                <problem.icon className="w-7 h-7 text-white/40 group-hover:text-primary transition-colors" />
+              </div>
+              <div className="space-y-3">
+                <h4 className="text-2xl font-display font-bold tracking-tight">{problem.title}</h4>
+                <p className="text-base text-white/40 leading-relaxed font-sans">{problem.description}</p>
+              </div>
             </div>
           ))}
+        </div>
+
+        {/* Transition to solution */}
+        <div className="relative p-12 sm:p-20 rounded-[3rem] border border-primary/20 bg-black/20 backdrop-blur-xl overflow-hidden text-center max-w-5xl mx-auto shadow-glow group">
+           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+           <div className="space-y-6 relative z-10">
+              <h3 className="text-2xl sm:text-4xl font-display font-bold tracking-tighter">
+                There's a <span className="text-primary italic">Better Way.</span>
+              </h3>
+              <p className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed font-sans">
+                Gymcentrix automates member management, attendance tracking, and payment monitoring 
+                so you can focus on running your gym instead of managing paperwork.
+              </p>
+              <div className="pt-4">
+                 <Link 
+                   href={registerHref} 
+                   className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-xs hover:gap-4 transition-all"
+                 >
+                   Discover the Solution <ArrowUpRight className="w-4 h-4" />
+                 </Link>
+              </div>
+           </div>
+           {/* Abstract Decoration */}
+           <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-primary/10 blur-[100px] rounded-full group-hover:bg-primary/20 transition-colors duration-1000" />
         </div>
       </div>
     </section>
   );
 }
+
 
 function FeaturesGrid() {
   return (
