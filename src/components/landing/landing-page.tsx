@@ -306,7 +306,7 @@ function ProblemSection() {
       title: "Manual Attendance",
       description: "Staff still track check-ins using logbooks or paper sheets.",
       icon: ClipboardList,
-      image: "/problems/manual attendance.png"
+      image: "/problems/manual-attendance.png"
     },
     {
       title: "Missed Payments",
