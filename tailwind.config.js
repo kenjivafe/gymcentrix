@@ -33,6 +33,15 @@ module.exports = {
         'mesh-glow':
           "radial-gradient(circle at 20% 20%, rgba(135, 241, 0, 0.15), transparent 45%), radial-gradient(circle at 80% 0%, rgba(135, 241, 0, 0.1), transparent 40%)",
       },
+      animation: {
+        marquee: "marquee 25s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(calc(-100% - 3rem))" },
+        },
+      },
     },
   },
   plugins: [],

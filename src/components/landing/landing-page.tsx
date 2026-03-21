@@ -57,6 +57,7 @@ export function LandingPage() {
       <main className="relative z-10 pt-[72px] sm:pt-[88px]">
         <Navbar />
         <HeroSection />
+        <Marquee />
         <ProblemSection />
         <FeaturesGrid />
         <RfidHighlight />
@@ -249,7 +250,6 @@ function HeroSection() {
             </p>
           </div>
         </div>
-
         {/* Right Side: Product Mockup */}
         <div className="relative order-1 lg:order-2 group px-12 lg:pl-10 mb-0 lg:mb-0">
           <div className="absolute -inset-4 bg-primary/20 rounded-[2.5rem] blur-[100px] opacity-20 group-hover:opacity-40 transition duration-1000" aria-hidden />
@@ -269,32 +269,68 @@ function HeroSection() {
   );
 }
 
+function Marquee() {
+  const items = [
+    "RFID Tap Check-In",
+    "Automated Attendance",
+    "Member Management",
+    "Payment Tracking",
+    "Real-Time Gym Insights",
+    "Staff Tools",
+    "Attendance Analytics"
+  ];
+
+  return (
+    <div className="relative py-4 overflow-hidden bg-primary/5 border-y border-white/5 backdrop-blur-sm">
+      <div className="flex animate-marquee whitespace-nowrap gap-12 sm:gap-24 items-center">
+        {[...items, ...items, ...items, ...items].map((item, i) => (
+          <div key={i} className="flex items-center gap-4 sm:gap-6">
+            <div className="w-1 h-1 rounded-full bg-primary/40 shadow-[0_0_8px_rgba(135,241,0,0.3)]" />
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em] text-white/40">
+              {item}
+            </span>
+          </div>
+        ))}
+      </div>
+      
+      {/* Edge Fades */}
+      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-canvas to-transparent z-10" />
+      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-canvas to-transparent z-10" />
+    </div>
+  );
+}
+
 function ProblemSection() {
   const problems = [
     {
       title: "Manual Attendance",
       description: "Staff still track check-ins using logbooks or paper sheets.",
       icon: ClipboardList,
+      image: "/problems/manual attendance.png"
     },
     {
       title: "Missed Payments",
       description: "Without a proper system, it's easy to lose track of memberships and payment dates.",
       icon: AlertCircle,
+      image: "/problems/missed-payments.png"
     },
     {
       title: "Member Tracking",
       description: "No clear way to see who actually visits the gym and how often.",
       icon: UserSearch,
+      image: "/problems/member-tracking.png"
     },
     {
-      title: "Too Much Admin Work",
+      title: "Admin Work Overload",
       description: "Staff spend hours handling records instead of helping members.",
       icon: Clock,
+      image: "/problems/admin-work-overload.png"
     },
     {
       title: "No Real Insights",
       description: "Gym owners struggle to understand attendance trends, active members, and business performance.",
       icon: BarChart3,
+      image: "/problems/no-real-insights.png"
     },
   ];
 
@@ -316,27 +352,27 @@ function ProblemSection() {
         </div>
 
         {/* Asymmetric Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-3 max-w-7xl mx-auto md:min-h-[850px] auto-rows-fr">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-4 max-w-7xl mx-auto md:min-h-[850px] auto-rows-fr">
           {/* Row 1, Col 1 & 2 - Small Cards */}
-          <div className="md:col-span-1 md:row-span-1 p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] transition-all duration-500 shadow-sm group">
+          <div className="md:col-span-1 md:row-span-1 p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative">
             <ProblemContent problem={problems[0]} />
           </div>
-          <div className="md:col-span-1 md:row-span-1 p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] transition-all duration-500 shadow-sm group">
+          <div className="md:col-span-1 md:row-span-1 p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative">
             <ProblemContent problem={problems[1]} />
           </div>
 
           {/* Row 1 & 2, Col 3 - Tall Card 1 */}
-          <div className="md:col-span-1 md:row-span-2 p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] transition-all duration-500 shadow-sm group">
+          <div className="md:col-span-1 md:row-span-2 p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative">
             <ProblemContent problem={problems[2]} />
           </div>
 
           {/* Row 2 & 3, Col 1 - Tall Card 2 */}
-          <div className="md:col-span-1 md:row-span-2 p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] transition-all duration-500 shadow-sm group">
+          <div className="md:col-span-1 md:row-span-2 p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative">
             <ProblemContent problem={problems[3]} />
           </div>
 
           {/* Row 2, Col 2 - Small Card */}
-          <div className="md:col-span-1 md:row-span-1 p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] transition-all duration-500 shadow-sm group">
+          <div className="md:col-span-1 md:row-span-1 p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative">
             <ProblemContent problem={problems[4]} />
           </div>
 
@@ -347,16 +383,22 @@ function ProblemSection() {
                 <h3 className="text-2xl sm:text-3xl font-display font-bold tracking-tighter">
                   There's a <span className="text-primary italic">Better Way.</span>
                 </h3>
-                <p className="text-base text-white/50 max-w-xl mx-auto leading-relaxed font-sans">
-                  Gymcentrix automates tracking and billing so you can focus on your community.
+                <p className="text-base text-white/50 max-w-2xl mx-auto leading-relaxed font-sans">
+                  Gymcentrix centralizes member management, automates attendance, tracks payments, and provides clear insights into member activity and gym performance.
                 </p>
-                <div className="pt-4">
-                   <Link 
-                     href={registerHref} 
-                     className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-xs hover:gap-4 transition-all"
-                   >
-                     Discover Solution <ArrowUpRight className="w-4 h-4" />
-                   </Link>
+                <div className="pt-2 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 sm:gap-8 text-primary font-bold uppercase tracking-widest text-[10px] sm:text-2xs">
+                   <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md">
+                     <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(167,243,62,0.4)]" />
+                     RFID tap check-ins
+                   </div>
+                   <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md">
+                     <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(167,243,62,0.4)]" />
+                     Attendance dashboards
+                   </div>
+                   <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md">
+                     <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(167,243,62,0.4)]" />
+                     Membership & payment tracking
+                   </div>
                 </div>
              </div>
              {/* Abstract Decoration */}
@@ -368,9 +410,19 @@ function ProblemSection() {
   );
 }
 
-function ProblemContent({ problem }: { problem: any; isTall?: boolean }) {
+function ProblemContent({ problem }: { problem: any }) {
   return (
-    <div className="h-full flex flex-col justify-end gap-6">
+    <div className="h-full flex flex-col justify-end gap-6 relative z-10">
+      {problem.image && (
+        <div className="absolute inset-x-[-2.5rem] inset-y-[-2.5rem] md:inset-x-[-3rem] md:inset-y-[-3rem] z-[-1]">
+          <img 
+            src={problem.image} 
+            alt={problem.title}
+            className="w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        </div>
+      )}
       <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
         <problem.icon className="w-6 h-6 text-white/40 group-hover:text-primary transition-colors" />
       </div>
@@ -381,6 +433,7 @@ function ProblemContent({ problem }: { problem: any; isTall?: boolean }) {
     </div>
   );
 }
+
 
 
 function FeaturesGrid() {
