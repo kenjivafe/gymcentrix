@@ -64,7 +64,7 @@ export function LandingPage() {
         <CtaSection />
       </main>
 
-      <footer className="relative z-10 border-t border-white/5 bg-black/20 overflow-hidden">
+      <footer className="relative z-10 border-t border-white/5 bg-black/20 overflow-hidden px-6 lg:px-14">
         {/* Background Watermark */}
         <div className="absolute inset-0 flex items-end pb-32 lg:pb-0 justify-center pointer-events-none opacity-[0.02] select-none">
           <span className="text-[12vw] font-display font-bold tracking-tighter leading-none">
@@ -72,7 +72,7 @@ export function LandingPage() {
           </span>
         </div>
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6 pt-24 pb-12">
+        <div className="relative z-10 mx-auto max-w-7xl pt-24 pb-12">
           {/* Main Footer Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24 mb-24">
             
@@ -165,8 +165,8 @@ export function LandingPage() {
 
 function Navbar() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/20 backdrop-blur-xl">
-      <nav className="flex items-center justify-between px-6 md:px-0 py-4 mx-auto max-w-7xl">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/20 backdrop-blur-xl px-6 lg:px-14">
+      <nav className="flex items-center justify-between py-4 mx-auto max-w-7xl">
         <Link href="/" className="flex items-center gap-3 sm:gap-4 group cursor-pointer transition-transform hover:scale-[1.02] active:scale-95">
           <Image 
             src="/app/gymcentrix-logo.png" 
