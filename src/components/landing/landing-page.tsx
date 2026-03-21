@@ -49,7 +49,7 @@ export function LandingPage() {
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-20 bg-mesh-glow pointer-events-none" aria-hidden />
       
-      <main className="relative z-10">
+      <main className="relative z-10 pt-[72px] sm:pt-[88px]">
         <Navbar />
         <HeroSection />
         <StatsSection />
@@ -159,8 +159,8 @@ export function LandingPage() {
 
 function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/20 backdrop-blur-md">
-      <nav className="flex items-center justify-between px-6 lg:px-0 py-4 mx-auto max-w-7xl">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/20 backdrop-blur-xl">
+      <nav className="flex items-center justify-between px-6 md:px-0 py-4 mx-auto max-w-7xl">
         <Link href="/" className="flex items-center gap-3 sm:gap-4 group cursor-pointer transition-transform hover:scale-[1.02] active:scale-95">
           <Image 
             src="/app/gymcentrix-logo.png" 
