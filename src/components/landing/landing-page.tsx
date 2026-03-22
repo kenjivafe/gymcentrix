@@ -534,7 +534,7 @@ function ProblemSection() {
         </div>
 
         {/* Asymmetric Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4 max-w-7xl mx-auto">
           {/* Row 1, Col 1 & 2 - Small Cards */}
           <div className="md:col-span-1 md:row-span-1 p-6 sm:p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[0]} />
@@ -544,12 +544,12 @@ function ProblemSection() {
           </div>
 
           {/* Row 1 & 2, Col 3 - Tall Card 1 */}
-          <div className="md:col-span-1 md:row-span-2 p-8 sm:p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
+          <div className="md:col-span-1 md:row-span-2 p-6 sm:p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[2]} />
           </div>
 
           {/* Row 2 & 3, Col 1 - Tall Card 2 */}
-          <div className="md:col-span-1 md:row-span-2 p-8 sm:p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
+          <div className="md:col-span-1 md:row-span-2 p-6 sm:p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[3]} />
           </div>
 
@@ -594,7 +594,7 @@ function ProblemSection() {
 
 function ProblemContent({ problem }: { problem: any }) {
   return (
-    <div className="h-full flex flex-col justify-end gap-6 relative z-10">
+    <div className="h-full flex flex-col justify-end gap-3 sm:gap-6 relative z-10">
       {problem.image && (
         <div className="absolute inset-x-[-2.5rem] inset-y-[-2.5rem] md:inset-x-[-3rem] md:inset-y-[-3rem] z-[-1]">
           <Image 
@@ -609,9 +609,9 @@ function ProblemContent({ problem }: { problem: any }) {
       <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
         <problem.icon className="w-6 h-6 text-white/40 group-hover:text-primary transition-colors" />
       </div>
-      <div className="space-y-3">
-        <h4 className="text-xl font-display font-bold tracking-tight">{problem.title}</h4>
-        <p className="text-sm text-white/40 leading-relaxed font-sans">{problem.description}</p>
+      <div className="space-y-2 sm:space-y-3">
+        <h4 className="text-lg sm:text-xl font-display font-bold tracking-tight">{problem.title}</h4>
+        <p className="text-[13px] sm:text-sm text-white/40 leading-relaxed font-sans">{problem.description}</p>
       </div>
     </div>
   );
