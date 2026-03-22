@@ -594,7 +594,7 @@ function ProblemSection() {
 
 function ProblemContent({ problem }: { problem: any }) {
   return (
-    <div className="h-full flex flex-col justify-end gap-3 sm:gap-6 relative z-10">
+    <div className="h-full flex flex-col justify-end gap-2 sm:gap-6 relative z-10 pb-2 sm:pb-0">
       {problem.image && (
         <div className="absolute inset-x-[-2.5rem] inset-y-[-2.5rem] md:inset-x-[-3rem] md:inset-y-[-3rem] z-[-1]">
           <Image 
@@ -609,9 +609,9 @@ function ProblemContent({ problem }: { problem: any }) {
       <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
         <problem.icon className="w-6 h-6 text-white/40 group-hover:text-primary transition-colors" />
       </div>
-      <div className="space-y-2 sm:space-y-3">
-        <h4 className="text-lg sm:text-xl font-display font-bold tracking-tight">{problem.title}</h4>
-        <p className="text-[13px] sm:text-sm text-white/40 leading-relaxed font-sans">{problem.description}</p>
+      <div className="space-y-1.5 sm:space-y-3">
+        <h4 className="text-base sm:text-xl font-display font-bold tracking-tight">{problem.title}</h4>
+        <p className="text-xs sm:text-sm text-white/40 leading-relaxed font-sans">{problem.description}</p>
       </div>
     </div>
   );
