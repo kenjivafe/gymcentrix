@@ -517,10 +517,10 @@ function ProblemSection() {
   ];
 
   return (
-    <section className="px-6 py-24 lg:px-14 relative overflow-hidden snap-start">
+    <section className="px-6 py-12 sm:py-24 lg:px-14 relative overflow-hidden snap-start">
       <div className="mx-auto max-w-7xl">
         {/* Header Section */}
-        <div className="text-center mb-20 space-y-6">
+        <div className="text-center mb-10 sm:mb-20 space-y-6">
           <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-primary">PROBLEM</h3>
           <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-7xl leading-[1.1] max-w-4xl mx-auto">
             Running a Gym <br className="hidden sm:block" />
@@ -534,7 +534,7 @@ function ProblemSection() {
         </div>
 
         {/* Asymmetric Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-4 max-w-7xl mx-auto md:min-h-[850px] auto-rows-fr">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-2 md:gap-4 max-w-7xl mx-auto md:min-h-[850px] md:auto-rows-fr">
           {/* Row 1, Col 1 & 2 - Small Cards */}
           <div className="md:col-span-1 md:row-span-1 p-5 sm:p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[0]} />
