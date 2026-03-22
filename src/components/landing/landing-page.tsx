@@ -308,20 +308,27 @@ function RfidAnimationSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const [videoSrc, setVideoSrc] = useState<string>("/videos/RFID-animation.mp4");
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
 
-  // Fetch the video as a Blob for much smoother local scrubbing
+  // Fetch the appropriate video as a Blob based on orientation
   useEffect(() => {
-    const originalSrc = "/videos/RFID-animation.mp4";
+    if (typeof window === "undefined") return;
+    
+    // Choose mobile asset if screen is narrow
+    const isMobile = window.innerWidth < 768;
+    const targetAsset = isMobile ? "/videos/RFID-animation-mobile.mp4" : "/videos/RFID-animation.mp4";
     let blobUrl: string;
 
-    fetch(originalSrc)
+    fetch(targetAsset)
       .then(response => response.blob())
       .then(blob => {
         blobUrl = URL.createObjectURL(blob);
         setVideoSrc(blobUrl);
       })
-      .catch(err => console.error("Video blob fetch failed:", err));
+      .catch(err => {
+        console.error("Video blob fetch failed:", err);
+        setVideoSrc(targetAsset); // Fallback to direct path
+      });
 
     return () => {
       if (blobUrl) URL.revokeObjectURL(blobUrl);
@@ -394,14 +401,16 @@ function RfidAnimationSection() {
       <div className="sticky top-[72px] sm:top-[88px] h-[calc(100vh-72px)] sm:h-[calc(100vh-88px)] w-full flex items-center justify-center overflow-hidden">
         {/* Video Background */}
         <div className="absolute inset-0 w-full h-full">
-          <video
-            ref={videoRef}
-            src={videoSrc}
-            muted
-            playsInline
-            preload="auto"
-            className="w-full h-full object-cover opacity-60"
-          />
+          {videoSrc && (
+            <video
+              ref={videoRef}
+              src={videoSrc}
+              muted
+              playsInline
+              preload="auto"
+              className="w-full h-full object-cover opacity-60"
+            />
+          )}
           {/* Subtle Overlays */}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80" />
           <div className="absolute inset-0 bg-black/20" />
@@ -410,7 +419,7 @@ function RfidAnimationSection() {
         {/* Content Overlay */}
         <div 
           ref={textRef} 
-          className="relative z-10 w-full px-6 lg:px-14 flex items-center opacity-0 pointer-events-none transition-transform duration-300 ease-out"
+          className="relative z-10 w-full px-6 lg:px-14 flex items-start md:items-center pt-24 md:pt-0 opacity-0 pointer-events-none transition-transform duration-300 ease-out h-full"
         >
            <div className="mx-auto max-w-7xl w-full">
              <div className="max-w-2xl text-left space-y-8">
