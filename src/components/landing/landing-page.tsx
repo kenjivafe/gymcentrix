@@ -308,6 +308,7 @@ function RfidAnimationSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
   const blobsRef = useRef<{ [key: string]: string }>({});
@@ -388,6 +389,14 @@ function RfidAnimationSection() {
           const textOpacity = Math.min(Math.max((currentProgress - 0.7) / 0.25, 0), 1);
           textRef.current.style.opacity = textOpacity.toString();
           textRef.current.style.transform = `translateY(${10 - textOpacity * 10}px)`;
+
+          // Synchronize overlay opacity (subtle base, dark when text is visible)
+          if (overlayRef.current) {
+            const baseOpacity = isMobile ? 0.05 : 0.15;
+            const targetOpacity = isMobile ? 0.4 : 0.8;
+            const currentOverlayOpacity = baseOpacity + (targetOpacity - baseOpacity) * textOpacity;
+            overlayRef.current.style.opacity = currentOverlayOpacity.toString();
+          }
         }
       }
       rafId = requestAnimationFrame(updateVideo);
@@ -427,9 +436,13 @@ function RfidAnimationSection() {
               preload="auto"
               className="w-full h-full object-cover opacity-60"
             />
-          )}
-          {/* Subtle Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-10 lg:opacity-80" />
+           )}
+          {/* Dynamic Backdrop Overlay */}
+          <div 
+            ref={overlayRef} 
+            className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black transition-opacity duration-300 pointer-events-none"
+            style={{ opacity: isMobile ? 0.05 : 0.15 }}
+          />
           <div className="absolute inset-0 bg-black/20" />
         </div>
         
