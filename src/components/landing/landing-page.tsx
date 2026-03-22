@@ -1,3 +1,6 @@
+"use client";
+
+import { useRef, useEffect, useState } from "react";
 import type { Route } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -50,7 +53,7 @@ const features = [
 
 export function LandingPage() {
   return (
-    <div className="overflow-hidden relative text-white bg-canvas min-h-screen font-sans bg-grid">
+    <div className="relative text-white bg-canvas min-h-screen font-sans bg-grid overflow-x-clip">
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-20 bg-mesh-glow pointer-events-none" aria-hidden />
       
@@ -59,6 +62,7 @@ export function LandingPage() {
         <HeroSection />
         <Marquee />
         <ProblemSection />
+        <RfidAnimationSection />
         <FeaturesGrid />
         <RfidHighlight />
         <CtaSection />
@@ -297,6 +301,142 @@ function Marquee() {
       <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-canvas to-transparent z-10" />
       <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-canvas to-transparent z-10" />
     </div>
+  );
+}
+
+function RfidAnimationSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const [videoSrc, setVideoSrc] = useState<string>("/videos/RFID-animation.mp4");
+
+  // Fetch the video as a Blob for much smoother local scrubbing
+  useEffect(() => {
+    const originalSrc = "/videos/RFID-animation.mp4";
+    let blobUrl: string;
+
+    fetch(originalSrc)
+      .then(response => response.blob())
+      .then(blob => {
+        blobUrl = URL.createObjectURL(blob);
+        setVideoSrc(blobUrl);
+      })
+      .catch(err => console.error("Video blob fetch failed:", err));
+
+    return () => {
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
+    };
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.pause();
+
+    let rafId: number;
+    let targetProgress = 0;
+    let currentProgress = 0;
+    const lerpFactor = 0.08; // Adjusted for buttery smoothness
+
+    const handleScroll = () => {
+      if (!containerRef.current || !video.duration || isNaN(video.duration)) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const viewHeight = window.innerHeight;
+      const navOffset = viewHeight > 640 ? 88 : 72;
+      const total = rect.height - viewHeight;
+      
+      let nextTarget = -rect.top / total;
+      targetProgress = Math.min(Math.max(nextTarget, 0), 1);
+    };
+
+    const updateVideo = () => {
+      const diff = targetProgress - currentProgress;
+      if (Math.abs(diff) > 0.0001) {
+        currentProgress += diff * lerpFactor;
+        if (video.readyState >= 2) {
+          video.currentTime = currentProgress * video.duration;
+        }
+
+        // Apply scroll-triggered opacity to text (starts at 0.7, full at 0.95)
+        if (textRef.current) {
+          const textOpacity = Math.min(Math.max((currentProgress - 0.7) / 0.25, 0), 1);
+          textRef.current.style.opacity = textOpacity.toString();
+          textRef.current.style.transform = `translateY(${10 - textOpacity * 10}px)`;
+        }
+      }
+      rafId = requestAnimationFrame(updateVideo);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    rafId = requestAnimationFrame(updateVideo);
+
+    // Initial activation trick for some browsers
+    const activateVideo = () => {
+      video.play().then(() => video.pause());
+      window.removeEventListener('touchstart', activateVideo);
+      window.removeEventListener('click', activateVideo);
+    };
+    window.addEventListener('touchstart', activateVideo);
+    window.addEventListener('click', activateVideo);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('touchstart', activateVideo);
+      window.removeEventListener('click', activateVideo);
+      cancelAnimationFrame(rafId);
+    };
+  }, [videoSrc]);
+
+  return (
+    <section ref={containerRef} className="h-[300vh] relative bg-black">
+      <div className="sticky top-[72px] sm:top-[88px] h-[calc(100vh-72px)] sm:h-[calc(100vh-88px)] w-full flex items-center justify-center overflow-hidden">
+        {/* Video Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <video
+            ref={videoRef}
+            src={videoSrc}
+            muted
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover opacity-60"
+          />
+          {/* Subtle Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80" />
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+        
+        {/* Content Overlay */}
+        <div 
+          ref={textRef} 
+          className="relative z-10 w-full px-6 lg:px-14 flex justify-start items-center opacity-0 pointer-events-none transition-transform duration-300 ease-out"
+        >
+           <div className="max-w-2xl text-left space-y-8">
+             <div className="space-y-4">
+               <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-primary">Seamless Integration</h3>
+               <h2 className="text-5xl md:text-8xl font-display font-bold tracking-tighter text-white leading-tight">
+                 Fast. Seamless. <br />
+                 <span className="text-primary italic">Effortless.</span>
+               </h2>
+             </div>
+             <p className="text-lg md:text-2xl text-white/50 font-sans leading-relaxed">
+               Experience the future of gym access with lightning-fast RFID check-ins that keep your community moving.
+             </p>
+             <div className="pt-8">
+                <div className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.3em] text-white/30">
+                  <div className="w-12 h-[1px] bg-white/10" />
+                  SCROLL TO EXPLORE
+                  <div className="w-12 h-[1px] bg-white/10" />
+                </div>
+             </div>
+           </div>
+        </div>
+
+        {/* Decorative Light Effect */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+      </div>
+    </section>
   );
 }
 
