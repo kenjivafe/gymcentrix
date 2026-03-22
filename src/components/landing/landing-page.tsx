@@ -443,6 +443,11 @@ function RfidAnimationSection() {
             className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black transition-opacity duration-300 pointer-events-none"
             style={{ opacity: isMobile ? 0.05 : 0.15 }}
           />
+
+          {/* Permanent Edge Fades for Desktop */}
+          <div className="absolute top-0 left-0 right-0 h-24 lg:h-48 bg-gradient-to-b from-black to-transparent z-10 pointer-events-none hidden lg:block" />
+          <div className="absolute bottom-0 left-0 right-0 h-24 lg:h-48 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none hidden lg:block" />
+
           <div className="absolute inset-0 bg-black/20" />
         </div>
         
