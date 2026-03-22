@@ -594,7 +594,7 @@ function ProblemSection() {
 
 function ProblemContent({ problem }: { problem: any }) {
   return (
-    <div className="h-full flex flex-col justify-center md:justify-end gap-6 relative z-10">
+    <div className="h-full flex flex-col justify-end gap-6 relative z-10">
       {problem.image && (
         <div className="absolute inset-x-[-2.5rem] inset-y-[-2.5rem] md:inset-x-[-3rem] md:inset-y-[-3rem] z-[-1]">
           <Image 
