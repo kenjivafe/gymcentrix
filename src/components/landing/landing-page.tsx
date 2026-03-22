@@ -419,7 +419,7 @@ function RfidAnimationSection() {
         {/* Content Overlay */}
         <div 
           ref={textRef} 
-          className="relative z-10 w-full px-6 lg:px-14 flex items-start md:items-center pt-24 md:pt-0 opacity-0 pointer-events-none transition-transform duration-300 ease-out h-full"
+          className="relative z-10 w-full px-6 lg:px-14 flex items-start md:items-center pt-6 md:pt-0 opacity-0 pointer-events-none transition-transform duration-300 ease-out h-full"
         >
            <div className="mx-auto max-w-7xl w-full">
              <div className="max-w-2xl text-left space-y-8">
