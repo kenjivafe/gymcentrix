@@ -412,7 +412,7 @@ function RfidAnimationSection() {
             />
           )}
           {/* Subtle Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-10 lg:opacity-80" />
           <div className="absolute inset-0 bg-black/20" />
         </div>
         
@@ -422,7 +422,7 @@ function RfidAnimationSection() {
           className="relative z-10 w-full px-6 lg:px-14 flex items-start md:items-center pt-6 md:pt-0 opacity-0 pointer-events-none transition-transform duration-300 ease-out h-full"
         >
            <div className="mx-auto max-w-7xl w-full">
-             <div className="max-w-2xl text-left space-y-8">
+             <div className="max-w-2xl text-left space-y-4 lg:space-y-8">
                <div className="space-y-4">
                  <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-primary">Seamless Integration</h3>
                  <h2 className="text-5xl md:text-8xl font-display font-bold tracking-tighter text-white leading-tight">
