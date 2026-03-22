@@ -410,25 +410,27 @@ function RfidAnimationSection() {
         {/* Content Overlay */}
         <div 
           ref={textRef} 
-          className="relative z-10 w-full px-6 lg:px-14 flex justify-start items-center opacity-0 pointer-events-none transition-transform duration-300 ease-out"
+          className="relative z-10 w-full px-6 lg:px-14 flex items-center opacity-0 pointer-events-none transition-transform duration-300 ease-out"
         >
-           <div className="max-w-2xl text-left space-y-8">
-             <div className="space-y-4">
-               <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-primary">Seamless Integration</h3>
-               <h2 className="text-5xl md:text-8xl font-display font-bold tracking-tighter text-white leading-tight">
-                 Fast. Seamless. <br />
-                 <span className="text-primary italic">Effortless.</span>
-               </h2>
-             </div>
-             <p className="text-lg md:text-2xl text-white/50 font-sans leading-relaxed">
-               Experience the future of gym access with lightning-fast RFID check-ins that keep your community moving.
-             </p>
-             <div className="pt-8">
-                <div className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.3em] text-white/30">
-                  <div className="w-12 h-[1px] bg-white/10" />
-                  SCROLL TO EXPLORE
-                  <div className="w-12 h-[1px] bg-white/10" />
-                </div>
+           <div className="mx-auto max-w-7xl w-full">
+             <div className="max-w-2xl text-left space-y-8">
+               <div className="space-y-4">
+                 <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-primary">Seamless Integration</h3>
+                 <h2 className="text-5xl md:text-8xl font-display font-bold tracking-tighter text-white leading-tight">
+                   Fast. Seamless. <br />
+                   <span className="text-primary italic">Effortless.</span>
+                 </h2>
+               </div>
+               <p className="text-lg md:text-2xl text-white/50 font-sans leading-relaxed">
+                 Experience the future of gym access with lightning-fast RFID check-ins that keep your community moving.
+               </p>
+               <div className="pt-8">
+                  <div className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.3em] text-white/30">
+                    <div className="w-12 h-[1px] bg-white/10" />
+                    SCROLL TO EXPLORE
+                    <div className="w-12 h-[1px] bg-white/10" />
+                  </div>
+               </div>
              </div>
            </div>
         </div>
