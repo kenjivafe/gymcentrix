@@ -517,10 +517,10 @@ function ProblemSection() {
   ];
 
   return (
-    <section className="px-6 py-24 lg:px-14 relative overflow-hidden snap-start">
+    <section className="px-6 py-12 sm:py-24 lg:px-14 relative overflow-hidden snap-start">
       <div className="mx-auto max-w-7xl">
         {/* Header Section */}
-        <div className="text-center mb-20 space-y-6">
+        <div className="text-center mb-10 sm:mb-20 space-y-6">
           <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-primary">PROBLEM</h3>
           <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-7xl leading-[1.1] max-w-4xl mx-auto">
             Running a Gym <br className="hidden sm:block" />
@@ -534,32 +534,32 @@ function ProblemSection() {
         </div>
 
         {/* Asymmetric Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-4 max-w-7xl mx-auto md:min-h-[850px] auto-rows-fr">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 max-w-7xl mx-auto">
           {/* Row 1, Col 1 & 2 - Small Cards */}
-          <div className="md:col-span-1 md:row-span-1 p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative">
+          <div className="md:col-span-1 md:row-span-1 p-6 sm:p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[0]} />
           </div>
-          <div className="md:col-span-1 md:row-span-1 p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative">
+          <div className="md:col-span-1 md:row-span-1 p-6 sm:p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[1]} />
           </div>
 
           {/* Row 1 & 2, Col 3 - Tall Card 1 */}
-          <div className="md:col-span-1 md:row-span-2 p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative">
+          <div className="md:col-span-1 md:row-span-2 p-8 sm:p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[2]} />
           </div>
 
           {/* Row 2 & 3, Col 1 - Tall Card 2 */}
-          <div className="md:col-span-1 md:row-span-2 p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative">
+          <div className="md:col-span-1 md:row-span-2 p-8 sm:p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[3]} />
           </div>
 
           {/* Row 2, Col 2 - Small Card */}
-          <div className="md:col-span-1 md:row-span-1 p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative">
+          <div className="md:col-span-1 md:row-span-1 p-6 sm:p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[4]} />
           </div>
 
           {/* Row 3, Col 2 & 3 - Solution Spanning 2 Columns */}
-          <div className="md:col-span-2 md:row-span-1 relative p-12 rounded-3xl border border-primary/20 bg-black/20 backdrop-blur-xl overflow-hidden text-center shadow-glow group flex items-center justify-center">
+          <div className="col-span-1 md:col-span-2 md:row-span-1 relative p-10 sm:p-12 rounded-3xl border border-primary/20 bg-black/20 backdrop-blur-xl overflow-hidden text-center shadow-glow group flex items-center justify-center">
              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
              <div className="space-y-6 relative z-10 w-full">
                 <h3 className="text-2xl sm:text-3xl font-display font-bold tracking-tighter">
@@ -594,7 +594,7 @@ function ProblemSection() {
 
 function ProblemContent({ problem }: { problem: any }) {
   return (
-    <div className="h-full flex flex-col justify-end gap-6 relative z-10">
+    <div className="h-full flex flex-col justify-center md:justify-end gap-6 relative z-10">
       {problem.image && (
         <div className="absolute inset-x-[-2.5rem] inset-y-[-2.5rem] md:inset-x-[-3rem] md:inset-y-[-3rem] z-[-1]">
           <Image 
