@@ -433,13 +433,6 @@ function RfidAnimationSection() {
                <p className="text-lg md:text-2xl text-white/50 font-sans leading-relaxed">
                  Experience the future of gym access with lightning-fast RFID check-ins that keep your community moving.
                </p>
-               <div className="pt-8">
-                  <div className="inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.3em] text-white/30">
-                    <div className="w-12 h-[1px] bg-white/10" />
-                    SCROLL TO EXPLORE
-                    <div className="w-12 h-[1px] bg-white/10" />
-                  </div>
-               </div>
              </div>
            </div>
         </div>
