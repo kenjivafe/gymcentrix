@@ -536,25 +536,25 @@ function ProblemSection() {
         {/* Asymmetric Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-2 md:gap-4 max-w-7xl mx-auto md:min-h-[850px] md:auto-rows-fr">
           {/* Row 1, Col 1 & 2 - Small Cards */}
-          <div className="md:col-span-1 md:row-span-1 p-6 sm:p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto flex flex-col">
+          <div className="md:col-span-1 md:row-span-1 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[0]} />
           </div>
-          <div className="md:col-span-1 md:row-span-1 p-6 sm:p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto flex flex-col">
+          <div className="md:col-span-1 md:row-span-1 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[1]} />
           </div>
 
           {/* Row 1 & 2, Col 3 - Tall Card 1 */}
-          <div className="md:col-span-1 md:row-span-2 p-6 sm:p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto flex flex-col">
-            <ProblemContent problem={problems[2]} />
+          <div className="md:col-span-1 md:row-span-2 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
+            <ProblemContent problem={problems[2]} isTall />
           </div>
 
           {/* Row 2 & 3, Col 1 - Tall Card 2 */}
-          <div className="md:col-span-1 md:row-span-2 p-6 sm:p-12 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto flex flex-col">
-            <ProblemContent problem={problems[3]} />
+          <div className="md:col-span-1 md:row-span-2 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
+            <ProblemContent problem={problems[3]} isTall />
           </div>
 
           {/* Row 2, Col 2 - Small Card */}
-          <div className="md:col-span-1 md:row-span-1 p-6 sm:p-10 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto flex flex-col">
+          <div className="md:col-span-1 md:row-span-1 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-xl hover:bg-white/[0.05] hover:border-primary/20 hover:shadow-glow transition-all duration-500 shadow-sm group overflow-hidden relative aspect-square md:aspect-auto">
             <ProblemContent problem={problems[4]} />
           </div>
 
@@ -592,9 +592,9 @@ function ProblemSection() {
   );
 }
 
-function ProblemContent({ problem }: { problem: any }) {
+function ProblemContent({ problem, isTall }: { problem: any, isTall?: boolean }) {
   return (
-    <div className="flex-1 flex flex-col justify-end gap-3 sm:gap-6 relative z-10">
+    <div className={`h-full flex flex-col justify-end gap-3 sm:gap-6 relative z-10 transition-all duration-500 ${isTall ? 'p-6 sm:p-12' : 'p-6 sm:p-10'}`}>
       {problem.image && (
         <div className="absolute inset-0 z-[-1]">
           <Image 
