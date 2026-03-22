@@ -309,29 +309,46 @@ function RfidAnimationSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const [videoSrc, setVideoSrc] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const blobsRef = useRef<{ [key: string]: string }>({});
 
-  // Fetch the appropriate video as a Blob based on orientation
+  // Detect orientation change
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Fetch / Switch based on orientation
+  useEffect(() => {
+    if (isMobile === null) return;
     
-    // Choose mobile asset if screen is narrow
-    const isMobile = window.innerWidth < 768;
     const targetAsset = isMobile ? "/videos/RFID-animation-mobile.mp4" : "/videos/RFID-animation.mp4";
-    let blobUrl: string;
+    
+    // Use cached blob if available
+    if (blobsRef.current[targetAsset]) {
+      setVideoSrc(blobsRef.current[targetAsset]);
+      return;
+    }
 
     fetch(targetAsset)
       .then(response => response.blob())
       .then(blob => {
-        blobUrl = URL.createObjectURL(blob);
-        setVideoSrc(blobUrl);
+        const url = URL.createObjectURL(blob);
+        blobsRef.current[targetAsset] = url;
+        setVideoSrc(url);
       })
       .catch(err => {
         console.error("Video blob fetch failed:", err);
-        setVideoSrc(targetAsset); // Fallback to direct path
+        setVideoSrc(targetAsset); // Fallback
       });
+  }, [isMobile]);
 
+  // Cleanup all Object URLs on unmount
+  useEffect(() => {
     return () => {
-      if (blobUrl) URL.revokeObjectURL(blobUrl);
+      Object.values(blobsRef.current).forEach(url => URL.revokeObjectURL(url));
     };
   }, []);
 
