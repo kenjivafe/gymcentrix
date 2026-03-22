@@ -372,8 +372,11 @@ function RfidAnimationSection() {
       const navOffset = viewHeight > 640 ? 88 : 72;
       const total = rect.height - viewHeight;
       
-      let nextTarget = -rect.top / total;
-      targetProgress = Math.min(Math.max(nextTarget, 0), 1);
+      const scrollProgress = -rect.top / total;
+      // Map 0-0.75 of scroll range to 0-1.0 of video progress
+      // This creates a 25% "freeze zone" at the end for reading the content
+      const animationEndScroll = 0.75; 
+      targetProgress = Math.min(Math.max(scrollProgress / animationEndScroll, 0), 1);
     };
 
     const updateVideo = () => {
@@ -430,7 +433,7 @@ function RfidAnimationSection() {
           {videoSrc && (
             <video
               ref={videoRef}
-              src={videoSrc}
+              src={videoSrc ?? undefined}
               muted
               playsInline
               preload="auto"
@@ -465,7 +468,7 @@ function RfidAnimationSection() {
                    <span className="text-primary italic">Effortless.</span>
                  </h2>
                </div>
-               <p className="text-lg md:text-2xl text-white/50 font-sans leading-relaxed">
+               <p className="sm:text-xl text-white/50 font-sans leading-relaxed">
                  Experience the future of gym access with lightning-fast RFID check-ins that keep your community moving.
                </p>
              </div>
@@ -514,7 +517,7 @@ function ProblemSection() {
   ];
 
   return (
-    <section className="px-6 py-24 lg:px-14 relative overflow-hidden">
+    <section className="px-6 py-24 lg:px-14 relative overflow-hidden snap-start">
       <div className="mx-auto max-w-7xl">
         {/* Header Section */}
         <div className="text-center mb-20 space-y-6">
