@@ -79,7 +79,7 @@ const StatCard = ({ icon: Icon, label, value, trend, trendUp }: { icon: any, lab
 // --- Page Views ---
 
 const DashboardView = () => (
-  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[540px]">
+  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[600px]">
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <StatCard icon={Users} label="Total Members" value="1,248" trend="12%" trendUp />
       <StatCard icon={CalendarCheck} label="Check-ins Today" value="84" trend="5%" trendUp />
@@ -143,12 +143,12 @@ const DashboardView = () => (
 );
 
 const MembersView = () => (
-  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[540px]">
+  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[600px]">
     <div className="flex items-center justify-between">
       <h5 className="text-xl font-bold text-white">Member Directory</h5>
       <button className="bg-primary text-black px-4 py-2 rounded-xl text-xs font-bold hover:shadow-glow transition-all">Add New Member</button>
     </div>
-    <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
+    <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-x-auto">
       <table className="w-full text-left">
         <thead>
           <tr className="border-b border-white/5 bg-white/[0.02]">
@@ -197,7 +197,7 @@ const MembersView = () => (
 );
 
 const AttendanceView = () => (
-  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[540px]">
+  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[600px]">
     <div className="flex items-center justify-between">
       <h5 className="text-xl font-bold text-white">Daily Attendance Log</h5>
       <div className="flex gap-3">
@@ -205,7 +205,7 @@ const AttendanceView = () => (
         <button className="px-4 py-2 rounded-xl text-xs font-bold border border-white/5 text-white/60 hover:text-white transition-all">Export CSV</button>
       </div>
     </div>
-    <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
+    <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-x-auto">
       <table className="w-full text-left">
         <thead>
           <tr className="border-b border-white/5 bg-white/[0.02]">
@@ -236,7 +236,7 @@ const AttendanceView = () => (
 );
 
 const PaymentsView = () => (
-  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[540px]">
+  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[600px]">
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div className="p-6 rounded-2xl bg-primary text-black">
         <p className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-1">Estimated Revenue</p>
@@ -294,7 +294,7 @@ const PaymentsView = () => (
 );
 
 const ReportsView = () => (
-  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[540px]">
+  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[600px]">
     <div className="flex items-center justify-between">
       <h5 className="text-xl font-bold text-white">Gym Analytics</h5>
       <select className="bg-transparent border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white font-bold cursor-pointer">
@@ -394,7 +394,7 @@ export function DashboardPreview() {
         <div className="relative group max-w-7xl mx-auto">
           {/* Decorative Glow */}
           <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-transparent to-primary/20 rounded-[2.5rem] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
-          <div className="relative bg-[#0A0A0A] border border-white/10 rounded-[2rem] shadow-2xl flex flex-col md:flex-row overflow-hidden h-[500px] md:h-[650px]">
+          <div className="relative bg-[#0A0A0A] border border-white/10 rounded-[2rem] shadow-2xl flex flex-col md:flex-row overflow-hidden h-[750px] md:h-[650px]">
             {/* Sidebar / Top Nav */}
             <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-white/5 p-4 md:p-6 space-y-6 md:space-y-8 bg-white/[0.01]">
               <div className="flex items-center gap-3 px-2 mb-2 md:mb-0">
