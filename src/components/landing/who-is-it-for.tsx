@@ -68,7 +68,7 @@ export function WhoIsItFor() {
       <div className="mx-auto max-w-7xl px-6 lg:px-14 mb-2 sm:mb-8">
         {/* Section Header */}
         <div className="text-center max-w-4xl mx-auto space-y-4">
-          <h2 className="text-2xl font-display font-bold tracking-tighter sm:text-6xl text-white">
+          <h2 className="text-lg sm:text-6xl font-display font-bold tracking-tighter text-white">
             Who <span className="uppercase text-primary">Gymcentrix</span> Is For
           </h2>
           <p className="text-base sm:text-lg text-white/50 leading-relaxed font-sans">
