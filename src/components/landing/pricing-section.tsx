@@ -4,7 +4,9 @@ import { Check, ArrowRight, Monitor, Laptop, Server, HelpCircle } from 'lucide-r
 const plans = [
   {
     name: "Starter",
-    description: "Small or independent gyms starting to digitize operations.",
+    description: "Small gyms, basic features.",
+    priceMonthly: "1,500",
+    priceAnnual: "16,500",
     features: [
       "Member management",
       "Attendance tracking",
@@ -18,7 +20,9 @@ const plans = [
   },
   {
     name: "Pro",
-    description: "Growing gyms that want full automation and RFID precision.",
+    description: "Growing gyms, full automation.",
+    priceMonthly: "3,000",
+    priceAnnual: "33,000",
     features: [
       "RFID attendance tracking",
       "Member management",
@@ -33,7 +37,9 @@ const plans = [
   },
   {
     name: "Enterprise",
-    description: "Multi-location gyms or large-scale fitness facilities.",
+    description: "Multi-location gyms, full reporting & integrations.",
+    priceMonthly: "Custom",
+    priceAnnual: "Custom",
     features: [
       "Multi-location support",
       "Advanced analytics",
@@ -49,6 +55,8 @@ const plans = [
 ];
 
 export function PricingSection() {
+  const [billingPeriod, setBillingPeriod] = React.useState<'monthly' | 'annually'>('monthly');
+
   return (
     <section className="py-24 sm:py-32 relative overflow-hidden bg-canvas">
       {/* Background Glow */}
@@ -56,28 +64,53 @@ export function PricingSection() {
 
       <div className="mx-auto max-w-7xl px-6 lg:px-14 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-7xl text-white mb-6">
             Flexible Pricing & Setup
           </h2>
-          <p className="text-lg sm:text-xl text-white/50 leading-relaxed font-sans">
-            Final pricing may vary depending on your gym’s size, setup, and hardware requirements.
+          <p className="text-lg sm:text-xl text-white/50 leading-relaxed font-sans mb-10">
+            Initial setup pricing may vary depending on your gym’s size, setup, and hardware requirements. Gymcentrix can provide the necessary hardware if needed.
           </p>
+
+          {/* Billing Switcher */}
+          <div className="inline-flex items-center p-1.5 bg-white/[0.03] border border-white/5 rounded-2xl backdrop-blur-md">
+            <button 
+              onClick={() => setBillingPeriod('monthly')}
+              className={`px-8 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                billingPeriod === 'monthly' ? 'bg-primary text-canvas shadow-glow' : 'text-white/40 hover:text-white'
+              }`}
+            >
+              Monthly
+            </button>
+            <button 
+              onClick={() => setBillingPeriod('annually')}
+              className={`px-8 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 flex items-center gap-2 ${
+                billingPeriod === 'annually' ? 'bg-primary text-canvas shadow-glow' : 'text-white/40 hover:text-white'
+              }`}
+            >
+              Annual
+              <span className={`text-[9px] px-2 py-0.5 rounded-full ${
+                billingPeriod === 'annually' ? 'bg-canvas text-primary' : 'bg-primary/20 text-primary'
+              }`}>
+                -1 month
+              </span>
+            </button>
+          </div>
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {plans.map((plan, i) => (
             <div 
               key={i}
               className={`relative flex flex-col p-8 sm:p-10 rounded-[2.5rem] border transition-all duration-500 group ${
                 plan.recommend 
                   ? 'bg-white/[0.03] border-primary/30 shadow-glow-strong' 
-                  : 'bg-white/[0.01] border-white/5 hover:border-white/10'
+                  : 'bg-white/[0.01] border-white/5 hover:border-white/10 shadow-sm'
               }`}
             >
               {plan.recommend && (
-                <div className="absolute -top-5 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary rounded-full text-[10px] font-bold text-canvas uppercase tracking-widest">
+                <div className="absolute -top-5 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary rounded-full text-[10px] font-bold text-canvas uppercase tracking-widest shadow-glow">
                   Recommended
                 </div>
               )}
@@ -88,10 +121,26 @@ export function PricingSection() {
                 }`}>
                   <plan.icon className={`w-7 h-7 ${plan.recommend ? 'text-primary' : 'text-white/40'}`} />
                 </div>
-                <h3 className="text-2xl font-display font-bold text-white mb-2">{plan.name}</h3>
-                <p className="text-sm text-white/40 leading-relaxed h-12">
+                <h3 className="text-2xl font-display font-bold text-white mb-1">{plan.name}</h3>
+                <p className="text-sm text-white/40 leading-relaxed h-12 mb-6">
                   {plan.description}
                 </p>
+
+                {/* Price Display */}
+                <div className="mt-4 flex items-baseline gap-1">
+                  <span className="text-sm font-sans text-white/40">₱</span>
+                  <span className="text-5xl font-display font-bold text-white tracking-tighter transition-all duration-500">
+                    {billingPeriod === 'monthly' ? plan.priceMonthly : plan.priceAnnual}
+                  </span>
+                  <span className="text-sm font-sans text-white/20 uppercase tracking-widest ml-1">
+                    {plan.priceMonthly === 'Custom' ? '' : billingPeriod === 'monthly' ? '/mo' : '/yr'}
+                  </span>
+                </div>
+                {billingPeriod === 'annually' && plan.priceMonthly !== 'Custom' && (
+                  <div className="mt-2 text-[10px] font-bold text-primary uppercase tracking-[0.2em] animate-in fade-in slide-in-from-top-1 duration-500">
+                    Saves ₱{plan.priceMonthly} annually
+                  </div>
+                )}
               </div>
 
               <div className="flex-grow space-y-4 mb-10">
