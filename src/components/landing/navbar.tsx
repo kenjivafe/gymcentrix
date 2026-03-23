@@ -35,8 +35,8 @@ export function Navbar() {
           isMenuOpen 
             ? "opacity-0" 
             : isScrolled
-              ? "bg-black/80 backdrop-blur-2xl border-white/10 opacity-100"
-              : "bg-black/20 backdrop-blur-xl border-transparent opacity-100"
+              ? "bg-black/40 backdrop-blur-2xl border-white/10 opacity-100"
+              : "bg-black/20 backdrop-blur-xl border-white/5 opacity-100"
         }`} 
       />
 
