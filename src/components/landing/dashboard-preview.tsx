@@ -258,7 +258,7 @@ const PaymentsView = () => (
       </div>
     </div>
 
-    <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
+    <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-x-auto">
       <div className="p-6 border-b border-white/5 flex items-center justify-between">
         <h5 className="font-bold text-white">Recent Payments</h5>
         <Search className="w-4 h-4 text-white/20" />
@@ -394,7 +394,7 @@ export function DashboardPreview() {
         <div className="relative group max-w-7xl mx-auto">
           {/* Decorative Glow */}
           <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-transparent to-primary/20 rounded-[2.5rem] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
-          <div className="relative bg-[#0A0A0A] border border-white/10 rounded-[2rem] shadow-2xl flex flex-col md:flex-row overflow-hidden min-h-[500px] md:min-h-[650px]">
+          <div className="relative bg-[#0A0A0A] border border-white/10 rounded-[2rem] shadow-2xl flex flex-col md:flex-row overflow-hidden h-[500px] md:h-[650px]">
             {/* Sidebar / Top Nav */}
             <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-white/5 p-4 md:p-6 space-y-6 md:space-y-8 bg-white/[0.01]">
               <div className="flex items-center gap-3 px-2 mb-2 md:mb-0">
@@ -479,7 +479,7 @@ export function DashboardPreview() {
               </header>
 
               {/* View Content */}
-              <div className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-8 scrollbar-hide">
+              <div className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-8">
                 {renderContent()}
               </div>
             </main>
