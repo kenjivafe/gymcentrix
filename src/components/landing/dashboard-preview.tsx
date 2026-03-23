@@ -394,7 +394,7 @@ export function DashboardPreview() {
         <div className="relative group max-w-7xl mx-auto">
           {/* Decorative Glow */}
           <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-transparent to-primary/20 rounded-[2.5rem] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
-          <div className="relative bg-[#0A0A0A] border border-white/10 rounded-[2rem] shadow-2xl flex flex-col md:flex-row overflow-hidden h-[650px]">
+          <div className="relative bg-[#0A0A0A] border border-white/10 rounded-[2rem] shadow-2xl flex flex-col md:flex-row overflow-hidden h-[650px] md:h-[750px]">
             {/* Sidebar / Top Nav */}
             <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-white/5 p-4 md:p-6 space-y-6 md:space-y-8 bg-white/[0.01]">
               <div className="flex items-center gap-3 px-2 mb-2 md:mb-0">
