@@ -120,7 +120,7 @@ export function PricingSection() {
         </div>
 
         {/* Note Block */}
-        <div className="max-w-4xl mx-auto mb-20">
+        <div className="max-w-4xl mx-auto">
           <div className="p-8 rounded-3xl bg-white/[0.02] border border-white/5 flex flex-col sm:flex-row items-center sm:items-start gap-6 backdrop-blur-sm">
             <div className="w-12 h-12 shrink-0 rounded-2xl bg-white/5 flex items-center justify-center border border-white/5">
               <HelpCircle className="w-6 h-6 text-white/40" />
@@ -133,19 +133,6 @@ export function PricingSection() {
               </p>
             </div>
           </div>
-        </div>
-
-        {/* Secondary CTA */}
-        <div className="text-center">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="px-10 py-5 bg-white text-canvas rounded-2xl font-bold text-lg hover:scale-105 transition-all shadow-xl">
-              Start Your Free Trial
-            </button>
-            <button className="px-10 py-5 bg-white/5 border border-white/10 text-white rounded-2xl font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-md">
-              Book a Demo
-            </button>
-          </div>
-          <p className="mt-6 text-sm text-white/20 font-sans uppercase tracking-[0.2em]">No credit card required • 14-day trial</p>
         </div>
       </div>
     </section>
