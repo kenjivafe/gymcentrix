@@ -17,8 +17,8 @@ export function LandingPage() {
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-20 bg-mesh-glow pointer-events-none" aria-hidden />
       
+      <Navbar />
       <main className="relative z-10 pt-[60px] sm:pt-[72px]">
-        <Navbar />
         <HeroSection />
         <Marquee />
         <ProblemSection />

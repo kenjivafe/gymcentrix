@@ -19,7 +19,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300">
       {/* Navbar Container */}
       <div className={`relative z-[60] border-b border-white/5 bg-black/40 backdrop-blur-xl px-6 lg:px-14 transition-colors duration-500 ${isMenuOpen ? 'bg-transparent border-transparent' : ''}`}>
         <nav className="flex items-center justify-between py-2.5 mx-auto max-w-7xl">
@@ -82,7 +82,7 @@ export function Navbar() {
 
       {/* Mobile Menu Overlay */}
       <div 
-        className={`fixed inset-0 z-50 bg-[#030303] backdrop-blur-3xl transition-all duration-700 md:hidden ${
+        className={`fixed inset-0 z-[100] bg-[#030303] backdrop-blur-3xl transition-all duration-700 md:hidden ${
           isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none translate-y-[-10%]"
         }`}
       >
