@@ -79,7 +79,7 @@ const StatCard = ({ icon: Icon, label, value, trend, trendUp }: { icon: any, lab
 // --- Page Views ---
 
 const DashboardView = () => (
-  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[600px]">
+  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <StatCard icon={Users} label="Total Members" value="1,248" trend="12%" trendUp />
       <StatCard icon={CalendarCheck} label="Check-ins Today" value="84" trend="5%" trendUp />
@@ -143,7 +143,7 @@ const DashboardView = () => (
 );
 
 const MembersView = () => (
-  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[600px]">
+  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
     <div className="flex items-center justify-between">
       <h5 className="text-xl font-bold text-white">Member Directory</h5>
       <button className="bg-primary text-black px-4 py-2 rounded-xl text-xs font-bold hover:shadow-glow transition-all">Add New Member</button>
@@ -197,7 +197,7 @@ const MembersView = () => (
 );
 
 const AttendanceView = () => (
-  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[600px]">
+  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
     <div className="flex items-center justify-between">
       <h5 className="text-xl font-bold text-white">Daily Attendance Log</h5>
       <div className="flex gap-3">
@@ -236,7 +236,7 @@ const AttendanceView = () => (
 );
 
 const PaymentsView = () => (
-  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[600px]">
+  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div className="p-6 rounded-2xl bg-primary text-black">
         <p className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-1">Estimated Revenue</p>
@@ -294,7 +294,7 @@ const PaymentsView = () => (
 );
 
 const ReportsView = () => (
-  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 min-h-[600px]">
+  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
     <div className="flex items-center justify-between">
       <h5 className="text-xl font-bold text-white">Gym Analytics</h5>
       <select className="bg-transparent border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white font-bold cursor-pointer">
