@@ -80,8 +80,8 @@ export function WhoIsItFor() {
       {/* Carousel Container */}
       <div className="relative">
         {/* Faded Edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-r from-canvas via-canvas/90 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-l from-canvas via-canvas/90 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-r from-canvas via-canvas/90 to-transparent z-10 pointer-events-none hidden sm:block" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-l from-canvas via-canvas/90 to-transparent z-10 pointer-events-none hidden sm:block" />
 
         {/* Scrolling Area - scroll-smooth removed from here and used in scrollIntoView for clicks */}
         <div 
@@ -94,7 +94,7 @@ export function WhoIsItFor() {
               <div 
                 key={i} 
                 onClick={handleCardClick}
-                className="w-[320px] sm:w-[600px] aspect-[3/2] shrink-0 p-10 sm:p-14 rounded-[2.5rem] border border-white/5 bg-white/[0.02] backdrop-blur-3xl hover:border-primary/20 hover:shadow-glow-strong hover:scale-[1.02] active:scale-[0.98] transition-all duration-700 flex flex-col justify-end items-center sm:items-start text-center sm:text-left group cursor-pointer snap-center relative overflow-hidden"
+                className="w-[320px] sm:w-[600px] aspect-[4/3] shrink-0 p-10 sm:p-14 rounded-[2.5rem] border border-white/5 bg-white/[0.02] backdrop-blur-3xl hover:border-primary/20 hover:shadow-glow-strong hover:scale-[1.02] active:scale-[0.98] transition-all duration-700 flex flex-col justify-end items-center sm:items-start text-center sm:text-left group cursor-pointer snap-center relative overflow-hidden"
               >
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
