@@ -87,14 +87,14 @@ export function WhoIsItFor() {
         <div 
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pt-4 pb-20"
+          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pt-20 pb-20"
         >
           <div className="flex gap-4 sm:gap-8 px-[10vw]">
             {loopedTargets.map((target, i) => (
               <div 
                 key={i} 
                 onClick={handleCardClick}
-                className="w-[320px] sm:w-[600px] aspect-[4/3] shrink-0 p-10 sm:p-14 rounded-[2.5rem] border border-white/5 bg-white/[0.02] backdrop-blur-3xl hover:border-primary/20 hover:shadow-glow-strong hover:scale-[1.02] active:scale-[0.98] transition-all duration-700 flex flex-col justify-end items-center sm:items-start text-center sm:text-left group cursor-pointer snap-center relative overflow-hidden"
+                className="w-[320px] sm:w-[600px] aspect-[3/4] sm:aspect-[4/3] shrink-0 p-10 sm:p-14 rounded-[2.5rem] border border-white/5 bg-white/[0.02] backdrop-blur-3xl hover:border-primary/20 hover:shadow-glow-strong hover:scale-[1.02] active:scale-[0.98] transition-all duration-700 flex flex-col justify-end items-center sm:items-start text-center sm:text-left group cursor-pointer snap-center relative overflow-hidden"
               >
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
