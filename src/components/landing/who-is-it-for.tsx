@@ -2,8 +2,7 @@ import React from 'react';
 import { 
   Dumbbell, 
   Users, 
-  Layers, 
-  Sparkles 
+  Layers 
 } from 'lucide-react';
 
 const targets = [
@@ -11,11 +10,6 @@ const targets = [
     title: "Independent Gyms",
     description: "Manage memberships, attendance, and payments from one simple system.",
     icon: Dumbbell,
-  },
-  {
-    title: "Fitness Studios",
-    description: "Track member visits and manage class attendance with ease.",
-    icon: Sparkles,
   },
   {
     title: "Growing Gym Chains",
