@@ -65,10 +65,10 @@ export function PricingSection() {
       <div className="mx-auto max-w-7xl px-6 lg:px-14 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-7xl text-white mb-6">
+          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-5xl text-white mb-6">
             Flexible Pricing & Setup
           </h2>
-          <p className="text-lg sm:text-xl text-white/50 leading-relaxed font-sans mb-10">
+          <p className="text-lg sm:text-lg text-white/50 leading-relaxed font-sans mb-10">
             Initial setup pricing may vary depending on your gym’s size, setup, and hardware requirements. Gymcentrix can provide the necessary hardware if needed.
           </p>
 
@@ -84,7 +84,7 @@ export function PricingSection() {
             </button>
             <button 
               onClick={() => setBillingPeriod('annually')}
-              className={`px-8 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 flex items-center gap-2 ${
+              className={`px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 flex items-center gap-2 ${
                 billingPeriod === 'annually' ? 'bg-primary text-canvas shadow-glow' : 'text-white/40 hover:text-white'
               }`}
             >
@@ -92,7 +92,7 @@ export function PricingSection() {
               <span className={`text-[9px] px-2 py-0.5 rounded-full ${
                 billingPeriod === 'annually' ? 'bg-canvas text-primary' : 'bg-primary/20 text-primary'
               }`}>
-                -1 month
+                10% off
               </span>
             </button>
           </div>
@@ -156,14 +156,21 @@ export function PricingSection() {
                 ))}
               </div>
 
-              <button className={`w-full py-4 rounded-2xl font-bold transition-all duration-500 flex items-center justify-center gap-2 group/btn ${
-                plan.recommend 
-                  ? 'bg-primary text-canvas hover:bg-white hover:scale-[1.02]' 
-                  : 'bg-white/5 text-white hover:bg-white/10 border border-white/5'
-              }`}>
-                {plan.cta}
-                <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
-              </button>
+              <div className="space-y-4">
+                <button className={`w-full py-4 rounded-2xl font-bold transition-all duration-500 flex items-center justify-center gap-2 group/btn ${
+                  plan.recommend 
+                    ? 'bg-primary text-canvas hover:bg-white hover:scale-[1.02]' 
+                    : 'bg-white/5 text-white hover:bg-white/10 border border-white/5'
+                }`}>
+                  {plan.cta}
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                </button>
+                <div className="text-center">
+                  <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] cursor-pointer hover:text-white/40 transition-colors">
+                    or Get a quote
+                  </span>
+                </div>
+              </div>
             </div>
           ))}
         </div>
