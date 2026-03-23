@@ -155,7 +155,7 @@ const MembersView = () => (
             <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider">Member Name</th>
             <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider">Membership Plat</th>
             <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider">Last Check-in</th>
+            <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider hidden sm:table-cell">Last Check-in</th>
             <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider text-right">Action</th>
           </tr>
         </thead>
@@ -180,7 +180,7 @@ const MembersView = () => (
                   {m.status}
                 </span>
               </td>
-              <td className="px-6 py-4">
+              <td className="px-6 py-4 hidden sm:table-cell">
                 <span className="text-xs text-white/40 italic">{m.lastCheckIn}</span>
               </td>
               <td className="px-6 py-4 text-right">
@@ -210,8 +210,8 @@ const AttendanceView = () => (
         <thead>
           <tr className="border-b border-white/5 bg-white/[0.02]">
             <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider">Member</th>
-            <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider">Check-in Time</th>
-            <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider">Method</th>
+            <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider">Time</th>
+            <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider hidden sm:table-cell">Method</th>
             <th className="px-6 py-4 text-xs font-bold text-white/40 uppercase tracking-wider">Status</th>
           </tr>
         </thead>
@@ -220,7 +220,7 @@ const AttendanceView = () => (
             <tr key={a.id} className="hover:bg-white/[0.02] transition-colors">
               <td className="px-6 py-4 text-sm font-medium text-white">{a.name}</td>
               <td className="px-6 py-4 text-xs text-white/60">{a.time}</td>
-              <td className="px-6 py-4 text-xs text-white/60">{a.method}</td>
+              <td className="px-6 py-4 text-xs text-white/60 hidden sm:table-cell">{a.method}</td>
               <td className="px-6 py-4">
                 <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full">
                   <div className="w-1 h-1 rounded-full bg-emerald-400" />
@@ -394,55 +394,56 @@ export function DashboardPreview() {
         <div className="relative group max-w-7xl mx-auto">
           {/* Decorative Glow */}
           <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-transparent to-primary/20 rounded-[2.5rem] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
-          
-          <div className="relative bg-[#0A0A0A] border border-white/10 rounded-[2rem] shadow-2xl flex flex-col md:flex-row overflow-hidden min-h-[650px]">
-            {/* Sidebar */}
-            <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-white/5 p-6 space-y-8 bg-white/[0.01]">
-              <div className="flex items-center gap-3 px-2">
+          <div className="relative bg-[#0A0A0A] border border-white/10 rounded-[2rem] shadow-2xl flex flex-col md:flex-row overflow-hidden min-h-[500px] md:min-h-[650px]">
+            {/* Sidebar / Top Nav */}
+            <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-white/5 p-4 md:p-6 space-y-6 md:space-y-8 bg-white/[0.01]">
+              <div className="flex items-center gap-3 px-2 mb-2 md:mb-0">
                 <Image 
                   src="/app/gymcentrix-logo.png" 
                   alt="Gymcentrix" 
                   width={32} 
                   height={32} 
-                  className="w-6 h-6 object-contain logo-glow" 
+                  className="w-6 h-6 md:w-8 md:h-8 object-contain logo-glow" 
                 />
-                <span className="font-bold font-display text-white tracking-tight text-md uppercase">GYMCENTRIX</span>
+                <span className="font-black text-white tracking-widest text-base md:text-lg italic uppercase">CENTRIX</span>
               </div>
 
-              <div className="space-y-2">
-                <SidebarItem 
-                  icon={LayoutDashboard} 
-                  label="Dashboard" 
-                  active={activeTab === 'dashboard'} 
-                  onClick={() => setActiveTab('dashboard')} 
-                />
-                <SidebarItem 
-                  icon={Users} 
-                  label="Members" 
-                  active={activeTab === 'members'} 
-                  onClick={() => setActiveTab('members')} 
-                />
-                <SidebarItem 
-                  icon={CalendarCheck} 
-                  label="Attendance" 
-                  active={activeTab === 'attendance'} 
-                  onClick={() => setActiveTab('attendance')} 
-                />
-                <SidebarItem 
-                  icon={CreditCard} 
-                  label="Payments" 
-                  active={activeTab === 'payments'} 
-                  onClick={() => setActiveTab('payments')} 
-                />
-                <SidebarItem 
-                  icon={BarChart3} 
-                  label="Reports" 
-                  active={activeTab === 'reports'} 
-                  onClick={() => setActiveTab('reports')} 
-                />
+              <div className="flex md:flex-col overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 gap-2 scrollbar-hide">
+                <div className="flex md:flex-col gap-2 min-w-max md:min-w-0">
+                  <SidebarItem 
+                    icon={LayoutDashboard} 
+                    label="Dashboard" 
+                    active={activeTab === 'dashboard'} 
+                    onClick={() => setActiveTab('dashboard')} 
+                  />
+                  <SidebarItem 
+                    icon={Users} 
+                    label="Members" 
+                    active={activeTab === 'members'} 
+                    onClick={() => setActiveTab('members')} 
+                  />
+                  <SidebarItem 
+                    icon={CalendarCheck} 
+                    label="Attendance" 
+                    active={activeTab === 'attendance'} 
+                    onClick={() => setActiveTab('attendance')} 
+                  />
+                  <SidebarItem 
+                    icon={CreditCard} 
+                    label="Payments" 
+                    active={activeTab === 'payments'} 
+                    onClick={() => setActiveTab('payments')} 
+                  />
+                  <SidebarItem 
+                    icon={BarChart3} 
+                    label="Reports" 
+                    active={activeTab === 'reports'} 
+                    onClick={() => setActiveTab('reports')} 
+                  />
+                </div>
               </div>
 
-              <div className="pt-8 mt-auto md:absolute md:bottom-8 md:w-[208px]">
+              <div className="hidden md:block pt-8 mt-auto md:absolute md:bottom-8 md:w-[208px]">
                 <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
                   <p className="text-[10px] font-black uppercase text-primary mb-1">Status</p>
                   <p className="text-xs text-white/60 mb-3">RFID Reader Connected</p>
@@ -456,18 +457,18 @@ export function DashboardPreview() {
             {/* Main Content */}
             <main className="flex-1 overflow-hidden flex flex-col bg-white/[0.01]">
               {/* Top Bar */}
-              <header className="h-16 border-b border-white/5 px-8 flex items-center justify-between">
-                <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-xl border border-white/5 flex-1 max-w-md">
-                   <Search className="w-4 h-4 text-white/20" />
+              <header className="h-16 border-b border-white/5 px-4 md:px-8 flex items-center justify-between">
+                <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-xl border border-white/5 flex-1 max-w-xs md:max-w-md">
+                   <Search className="w-4 h-4 text-white/20 shrink-0" />
                    <input 
                      type="text" 
-                     placeholder="Search members..." 
-                     className="bg-transparent border-none text-xs text-white placeholder:text-white/20 focus:ring-0 w-full" 
+                     placeholder="Search..." 
+                     className="bg-transparent border-none text-xs text-white placeholder:text-white/20 focus:ring-0 w-full p-0" 
                      readOnly
                    />
                 </div>
-                <div className="flex items-center gap-6 ml-6">
-                   <div className="relative">
+                <div className="flex items-center gap-4 md:gap-6 ml-4">
+                   <div className="relative hidden sm:block">
                      <Bell className="w-5 h-5 text-white/40" />
                      <div className="absolute -top-1 -right-1 w-2 h-2 bg-rose-500 rounded-full border border-black" />
                    </div>
@@ -478,7 +479,7 @@ export function DashboardPreview() {
               </header>
 
               {/* View Content */}
-              <div className="flex-1 overflow-y-auto p-8 scrollbar-hide">
+              <div className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-8 scrollbar-hide">
                 {renderContent()}
               </div>
             </main>
