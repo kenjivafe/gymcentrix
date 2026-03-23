@@ -405,7 +405,7 @@ export function DashboardPreview() {
                   height={32} 
                   className="w-6 h-6 md:w-8 md:h-8 object-contain logo-glow" 
                 />
-                <span className="font-display font-bold text-white tracking-tighter text-base md:text-lg uppercase">CENTRIX</span>
+                <span className="font-display font-bold text-white tracking-tighter text-base md:text-lg uppercase">GYMCENTRIX</span>
               </div>
 
               <div className="flex md:flex-col overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 gap-2 scrollbar-hide">
