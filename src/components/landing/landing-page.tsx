@@ -25,6 +25,7 @@ import {
   CheckCircle2
 } from "lucide-react";
 import { DashboardPreview } from "./dashboard-preview";
+import { WhoIsItFor } from "./who-is-it-for";
 
 const registerHref = "/register" as Route;
 const dashboardHref = "/dashboard" as Route;
@@ -43,6 +44,7 @@ export function LandingPage() {
         <ProblemSection />
         <RfidAnimationSection />
         <DashboardPreview />
+        <WhoIsItFor />
         <CtaSection />
       </main>
 
