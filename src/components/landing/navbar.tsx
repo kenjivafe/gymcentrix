@@ -21,7 +21,7 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300">
       {/* Navbar Container */}
-      <div className={`relative z-[60] border-b border-white/5 bg-black/40 backdrop-blur-xl px-6 lg:px-14 transition-colors duration-500 ${isMenuOpen ? 'bg-transparent border-transparent' : ''}`}>
+      <div className={`relative z-[110] border-b border-white/5 bg-black/40 backdrop-blur-xl px-6 lg:px-14 transition-colors duration-500 ${isMenuOpen ? 'bg-transparent border-transparent' : ''}`}>
         <nav className="flex items-center justify-between py-2.5 mx-auto max-w-7xl">
           <Link 
             href="/" 
