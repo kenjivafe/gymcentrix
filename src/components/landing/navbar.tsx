@@ -82,7 +82,7 @@ export function Navbar() {
 
       {/* Mobile Menu Overlay */}
       <div 
-        className={`fixed inset-0 z-[100] bg-[#030303] backdrop-blur-3xl transition-all duration-700 md:hidden ${
+        className={`fixed inset-0 z-[100] bg-black/60 backdrop-blur-3xl transition-all duration-700 md:hidden ${
           isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none translate-y-[-10%]"
         }`}
       >
