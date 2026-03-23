@@ -63,8 +63,8 @@ export function LandingPage() {
         <HeroSection />
         <Marquee />
         <ProblemSection />
-        <DashboardPreview />
         <RfidAnimationSection />
+        <DashboardPreview />
         <FeaturesGrid />
         <RfidHighlight />
         <CtaSection />
