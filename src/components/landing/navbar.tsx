@@ -58,7 +58,7 @@ export function Navbar() {
             <Link
               href="#pricing"
               onClick={closeMenu}
-              className="hidden xs:inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 sm:px-8 sm:py-3.5 text-[10px] sm:text-sm font-bold text-canvas hover:scale-105 active:scale-95 transition shadow-glow-strong uppercase tracking-[0.2em]"
+              className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 sm:px-8 sm:py-3.5 text-[10px] sm:text-sm font-bold text-canvas hover:scale-105 active:scale-95 transition shadow-glow-strong uppercase tracking-[0.2em]"
             >
               <span>Get Started</span>
               <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 stroke-[3px]" />
