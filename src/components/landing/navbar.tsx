@@ -31,7 +31,7 @@ export function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300">
       {/* Background layer that covers the safe area */}
       <div 
-        className={`absolute inset-0 border-b transition-all duration-500 ${
+        className={`absolute inset-0 z-[110] border-b transition-all duration-500 ${
           isMenuOpen 
             ? "opacity-0" 
             : isScrolled
@@ -41,7 +41,7 @@ export function Navbar() {
       />
 
       {/* Navbar Content Container */}
-      <div className="relative z-[110] px-[clamp(1rem,5vw,3.5rem)] pt-[env(safe-area-inset-top)]">
+      <div className="relative z-[130] px-[clamp(1rem,5vw,3.5rem)] pt-[env(safe-area-inset-top)]">
         <nav className="flex items-center justify-between h-20 sm:h-24 mx-auto max-w-7xl">
           <Link 
             href="/" 
