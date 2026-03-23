@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { 
   LayoutDashboard, 
   Users, 
@@ -398,10 +399,14 @@ export function DashboardPreview() {
             {/* Sidebar */}
             <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-white/5 p-6 space-y-8 bg-white/[0.01]">
               <div className="flex items-center gap-3 px-2">
-                <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                  <span className="font-extrabold text-black text-xl italic">G</span>
-                </div>
-                <span className="font-display font-bold text-white tracking-widest text-md">GYMCENTRIX</span>
+                <Image 
+                  src="/app/gymcentrix-logo.png" 
+                  alt="Gymcentrix" 
+                  width={32} 
+                  height={32} 
+                  className="w-6 h-6 object-contain logo-glow" 
+                />
+                <span className="font-bold font-display text-white tracking-tight text-md uppercase">GYMCENTRIX</span>
               </div>
 
               <div className="space-y-2">
