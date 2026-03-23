@@ -18,7 +18,7 @@ export function LandingPage() {
       <div className="absolute inset-0 opacity-20 bg-mesh-glow pointer-events-none" aria-hidden />
       
       <Navbar />
-      <main className="relative z-10 pt-[60px] sm:pt-[72px]">
+      <main className="relative z-10 pt-[calc(60px+env(safe-area-inset-top))] sm:pt-[calc(72px+env(safe-area-inset-top))]">
         <HeroSection />
         <Marquee />
         <ProblemSection />

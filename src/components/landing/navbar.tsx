@@ -19,7 +19,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300 pt-[env(safe-area-inset-top)]">
       {/* Navbar Container */}
       <div className={`relative z-[110] border-b border-white/5 bg-black/20 backdrop-blur-xl px-6 lg:px-14 transition-colors duration-500 ${isMenuOpen ? 'bg-transparent border-transparent' : ''}`}>
         <nav className="flex items-center justify-between py-2.5 mx-auto max-w-7xl">
