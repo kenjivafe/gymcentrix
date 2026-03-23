@@ -1,15 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -22,14 +31,18 @@ export function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300">
       {/* Background layer that covers the safe area */}
       <div 
-        className={`absolute inset-0 border-b border-white/5 bg-black/20 backdrop-blur-xl transition-opacity duration-500 ${
-          isMenuOpen ? "opacity-0" : "opacity-100"
+        className={`absolute inset-0 border-b transition-all duration-500 ${
+          isMenuOpen 
+            ? "opacity-0" 
+            : isScrolled
+              ? "bg-black/80 backdrop-blur-2xl border-white/10 opacity-100"
+              : "bg-black/20 backdrop-blur-xl border-transparent opacity-100"
         }`} 
       />
 
       {/* Navbar Content Container */}
-      <div className="relative z-[110] px-6 lg:px-14 pt-[env(safe-area-inset-top)]">
-        <nav className="flex items-center justify-between py-2.5 mx-auto max-w-7xl">
+      <div className="relative z-[110] px-[clamp(1rem,5vw,3.5rem)] pt-[env(safe-area-inset-top)]">
+        <nav className="flex items-center justify-between h-20 sm:h-24 mx-auto max-w-7xl">
           <Link 
             href="/" 
             onClick={closeMenu}

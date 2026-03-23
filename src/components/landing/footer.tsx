@@ -10,7 +10,7 @@ import {
 
 export function Footer() {
   return (
-    <footer className="relative z-10 border-t border-white/5 bg-black/20 overflow-hidden px-6 lg:px-14">
+    <footer className="relative z-10 border-t border-white/5 bg-black/20 backdrop-blur-xl overflow-hidden px-[clamp(1rem,5vw,3.5rem)] pb-[env(safe-area-inset-bottom)]">
       {/* Background Watermark */}
       <div className="absolute inset-0 flex items-end pb-32 lg:pb-0 justify-center pointer-events-none opacity-[0.02] select-none">
         <span className="text-[12vw] font-display font-bold tracking-tighter leading-none">
