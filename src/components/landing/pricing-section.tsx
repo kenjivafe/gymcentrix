@@ -64,35 +64,41 @@ export function PricingSection() {
 
       <div className="mx-auto max-w-7xl px-6 lg:px-14 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-5xl text-white mb-10">
-            Pricing
-          </h2>
-
-          {/* Billing Switcher */}
-          <div className="inline-flex items-center p-1.5 bg-white/[0.03] border border-white/5 rounded-2xl backdrop-blur-md">
-            <button 
-              onClick={() => setBillingPeriod('monthly')}
-              className={`px-8 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
-                billingPeriod === 'monthly' ? 'bg-primary text-canvas shadow-glow' : 'text-white/40 hover:text-white'
-              }`}
-            >
-              Monthly
-            </button>
-            <button 
-              onClick={() => setBillingPeriod('annually')}
-              className={`px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 flex items-center gap-2 ${
-                billingPeriod === 'annually' ? 'bg-primary text-canvas shadow-glow' : 'text-white/40 hover:text-white'
-              }`}
-            >
-              Annual
-              <span className={`text-[9px] px-2 py-0.5 rounded-full ${
-                billingPeriod === 'annually' ? 'bg-canvas text-primary' : 'bg-primary/20 text-primary'
-              }`}>
-                10% off
-              </span>
-            </button>
+        <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-8 mb-16 sm:mb-20">
+          <div className="text-center md:text-left">
+            <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-5xl text-white">
+              Pricing
+            </h2>
           </div>
+
+          <div className="flex justify-center">
+            {/* Billing Switcher */}
+            <div className="inline-flex items-center p-1.5 bg-white/[0.03] border border-white/5 rounded-2xl backdrop-blur-md">
+              <button 
+                onClick={() => setBillingPeriod('monthly')}
+                className={`px-8 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                  billingPeriod === 'monthly' ? 'bg-primary text-canvas shadow-glow' : 'text-white/40 hover:text-white'
+                }`}
+              >
+                Monthly
+              </button>
+              <button 
+                onClick={() => setBillingPeriod('annually')}
+                className={`px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 flex items-center gap-2 ${
+                  billingPeriod === 'annually' ? 'bg-primary text-canvas shadow-glow' : 'text-white/40 hover:text-white'
+                }`}
+              >
+                Annual
+                <span className={`text-[9px] px-2 py-0.5 rounded-full ${
+                  billingPeriod === 'annually' ? 'bg-canvas text-primary' : 'bg-primary/20 text-primary'
+                }`}>
+                  10% off
+                </span>
+              </button>
+            </div>
+          </div>
+          
+          <div className="hidden md:block" />
         </div>
 
         {/* Pricing Grid */}
