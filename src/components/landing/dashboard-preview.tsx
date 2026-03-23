@@ -97,14 +97,14 @@ const DashboardView = () => (
             ))}
           </div>
         </div>
-        <div className="h-64 flex items-end justify-between gap-2 px-2">
+        <div className="h-64 flex items-end gap-2 px-2">
           {[45, 60, 40, 75, 55, 90, 65, 80, 50, 70, 85, 95].map((h, i) => (
-            <div key={i} className="flex-1 group relative">
+            <div key={i} className="flex-1 h-full flex items-end group relative">
               <div 
                 className="w-full bg-primary/20 rounded-t-lg group-hover:bg-primary/40 transition-all duration-500 cursor-pointer" 
                 style={{ height: `${h}%` }}
               >
-                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-primary text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                   {h + 20}
                 </div>
               </div>

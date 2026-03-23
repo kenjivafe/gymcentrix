@@ -68,7 +68,7 @@ function ProblemContent({ problem, isTall }: { problem: any, isTall?: boolean })
 
 export function ProblemSection() {
   return (
-    <section className="px-6 py-12 sm:py-24 lg:px-14 relative overflow-hidden snap-start">
+    <section id="solution" className="px-6 py-12 sm:py-24 lg:px-14 relative overflow-hidden snap-start">
       <div className="mx-auto max-w-7xl">
         {/* Header Section */}
         <div className="text-center lg:text-left mb-10 sm:mb-20 space-y-6">

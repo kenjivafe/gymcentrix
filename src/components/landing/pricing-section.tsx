@@ -1,5 +1,6 @@
 import React from 'react';
-import { Check, ArrowRight, Monitor, Laptop, Server, HelpCircle } from 'lucide-react';
+import Link from 'next/link';
+import { Check, Monitor, Laptop, Server, HelpCircle, ArrowUpRight } from 'lucide-react';
 
 const plans = [
   {
@@ -58,13 +59,13 @@ export function PricingSection() {
   const [billingPeriod, setBillingPeriod] = React.useState<'monthly' | 'annually'>('monthly');
 
   return (
-    <section className="py-24 sm:py-32 relative overflow-hidden bg-canvas">
+    <section id="pricing" className="py-16 sm:py-24 relative overflow-hidden bg-canvas">
       {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-6 lg:px-14 relative z-10">
         {/* Header */}
-        <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-8 mb-16 sm:mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-8 mb-12">
           <div className="text-center md:text-left">
             <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-5xl text-white">
               Pricing
@@ -106,7 +107,7 @@ export function PricingSection() {
           {plans.map((plan, i) => (
             <div 
               key={i}
-              className={`relative flex flex-col p-8 sm:p-10 rounded-[2.5rem] border transition-all duration-500 group ${
+              className={`relative flex flex-col p-6 sm:p-8 rounded-[2.5rem] border transition-all duration-500 group ${
                 plan.recommend 
                   ? 'bg-white/[0.03] border-primary/30 shadow-glow-strong' 
                   : 'bg-white/[0.01] border-white/5 hover:border-white/10 shadow-sm'
@@ -141,7 +142,7 @@ export function PricingSection() {
                 )}
               </div>
 
-              <div className="flex-grow space-y-4 mb-10">
+              <div className="flex-grow space-y-3 mb-8">
                 {plan.features.map((feature, featureIdx) => (
                   <div key={featureIdx} className="flex items-start gap-3">
                     <div className={`mt-1 shrink-0 w-4 h-4 rounded-full flex items-center justify-center ${
@@ -155,13 +156,13 @@ export function PricingSection() {
               </div>
 
               <div className="space-y-4">
-                <button className={`w-full py-4 rounded-2xl font-bold transition-all duration-500 flex items-center justify-center gap-2 group/btn ${
+                <button className={`w-full uppercase text tracking-wide py-4 rounded-2xl font-bold transition-all duration-500 flex items-center justify-center gap-2 group/btn ${
                   plan.recommend 
                     ? 'bg-primary text-canvas hover:bg-white hover:scale-[1.02]' 
                     : 'bg-white/5 text-white hover:bg-white/10 border border-white/5'
                 }`}>
                   {plan.cta}
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                 </button>
                 <div className="text-center">
                   <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] cursor-pointer hover:text-white/40 transition-colors">
@@ -171,6 +172,21 @@ export function PricingSection() {
               </div>
             </div>
           ))}
+        </div>
+        
+        {/* Secondary CTA */}
+        <div className="mt-12 sm:mt-16 flex items-center justify-center gap-4 sm:gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
+          <p className="text-xs sm:text-sm text-white/40 font-sans font-medium">
+            Not sure which plan fits your gym?
+          </p>
+          <div
+            className="group flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-primary/20 transition-all duration-500 hover:shadow-glow-sm cursor-pointer"
+          >
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/60 group-hover:text-white transition-colors">
+              Talk to Us
+            </span>
+            <ArrowUpRight className="w-3 h-3 text-white/20 group-hover:text-primary transition-colors transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </div>
         </div>
       </div>
     </section>

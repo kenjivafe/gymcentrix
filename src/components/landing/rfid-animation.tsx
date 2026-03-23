@@ -124,7 +124,7 @@ export function RfidAnimationSection() {
   }, [videoSrc]);
 
   return (
-    <section ref={containerRef} className="h-[300vh] relative bg-black">
+    <section id="features" ref={containerRef} className="h-[300vh] relative bg-black">
       <div className="sticky top-[60px] sm:top-[72px] h-[calc(100vh-60px)] sm:h-[calc(100vh-72px)] w-full flex items-center justify-center overflow-hidden">
         {/* Video Background */}
         <div className="absolute inset-0 w-full h-full">

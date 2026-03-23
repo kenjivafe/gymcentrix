@@ -25,9 +25,10 @@ export function Navbar() {
           </span>
         </Link>
         <div className="hidden md:flex gap-8 text-sm font-medium text-white/70 font-sans uppercase tracking-widest">
-          <Link href="#" className="hover:text-primary transition">Features</Link>
-          <Link href="#" className="hover:text-primary transition">Pricing</Link>
-          <Link href="#" className="hover:text-primary transition">Enterprise</Link>
+          <Link href="/" className="hover:text-primary transition">Home</Link>
+          <Link href="#solution" className="hover:text-primary transition">Solution</Link>
+          <Link href="#features" className="hover:text-primary transition">Features</Link>
+          <Link href="#pricing" className="hover:text-primary transition">Pricing</Link>
         </div>
         <div className="flex items-center gap-4 sm:gap-6">
           <Link href={dashboardHref} className="hidden sm:block text-sm font-medium hover:text-primary transition font-sans uppercase tracking-widest">Sign In</Link>
