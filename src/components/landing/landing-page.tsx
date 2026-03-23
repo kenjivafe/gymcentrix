@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { DashboardPreview } from "./dashboard-preview";
 import { WhoIsItFor } from "./who-is-it-for";
+import { PricingSection } from "./pricing-section";
 
 const registerHref = "/register" as Route;
 const dashboardHref = "/dashboard" as Route;
@@ -45,7 +46,7 @@ export function LandingPage() {
         <RfidAnimationSection />
         <DashboardPreview />
         <WhoIsItFor />
-        <CtaSection />
+        <PricingSection />
       </main>
 
       <footer className="relative z-10 border-t border-white/5 bg-black/20 overflow-hidden px-6 lg:px-14">
@@ -600,52 +601,4 @@ function ProblemContent({ problem, isTall }: { problem: any, isTall?: boolean })
 
 
 
-function CtaSection() {
-  return (
-    <section className="px-6 py-24 lg:px-14">
-      <div className="mx-auto max-w-5xl text-center space-y-8 sm:space-y-12">
-        <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-7xl lg:text-8xl leading-tight">
-          Scale your <br /><span className="text-primary italic">Ambition.</span>
-        </h2>
-        <p className="text-xl text-white/40 max-w-2xl mx-auto font-sans">
-          Join hundreds of owners who have switched to Gymcentrix to streamline their operations.
-        </p>
-        <div className="flex flex-wrap gap-4 justify-center pt-6">
-          <PrimaryCta href={registerHref}>Start 14-day Free Trial</PrimaryCta>
-          <SecondaryCta href={dashboardHref}>Request custom Demo</SecondaryCta>
-        </div>
-        <p className="text-xs text-white/20 uppercase tracking-[0.3em] font-bold">No credit card required</p>
-      </div>
-    </section>
-  );
-}
-
-function PrimaryCta({ href, children }: { href: Route; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      className="inline-flex items-center gap-2 rounded-2xl bg-primary px-8 py-5 text-sm font-bold text-black hover:scale-105 active:scale-95 transition shadow-glow-strong uppercase tracking-widest"
-    >
-      {children}
-      <ArrowUpRight className="w-4 h-4 stroke-[3px]" />
-    </Link>
-  );
-}
-
-function SecondaryCta({ 
-  href, 
-  children, 
-}: { 
-  href: Route; 
-  children: React.ReactNode; 
-}) {
-  return (
-    <Link
-      href={href}
-      className="inline-flex gap-2 items-center px-8 py-5 text-sm font-bold text-white rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 transition uppercase tracking-widest"
-    >
-      {children}
-    </Link>
-  );
-}
 
