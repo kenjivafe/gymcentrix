@@ -19,9 +19,16 @@ export function Navbar() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300 pt-[env(safe-area-inset-top)]">
-      {/* Navbar Container */}
-      <div className={`relative z-[110] border-b border-white/5 bg-black/20 backdrop-blur-xl px-6 lg:px-14 transition-colors duration-500 ${isMenuOpen ? 'bg-transparent border-transparent' : ''}`}>
+    <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300">
+      {/* Background layer that covers the safe area */}
+      <div 
+        className={`absolute inset-0 border-b border-white/5 bg-black/20 backdrop-blur-xl transition-opacity duration-500 ${
+          isMenuOpen ? "opacity-0" : "opacity-100"
+        }`} 
+      />
+
+      {/* Navbar Content Container */}
+      <div className="relative z-[110] px-6 lg:px-14 pt-[env(safe-area-inset-top)]">
         <nav className="flex items-center justify-between py-2.5 mx-auto max-w-7xl">
           <Link 
             href="/" 
@@ -82,11 +89,11 @@ export function Navbar() {
 
       {/* Mobile Menu Overlay */}
       <div 
-        className={`fixed inset-0 z-[100] bg-black/60 backdrop-blur-3xl transition-all duration-700 md:hidden ${
+        className={`fixed inset-0 z-[120] bg-black/60 backdrop-blur-3xl transition-all duration-700 md:hidden pt-[env(safe-area-inset-top)] ${
           isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none translate-y-[-10%]"
         }`}
       >
-        <div className="flex flex-col items-center pt-32 h-full gap-8 px-8">
+        <div className="flex flex-col items-center pt-24 h-full gap-8 px-8 overflow-y-auto">
           {navLinks.map((link, i) => (
             <Link
               key={link.name}
@@ -125,6 +132,7 @@ export function Navbar() {
           </div>
         </div>
       </div>
+    </header>
     </header>
   );
 }
