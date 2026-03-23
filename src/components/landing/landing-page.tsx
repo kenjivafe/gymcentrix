@@ -24,6 +24,7 @@ import {
   Clock,
   CheckCircle2
 } from "lucide-react";
+import { DashboardPreview } from "./dashboard-preview";
 
 const registerHref = "/register" as Route;
 const dashboardHref = "/dashboard" as Route;
@@ -62,6 +63,7 @@ export function LandingPage() {
         <HeroSection />
         <Marquee />
         <ProblemSection />
+        <DashboardPreview />
         <RfidAnimationSection />
         <FeaturesGrid />
         <RfidHighlight />
@@ -520,13 +522,13 @@ function ProblemSection() {
     <section className="px-6 py-12 sm:py-24 lg:px-14 relative overflow-hidden snap-start">
       <div className="mx-auto max-w-7xl">
         {/* Header Section */}
-        <div className="text-center mb-10 sm:mb-20 space-y-6">
+        <div className="text-center lg:text-left mb-10 sm:mb-20 space-y-6">
           <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-primary">PROBLEM</h3>
-          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-7xl leading-[1.1] max-w-4xl mx-auto">
+          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-7xl leading-[1.1] max-w-9xl mx-auto">
             Running a Gym <br className="hidden sm:block" />
             <span className="text-white/50">Shouldn&apos;t Be This</span> <span className="text-primary italic">Messy.</span>
           </h2>
-          <p className="text-base sm:text-xl text-white/50 max-w-3xl mx-auto leading-relaxed font-sans">
+          <p className="text-base sm:text-xl text-white/50 max-w-9xl mx-auto leading-relaxed font-sans">
             Managing a growing gym with manual systems quickly becomes difficult. 
             Attendance logs, membership tracking, and payment monitoring often end up 
             scattered across notebooks, spreadsheets, and staff memory.
