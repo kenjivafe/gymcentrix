@@ -375,7 +375,7 @@ export function DashboardPreview() {
   };
 
   return (
-    <section className="px-6 py-24 sm:py-32 lg:px-14 relative overflow-hidden bg-black/40 border-y border-white/5">
+    <section className="px-6 py-12 sm:py-24 lg:px-14 relative overflow-hidden bg-black/40 border-y border-white/5 snap-start">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="text-center lg:text-left mb-16 space-y-6">
@@ -390,7 +390,7 @@ export function DashboardPreview() {
         </div>
 
         {/* Dashboard Shell */}
-        <div className="relative group max-w-6xl mx-auto">
+        <div className="relative group max-w-7xl mx-auto">
           {/* Decorative Glow */}
           <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-transparent to-primary/20 rounded-[2.5rem] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
           
