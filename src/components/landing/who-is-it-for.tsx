@@ -65,7 +65,7 @@ export function WhoIsItFor() {
 
   return (
     <section className="pt-24 pb-12 relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 lg:px-14 mb-6 sm:mb-8">
+      <div className="mx-auto max-w-7xl px-6 lg:px-14 mb-2 sm:mb-8">
         {/* Section Header */}
         <div className="text-center max-w-4xl mx-auto space-y-4">
           <h2 className="text-3xl font-display font-bold tracking-tighter sm:text-6xl text-white">
@@ -87,7 +87,7 @@ export function WhoIsItFor() {
         <div 
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pt-20 pb-20"
+          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pt-10 sm:pt-20 pb-20"
         >
           <div className="flex gap-4 sm:gap-8 px-[10vw]">
             {loopedTargets.map((target, i) => (
