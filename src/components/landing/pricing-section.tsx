@@ -61,7 +61,7 @@ export function PricingSection() {
             Flexible Pricing & Setup
           </h2>
           <p className="text-lg sm:text-xl text-white/50 leading-relaxed font-sans">
-            Gymcentrix works for every gym—whether you already have computers or not. We can provide the hardware you need to get started quickly.
+            Final pricing may vary depending on your gym’s size, setup, and hardware requirements.
           </p>
         </div>
 
@@ -117,22 +117,6 @@ export function PricingSection() {
               </button>
             </div>
           ))}
-        </div>
-
-        {/* Note Block */}
-        <div className="max-w-4xl mx-auto">
-          <div className="p-8 rounded-3xl bg-white/[0.02] border border-white/5 flex flex-col sm:flex-row items-center sm:items-start gap-6 backdrop-blur-sm">
-            <div className="w-12 h-12 shrink-0 rounded-2xl bg-white/5 flex items-center justify-center border border-white/5">
-              <HelpCircle className="w-6 h-6 text-white/40" />
-            </div>
-            <div>
-              <h4 className="text-lg font-bold text-white mb-2">Pricing May Vary</h4>
-              <p className="text-sm text-white/40 leading-relaxed font-sans">
-                Final pricing may vary depending on your gym’s size, setup, and hardware requirements. 
-                Gymcentrix can provide the necessary hardware (RFID readers, cards, computers) if needed to ensure a smooth transition.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
