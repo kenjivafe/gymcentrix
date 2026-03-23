@@ -1,25 +1,21 @@
 import React from 'react';
-import { 
-  Dumbbell, 
-  Users, 
-  Layers 
-} from 'lucide-react';
+import Image from 'next/image';
 
 const targets = [
   {
     title: "Independent Gyms",
     description: "Manage memberships, attendance, and payments from one simple system.",
-    icon: Dumbbell,
+    image: "/who-is-it-for/independent.png",
   },
   {
     title: "Growing Gym Chains",
     description: "Centralize member data and monitor multiple gym locations from a single dashboard.",
-    icon: Layers,
+    image: "/who-is-it-for/growing.png",
   },
   {
     title: "New Gym Owners",
     description: "Start your gym with modern tools for managing members and tracking attendance.",
-    icon: Users,
+    image: "/who-is-it-for/new.png",
   },
 ];
 
@@ -69,7 +65,7 @@ export function WhoIsItFor() {
 
   return (
     <section className="pt-24 pb-12 relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 lg:px-14 mb-12 sm:mb-16">
+      <div className="mx-auto max-w-7xl px-6 lg:px-14 mb-6 sm:mb-8">
         {/* Section Header */}
         <div className="text-center max-w-4xl mx-auto space-y-4">
           <h2 className="text-3xl font-display font-bold tracking-tighter sm:text-6xl text-white">
@@ -91,24 +87,35 @@ export function WhoIsItFor() {
         <div 
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pt-20 pb-20"
+          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pt-4 pb-20"
         >
           <div className="flex gap-4 sm:gap-8 px-[10vw]">
             {loopedTargets.map((target, i) => (
               <div 
                 key={i} 
                 onClick={handleCardClick}
-                className="w-[320px] sm:w-[500px] shrink-0 p-10 sm:p-14 rounded-[2.5rem] border border-white/5 bg-white/[0.02] backdrop-blur-3xl hover:bg-white/[0.04] hover:border-primary/20 hover:shadow-glow-strong transition-all duration-700 flex flex-col items-center sm:items-start text-center sm:text-left group cursor-pointer snap-center"
+                className="w-[320px] sm:w-[600px] aspect-video shrink-0 p-10 sm:p-14 rounded-[2.5rem] border border-white/5 bg-white/[0.02] backdrop-blur-3xl hover:border-primary/20 hover:shadow-glow-strong hover:scale-[1.02] active:scale-[0.98] transition-all duration-700 flex flex-col justify-end items-center sm:items-start text-center sm:text-left group cursor-pointer snap-center relative overflow-hidden"
               >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-white/5 flex items-center justify-center mb-8 border border-white/5 group-hover:bg-primary/10 group-hover:border-primary/20 transition-all duration-500">
-                  <target.icon className="w-8 h-8 sm:w-10 sm:h-10 text-white/40 group-hover:text-primary transition-colors" />
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0">
+                  <Image 
+                    src={target.image} 
+                    alt={target.title} 
+                    fill 
+                    className="object-cover opacity-30 group-hover:opacity-50 group-hover:scale-110 transition-all duration-[1.5s] ease-out" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-1000" />
                 </div>
-                <h3 className="text-2xl sm:text-4xl font-display font-bold text-white mb-4 tracking-tight group-hover:text-primary transition-colors leading-tight">
-                  {target.title}
-                </h3>
-                <p className="text-sm sm:text-lg text-white/40 leading-relaxed font-sans">
-                  {target.description}
-                </p>
+
+                {/* Content */}
+                <div className="relative z-10 space-y-4">
+                  <h3 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight group-hover:text-primary transition-colors leading-tight">
+                    {target.title}
+                  </h3>
+                  <p className="text-sm sm:text-lg text-white/50 leading-relaxed font-sans max-w-sm">
+                    {target.description}
+                  </p>
+                </div>
               </div>
             ))}
           </div>

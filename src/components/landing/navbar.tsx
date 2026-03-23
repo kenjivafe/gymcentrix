@@ -4,8 +4,6 @@ import Image from "next/image";
 import type { Route } from "next";
 import { ArrowUpRight } from "lucide-react";
 
-const registerHref = "/register" as Route;
-const dashboardHref = "/dashboard" as Route;
 
 export function Navbar() {
   return (
@@ -31,13 +29,12 @@ export function Navbar() {
           <Link href="#pricing" className="hover:text-primary transition">Pricing</Link>
         </div>
         <div className="flex items-center gap-4 sm:gap-6">
-          <Link href={dashboardHref} className="hidden sm:block text-sm font-medium hover:text-primary transition font-sans uppercase tracking-widest">Sign In</Link>
           <Link
-            href={registerHref}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 sm:px-8 sm:py-3.5 text-[10px] sm:text-sm font-bold text-black hover:scale-105 active:scale-95 transition shadow-glow-strong uppercase tracking-widest"
+            href="#pricing"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 sm:px-8 sm:py-3.5 text-[10px] sm:text-sm font-bold text-canvas hover:scale-105 active:scale-95 transition shadow-glow-strong uppercase tracking-[0.2em]"
           >
-            <span className="hidden sm:inline">Book a call</span>
-            <span className="sm:hidden">Join Now</span>
+            <span className="hidden sm:inline">Get Started</span>
+            <span className="sm:hidden">Get Started</span>
             <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 stroke-[3px]" />
           </Link>
         </div>

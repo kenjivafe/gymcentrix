@@ -1,11 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import type { Route } from "next";
 import { Dumbbell } from "lucide-react";
 import { PrimaryCta, SecondaryCta } from "./cta-buttons";
 
-const registerHref = "/register" as Route;
-const dashboardHref = "/dashboard" as Route;
 
 export function HeroSection() {
   return (
@@ -41,8 +38,8 @@ export function HeroSection() {
             Automate the boring stuff and focus on building your community.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4 px-4 sm:px-0">
-            <PrimaryCta href={registerHref}>Book a call</PrimaryCta>
-            <SecondaryCta href={dashboardHref}>View Platform Demo</SecondaryCta>
+            <PrimaryCta href="#">Book a call</PrimaryCta>
+            <SecondaryCta href="#features">Learn More</SecondaryCta>
           </div>
           
           <div className="flex items-center justify-center lg:justify-start gap-6 pt-12 border-t border-white/5 max-w-xs mx-auto lg:mx-0">
