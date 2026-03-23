@@ -29,28 +29,6 @@ import { DashboardPreview } from "./dashboard-preview";
 const registerHref = "/register" as Route;
 const dashboardHref = "/dashboard" as Route;
 
-const features = [
-  {
-    title: "Owner Insights",
-    description: "Real-time analytics on member churn, peak hours, and revenue growth. Command your gym with data.",
-    icon: BarChart3,
-  },
-  {
-    title: "Member Management",
-    description: "Automated billing, digital contracts, and personalized growth tracking for every athlete.",
-    icon: Users,
-  },
-  {
-    title: "RFID Infrastructure",
-    description: "Low-latency sign-in systems for members. Tap-and-go access that syncs instantly with your records.",
-    icon: CreditCard,
-  },
-  {
-    title: "Workflow Automation",
-    description: "Reduce manual tasks by 60% with automated member onboarding and staff scheduling.",
-    icon: Zap,
-  },
-];
 
 export function LandingPage() {
   return (
@@ -65,8 +43,6 @@ export function LandingPage() {
         <ProblemSection />
         <RfidAnimationSection />
         <DashboardPreview />
-        <FeaturesGrid />
-        <RfidHighlight />
         <CtaSection />
       </main>
 
@@ -621,73 +597,6 @@ function ProblemContent({ problem, isTall }: { problem: any, isTall?: boolean })
 
 
 
-function FeaturesGrid() {
-  return (
-    <section className="px-6 py-24 lg:px-14 overflow-hidden">
-      <div className="mx-auto max-w-7xl">
-        <div className="max-w-3xl mb-12 sm:mb-16 text-center sm:text-left">
-          <h2 className="text-3xl font-display font-bold tracking-tighter sm:text-6xl mb-6">Designed for scale.</h2>
-          <p className="text-base sm:text-lg text-white/40 font-sans leading-relaxed">Everything you need to run a high-performance fitness business without the technical debt.</p>
-        </div>
-        
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature, i) => (
-            <div key={i} className="group p-10 rounded-[2.5rem] border border-white/5 bg-white/[0.03] hover:bg-white/[0.08] hover:border-primary/20 transition duration-500 hover:shadow-glow">
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-8 border border-primary/20 group-hover:scale-110 transition duration-500">
-                <feature.icon className="w-7 h-7 text-primary" />
-              </div>
-              <h3 className="text-2xl font-display font-bold mb-4 tracking-tighter">{feature.title}</h3>
-              <p className="text-sm text-white/40 leading-relaxed font-sans">{feature.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function RfidHighlight() {
-  return (
-    <section className="px-6 py-24 lg:px-14">
-      <div className="mx-auto max-w-7xl rounded-[2.5rem] sm:rounded-[4rem] overflow-hidden border border-primary/20 bg-white/[0.02] p-8 sm:p-24 group relative backdrop-blur-sm shadow-glow text-center sm:text-left">
-        <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none group-hover:opacity-10 transition duration-700 hidden sm:block">
-          <Smartphone className="w-96 h-96 -rotate-12 text-primary" />
-        </div>
-        
-        <div className="max-w-2xl relative z-10">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-primary/10 flex items-center justify-center mb-6 sm:mb-10 border border-primary/20 shadow-glow mx-auto sm:mx-0">
-            <ShieldCheck className="w-6 h-6 sm:w-8 sm:h-8 text-primary font-bold" />
-          </div>
-          <h2 className="text-3xl font-display font-bold tracking-tighter sm:text-6xl mb-6 sm:mb-8 leading-[1.2] sm:leading-[1.1]">
-            Frictionless Sign-In with <span className="text-primary italic">RFID.</span>
-          </h2>
-          <p className="text-base sm:text-xl text-white/40 mb-8 sm:mb-12 leading-relaxed font-sans">
-            Eliminate bottlenecks at the front desk. Our RFID integration allows members to sign in with a simple tap, 
-            instantaneously updating your attendance metrics.
-          </p>
-          <div className="grid gap-6 sm:grid-cols-2 text-white/50 text-sm font-sans uppercase tracking-[0.2em] font-bold">
-            <div className="flex gap-4 items-center">
-              <div className="w-2 h-2 rounded-full bg-primary" />
-              Instant Validation
-            </div>
-            <div className="flex gap-4 items-center">
-              <div className="w-2 h-2 rounded-full bg-primary" />
-              Locker Sync
-            </div>
-            <div className="flex gap-4 items-center">
-              <div className="w-2 h-2 rounded-full bg-primary" />
-              PT Tracking
-            </div>
-            <div className="flex gap-4 items-center">
-              <div className="w-2 h-2 rounded-full bg-primary" />
-              Safe Access
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function CtaSection() {
   return (
