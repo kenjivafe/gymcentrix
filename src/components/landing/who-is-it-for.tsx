@@ -32,32 +32,34 @@ const targets = [
 export function WhoIsItFor() {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   
-  // Create a large enough list to simulate infinity
-  // 10 sets of 4 items = 40 items total
-  const loopedTargets = React.useMemo(() => Array(10).fill(targets).flat(), []);
+  // 50 sets of 4 items = 200 items total for a truly "infinite" feel
+  const loopedTargets = React.useMemo(() => Array(50).fill(targets).flat(), []);
 
-  // Initialize scroll position to the middle on mount
+  // Initialize scroll position to the absolute middle on mount
   React.useEffect(() => {
     const container = scrollRef.current;
     if (container) {
-      const scrollWidth = container.scrollWidth;
-      container.scrollLeft = scrollWidth / 2 - container.clientWidth / 2;
+      setTimeout(() => {
+        const scrollWidth = container.scrollWidth;
+        container.scrollTo({ 
+          left: scrollWidth / 2 - container.clientWidth / 2, 
+          behavior: 'instant' 
+        });
+      }, 0);
     }
   }, []);
 
-  // Handle seamless looping teleportation
+  // Seamless looping teleportation
   const handleScroll = () => {
     const container = scrollRef.current;
     if (!container) return;
 
     const { scrollLeft, scrollWidth, clientWidth } = container;
     
-    // If we're too close to the start, jump to the same relative position in the middle
-    if (scrollLeft < scrollWidth / 4) {
+    // Jump if we're in the first 20% or last 20%
+    if (scrollLeft < scrollWidth / 5) {
       container.scrollTo({ left: scrollLeft + scrollWidth / 2, behavior: 'instant' });
-    } 
-    // If we're too close to the end, jump to the same relative position in the middle
-    else if (scrollLeft > (scrollWidth * 3) / 4 - clientWidth) {
+    } else if (scrollLeft > (scrollWidth * 4) / 5 - clientWidth) {
       container.scrollTo({ left: scrollLeft - scrollWidth / 2, behavior: 'instant' });
     }
   };
@@ -75,9 +77,9 @@ export function WhoIsItFor() {
     <section className="py-24 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-14 mb-16 sm:mb-20">
         {/* Section Header */}
-        <div className="text-center max-w-4xl mx-auto space-y-4">
+        <div className="text-center max-w-3xl mx-auto space-y-4">
           <h2 className="text-3xl font-display font-bold tracking-tighter sm:text-6xl text-white">
-            Who <span className="text-primary">GYMCENTRIX</span> Is For
+            Who Gymcentrix Is For
           </h2>
           <p className="text-base sm:text-lg text-white/50 leading-relaxed font-sans">
             Gymcentrix is built to simplify gym operations, automate attendance, and help gym owners manage their business more efficiently.
@@ -88,14 +90,14 @@ export function WhoIsItFor() {
       {/* Carousel Container */}
       <div className="relative">
         {/* Faded Edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-r from-canvas via-canvas/80 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-l from-canvas via-canvas/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-r from-canvas via-canvas/90 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-l from-canvas via-canvas/90 to-transparent z-10 pointer-events-none" />
 
-        {/* Scrolling Area */}
+        {/* Scrolling Area - scroll-smooth removed from here and used in scrollIntoView for clicks */}
         <div 
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-16"
+          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pb-16"
         >
           <div className="flex gap-4 sm:gap-8 px-[10vw]">
             {loopedTargets.map((target, i) => (
