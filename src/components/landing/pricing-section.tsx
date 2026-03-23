@@ -115,12 +115,7 @@ export function PricingSection() {
                 </div>
               )}
 
-              <div className="mb-8">
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border transition-colors duration-500 ${
-                  plan.recommend ? 'bg-primary/10 border-primary/20' : 'bg-white/5 border-white/5'
-                }`}>
-                  <plan.icon className={`w-7 h-7 ${plan.recommend ? 'text-primary' : 'text-white/40'}`} />
-                </div>
+              <div className="mb-6">
                 <h3 className="text-2xl font-display font-bold text-white mb-1">{plan.name}</h3>
                 <p className="text-sm text-white/40 leading-relaxed h-12 mb-6">
                   {plan.description}
