@@ -94,7 +94,7 @@ export function WhoIsItFor() {
               <div 
                 key={i} 
                 onClick={handleCardClick}
-                className="w-[320px] sm:w-[600px] aspect-video shrink-0 p-10 sm:p-14 rounded-[2.5rem] border border-white/5 bg-white/[0.02] backdrop-blur-3xl hover:border-primary/20 hover:shadow-glow-strong hover:scale-[1.02] active:scale-[0.98] transition-all duration-700 flex flex-col justify-end items-center sm:items-start text-center sm:text-left group cursor-pointer snap-center relative overflow-hidden"
+                className="w-[320px] sm:w-[600px] aspect-[3/2] shrink-0 p-10 sm:p-14 rounded-[2.5rem] border border-white/5 bg-white/[0.02] backdrop-blur-3xl hover:border-primary/20 hover:shadow-glow-strong hover:scale-[1.02] active:scale-[0.98] transition-all duration-700 flex flex-col justify-end items-center sm:items-start text-center sm:text-left group cursor-pointer snap-center relative overflow-hidden"
               >
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
