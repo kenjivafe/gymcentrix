@@ -65,12 +65,18 @@ export function PricingSection() {
       <div className="mx-auto max-w-7xl px-6 lg:px-14 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-5xl text-white mb-6">
+          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-5xl text-white mb-8">
             Flexible Pricing & Setup
           </h2>
-          <p className="text-lg sm:text-lg text-white/50 leading-relaxed font-sans mb-10">
-            Initial setup pricing may vary depending on your gym’s size, setup, and hardware requirements. Gymcentrix can provide the necessary hardware if needed.
-          </p>
+          
+          {/* Info Banner */}
+          <div className="inline-flex items-start sm:items-center gap-3 px-6 py-4 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm max-w-2xl mx-auto mb-10">
+            <HelpCircle className="w-4 h-4 text-primary shrink-0 mt-0.5 sm:mt-0" />
+            <p className="text-sm text-white/50 leading-relaxed font-sans text-left sm:text-center">
+              Initial setup pricing may vary depending on your gym&apos;s size, setup, and hardware requirements. 
+              Gymcentrix can provide the necessary hardware if needed.
+            </p>
+          </div>
 
           {/* Billing Switcher */}
           <div className="inline-flex items-center p-1.5 bg-white/[0.03] border border-white/5 rounded-2xl backdrop-blur-md">
