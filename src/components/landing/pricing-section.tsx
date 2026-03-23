@@ -12,7 +12,7 @@ const plans = [
       "Up to 100 members",
       "Email support",
     ],
-    cta: "Start Free Trial",
+    cta: "Book a call",
     recommend: false,
     icon: Laptop
   },
@@ -27,7 +27,7 @@ const plans = [
       "Staff access controls",
       "Higher member limits",
     ],
-    cta: "Start Free Trial",
+    cta: "Book a call",
     recommend: true,
     icon: Monitor
   },
@@ -42,7 +42,7 @@ const plans = [
       "Priority support",
       "Custom integrations",
     ],
-    cta: "Start Free Trial",
+    cta: "Book a call",
     recommend: false,
     icon: Server
   }

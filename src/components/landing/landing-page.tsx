@@ -220,7 +220,7 @@ function HeroSection() {
             Automate the boring stuff and focus on building your community.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4 px-4 sm:px-0">
-            <PrimaryCta href={registerHref}>Get Started Now</PrimaryCta>
+            <PrimaryCta href={registerHref}>Book a call</PrimaryCta>
             <SecondaryCta href={dashboardHref}>View Platform Demo</SecondaryCta>
           </div>
           
