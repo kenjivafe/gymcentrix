@@ -74,10 +74,10 @@ export function WhoIsItFor() {
   };
 
   return (
-    <section className="py-24 relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 lg:px-14 mb-16 sm:mb-20">
+    <section className="pt-24 pb-12 relative overflow-hidden">
+      <div className="mx-auto max-w-7xl px-6 lg:px-14 mb-12 sm:mb-16">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
+        <div className="text-center max-w-4xl mx-auto space-y-4">
           <h2 className="text-3xl font-display font-bold tracking-tighter sm:text-6xl text-white">
             Who Gymcentrix Is For
           </h2>
@@ -97,7 +97,7 @@ export function WhoIsItFor() {
         <div 
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pb-16"
+          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pt-20 pb-20"
         >
           <div className="flex gap-4 sm:gap-8 px-[10vw]">
             {loopedTargets.map((target, i) => (
