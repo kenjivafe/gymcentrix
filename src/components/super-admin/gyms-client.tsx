@@ -8,22 +8,17 @@ export function GymsClient({ children }: { children: ReactNode }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">
-          <p className="text-sm uppercase tracking-widest text-primary/80 font-bold">Tenant Management</p>
-          <h2 className="text-4xl font-bold tracking-tight text-white">
-            Registered Gyms
-          </h2>
-          <p className="text-lg text-white/60">
-            Manage your tenant gyms and monitor their registration status.
-          </p>
+           <h2 className="text-3xl font-display font-bold text-white tracking-tight">Registered Gyms</h2>
+           <p className="text-sm text-white/40">Manage tenant gym facilities and monitor their system status.</p>
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="whitespace-nowrap flex items-center gap-2 px-8 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-2xl transition-all shadow-xl shadow-primary/20 active:scale-95"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-primary text-black hover:shadow-glow transition-all active:scale-95"
         >
-          <Plus className="size-5" />
+          <Plus className="w-4 h-4" />
           Register New Gym
         </button>
       </div>
@@ -31,6 +26,6 @@ export function GymsClient({ children }: { children: ReactNode }) {
       {children}
 
       {isModalOpen && <AddGymModal onClose={() => setIsModalOpen(false)} />}
-    </>
+    </div>
   );
 }

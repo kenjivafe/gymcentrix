@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Search, Building2, User2, Calendar } from "lucide-react";
+import { Search, Building2, User2, Calendar, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { GymsClient } from "@/components/super-admin/gyms-client";
 
@@ -14,56 +14,69 @@ export default async function GymsManagementPage() {
   });
 
   return (
-    <div className="space-y-10">
-      <GymsClient>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <GymsClient>
+      <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-x-auto">
         {gyms.length === 0 ? (
-          <div className="col-span-full py-32 bg-white/5 rounded-[3rem] border-2 border-dashed border-white/10 flex flex-col items-center justify-center text-center">
-            <div className="size-20 bg-white/5 rounded-3xl flex items-center justify-center mb-6">
-                <Building2 className="size-10 text-white/20" />
+          <div className="py-24 flex flex-col items-center justify-center text-center">
+            <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-6">
+                <Building2 className="w-8 h-8 text-white/20" />
             </div>
-            <p className="text-2xl font-bold text-white">No gyms found</p>
-            <p className="text-white/50 mt-2 max-w-sm">Get started by creating your first gym tenant in the system infrastructure.</p>
+            <p className="text-xl font-bold text-white">No gyms found</p>
+            <p className="text-white/40 mt-2 text-sm max-w-sm">Register a new gym tenant to get started.</p>
           </div>
         ) : (
-          gyms.map((gym: any) => (
-            <div
-              key={gym.id}
-              className="group relative bg-white/5 border border-white/10 rounded-[2.5rem] p-8 flex flex-col hover:bg-white/10 transition-all duration-500 shadow-card"
-            >
-              <div className="size-16 bg-white/5 group-hover:bg-primary/10 rounded-2xl flex items-center justify-center mb-8 transition-colors duration-500">
-                <Building2 className="size-8 text-white/60 group-hover:text-primary transition-colors duration-500" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-4">
-                {gym.name}
-              </h3>
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3 text-white/50">
-                  <div className="size-8 rounded-full bg-white/5 flex items-center justify-center">
-                    <User2 className="size-4" />
-                  </div>
-                  <span className="text-sm">Owner: <span className="text-white font-medium">{gym.owner.name}</span></span>
-                </div>
-                <div className="flex items-center gap-3 text-white/50">
-                  <div className="size-8 rounded-full bg-white/5 flex items-center justify-center">
-                    <Calendar className="size-4" />
-                  </div>
-                  <span className="text-sm">Registered: <span className="text-white/80">{new Date(gym.createdAt).toLocaleDateString()}</span></span>
-                </div>
-              </div>
-              <div className="mt-auto pt-8 border-t border-white/5 flex gap-4">
-                <button className="flex-1 px-4 py-3 bg-white/5 hover:bg-white/10 text-white text-sm font-bold rounded-xl transition-all">
-                  Details
-                </button>
-                <button className="flex-1 px-4 py-3 text-primary bg-primary/10 hover:bg-primary/20 text-sm font-bold rounded-xl transition-all">
-                  Edit
-                </button>
-              </div>
-            </div>
-          ))
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-white/5 bg-white/[0.02]">
+                <th className="px-6 py-4 text-[10px] font-bold text-white/40 uppercase tracking-widest leading-tight">Gym Facility</th>
+                <th className="px-6 py-4 text-[10px] font-bold text-white/40 uppercase tracking-widest leading-tight">Owner</th>
+                <th className="px-6 py-4 text-[10px] font-bold text-white/40 uppercase tracking-widest leading-tight">Registration Date</th>
+                <th className="px-6 py-4 text-[10px] font-bold text-white/40 uppercase tracking-widest leading-tight hidden xl:table-cell">Status</th>
+                <th className="px-6 py-4 text-right text-[10px] font-bold text-white/40 uppercase tracking-widest leading-tight">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {gyms.map((gym: any) => (
+                <tr key={gym.id} className="hover:bg-white/[0.02] transition-colors group">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                        <Building2 className="w-5 h-5 text-white/40 group-hover:text-primary transition-colors" />
+                      </div>
+                      <span className="text-sm font-bold text-white">{gym.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
+                        <User2 className="w-3 h-3 text-white/60" />
+                      </div>
+                      <span className="text-xs font-medium text-white/80">{gym.owner.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                       <Calendar className="w-4 h-4 text-white/20" />
+                       <span className="text-xs text-white/60">{new Date(gym.createdAt).toLocaleDateString()}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 hidden xl:table-cell">
+                     <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-400/10 text-emerald-400">
+                        <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                        Active
+                     </span>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <button className="text-white/20 hover:text-white transition-colors">
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
-        </div>
-      </GymsClient>
-    </div>
+      </div>
+    </GymsClient>
   );
 }
