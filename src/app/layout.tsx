@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Unbounded, Host_Grotesk } from "next/font/google";
 import "./globals.css";
-import { Providers } from "@/components/providers";
 
 const unbounded = Unbounded({
   subsets: ["latin"],
@@ -38,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${unbounded.variable} ${geist.variable} font-sans`} suppressHydrationWarning>
       <body className="bg-canvas text-white antialiased min-h-screen font-sans" suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );
