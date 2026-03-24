@@ -69,7 +69,7 @@ export default function OnboardingPage() {
     fullName: '',
     email: '',
     phone: '',
-    gymType: '' as 'Independent' | 'Multi-branch' | 'New startup' | '',
+    gymType: '' as 'Independent' | 'Multi-branch' | '',
     gymName: '',
     location: '',
     activeMembers: '',
@@ -112,12 +112,13 @@ export default function OnboardingPage() {
   };
 
   const recommendation = useMemo(() => {
-    const membersStr = formData.gymType === 'Multi-branch' ? formData.totalMembers : formData.activeMembers;
+    const isMulti = formData.gymType === 'Multi-branch';
+    const membersStr = isMulti ? formData.totalMembers : formData.activeMembers;
     const members = parseInt(membersStr) || 0;
-    const branches = parseInt(formData.branchCount) || 1;
+    const branches = isMulti ? (parseInt(formData.branchCount) || 1) : 1;
 
     // Enterprise: Multi-branch or High Volume
-    if (formData.gymType === 'Multi-branch' || branches > 1 || members > 1000) {
+    if (isMulti || branches > 1 || members > 1000) {
       return 'Enterprise';
     }
 
@@ -142,49 +143,57 @@ export default function OnboardingPage() {
     const monthlyItems: { label: string; price: number }[] = [];
 
     const selectedPlan = plans.find(p => p.name === selectedPlanName) || plans[0];
+    const isMulti = formData.gymType === 'Multi-branch';
+    const branches = isMulti ? (parseInt(formData.branchCount) || 1) : 1;
+    const membersStr = isMulti ? formData.totalMembers : formData.activeMembers;
+    const members = parseInt(membersStr) || 0;
+
+    // 1. Monthly Recurring
     monthly = selectedPlan.basePrice;
     monthlyItems.push({ label: `${selectedPlan.name} Plan (Base)`, price: selectedPlan.basePrice });
 
-    // Base Setup by Type
-    if (formData.gymType === 'New startup') {
-      setup = 5000;
-      setupItems.push({ label: 'New Startup Onboarding', price: 5000 });
-    } else if (formData.gymType === 'Independent') {
-      setup = 10000;
-      setupItems.push({ label: 'Independent Gym Setup', price: 10000 });
-    } else if (formData.gymType === 'Multi-branch') {
-      setup = 25000;
-      setupItems.push({ label: 'Multi-branch Integration', price: 25000 });
-      // Branch Monthly Multiplier
-      const branches = parseInt(formData.branchCount) || 1;
-      if (branches > 1) {
-        const extraPrice = (branches - 1) * 2000;
-        monthly += extraPrice;
-        monthlyItems.push({ label: `Additional Branches (${branches - 1})`, price: extraPrice });
-      }
+    // Branch Monthly Surcharge (for branches beyond the first)
+    if (branches > 1) {
+      const extraBranchPrice = (branches - 1) * 2000;
+      monthly += extraBranchPrice;
+      monthlyItems.push({ label: `Additional Branches (${branches - 1})`, price: extraBranchPrice });
     }
 
-    // Hardware Adjustment (RFID)
-    if (formData.hasRFID === false) {
-      setup += 7500;
-      setupItems.push({ label: 'RFID Reader Hardware', price: 7500 });
-    }
-
-    // Hardware Adjustment (Device/PC)
-    if (formData.hasDevice === false) {
-      setup += 20000;
-      setupItems.push({ label: 'Dedicated Device Setup', price: 20000 });
-    }
-
-    // Member Surcharge
-    const membersStr = formData.gymType === 'Multi-branch' ? formData.totalMembers : formData.activeMembers;
-    const members = parseInt(membersStr) || 0;
+    // Member Volume Surcharge
     if (members > 2000) {
       monthly += 1500;
       monthlyItems.push({ label: 'High Member Volume (>2k)', price: 1500 });
     } else if (members > 500) {
       monthly += 500;
       monthlyItems.push({ label: 'Mid-Tier Member Volume (>500)', price: 500 });
+    }
+
+    // 2. One-time Setup
+    // Base Setup: ₱10,000 per branch
+    const baseSetup = branches * 10000;
+    setup += baseSetup;
+    setupItems.push({ label: `System Setup (${branches} Location${branches > 1 ? 's' : ''})`, price: baseSetup });
+
+    // Hardware Adjustment (RFID Reader)
+    if (formData.hasRFID === false) {
+      const rfidHardwarePrice = branches * 7500;
+      setup += rfidHardwarePrice;
+      setupItems.push({ label: `RFID Reader Hardware (${branches} Units)`, price: rfidHardwarePrice });
+    }
+
+    // Hardware Adjustment (Device/PC)
+    if (formData.hasDevice === false) {
+      const devicePrice = branches * 20000;
+      setup += devicePrice;
+      setupItems.push({ label: `Dedicated Device Setup (${branches} Units)`, price: devicePrice });
+    }
+
+    // RFID Cards (3x current members @ ₱20 Each)
+    if (members > 0) {
+      const cardCount = members * 3;
+      const cardsPrice = cardCount * 20;
+      setup += cardsPrice;
+      setupItems.push({ label: `RFID Cards (Initial Stock - ${cardCount} Units)`, price: cardsPrice });
     }
 
     return { setup, monthly, setupItems, monthlyItems };
@@ -286,7 +295,7 @@ export default function OnboardingPage() {
                 <p className="text-white/40 text-sm">Select the category that best describes your gym.</p>
               </div>
               <div className="grid grid-cols-1 gap-4">
-                {(['Independent', 'Multi-branch', 'New startup'] as const).map(type => (
+                {(['Independent', 'Multi-branch'] as const).map(type => (
                   <ActionButton 
                     key={type}
                     active={formData.gymType === type} 
@@ -294,8 +303,7 @@ export default function OnboardingPage() {
                     label={type}
                     description={
                       type === 'Independent' ? 'Single location, owner-operated.' :
-                      type === 'Multi-branch' ? 'Multiple locations under one brand.' :
-                      'New facility preparing to open soon.'
+                      'Multiple locations under one brand.'
                     }
                   />
                 ))}
