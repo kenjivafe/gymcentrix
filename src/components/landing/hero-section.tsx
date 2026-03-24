@@ -49,7 +49,7 @@ export function HeroSection() {
               ))}
             </div>
             <p className="text-xs text-white/30 uppercase tracking-widest font-bold">
-              Trusted by <span className="text-white">200+</span> Studios
+              Trusted by <span className="text-white">50+</span> <br /> Gyms Nationwide
             </p>
           </div>
         </div>

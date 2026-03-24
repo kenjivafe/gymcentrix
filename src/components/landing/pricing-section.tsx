@@ -156,13 +156,13 @@ export function PricingSection() {
               </div>
 
               <div className="space-y-4">
-                <button className={`w-full uppercase text tracking-wide py-4 rounded-2xl font-bold transition-all duration-500 flex items-center justify-center gap-2 group/btn ${
+                <button className={`w-full uppercase text tracking-widest py-4 rounded-2xl font-bold transition-all duration-500 flex items-center justify-center gap-2 group/btn ${
                   plan.recommend 
                     ? 'bg-primary text-canvas hover:bg-white hover:scale-[1.02]' 
-                    : 'bg-white/5 text-white hover:bg-white/10 border border-white/5'
+                    : 'bg-white/5 text-white hover:bg-white/10 border border-white/5 hover:border-primary/20'
                 }`}>
                   {plan.cta}
-                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
                 </button>
                 <div className="text-center">
                   <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] cursor-pointer hover:text-white/40 transition-colors">
