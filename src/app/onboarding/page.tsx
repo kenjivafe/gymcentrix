@@ -65,6 +65,7 @@ export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedPlanName, setSelectedPlanName] = useState<string | null>(null);
   const [showBreakdown, setShowBreakdown] = useState(false);
+  const [validationError, setValidationError] = useState('');
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -93,7 +94,57 @@ export default function OnboardingPage() {
     essentialFeatures: '',
   });
 
+  const validateStep = (): string | null => {
+    switch (currentStep) {
+      case 0: // Contact Info
+        if (!formData.fullName.trim()) return 'Please enter your full name.';
+        if (!formData.email.trim()) return 'Please enter your email address.';
+        if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return 'Please enter a valid email address.';
+        return null;
+      case 1: // Gym Type
+        if (!formData.gymType) return 'Please select your gym type.';
+        return null;
+      case 2: // Gym Info
+        if (formData.gymType === 'Multi-branch') {
+          if (!formData.brandName.trim()) return 'Please enter your brand name.';
+          if (!formData.branchCount.trim() || parseInt(formData.branchCount) < 2) return 'Please enter the number of branches (min. 2).';
+          if (!formData.totalMembers.trim()) return 'Please enter total active members.';
+          if (!formData.totalStaff.trim()) return 'Please enter total staff/admin users.';
+        } else {
+          if (!formData.gymName.trim()) return 'Please enter your gym name.';
+          if (!formData.location.trim()) return 'Please enter your gym location.';
+          if (!formData.activeMembers.trim()) return 'Please enter total active members.';
+          if (!formData.staffCount.trim()) return 'Please enter total staff/admin users.';
+        }
+        return null;
+      case 3: // Tech Setup
+        if (formData.hasSoftware === null) return 'Please indicate if you use any gym management software.';
+        if (formData.hasDevice === null) return 'Please indicate if you have a PC or tablet at the front desk.';
+        return null;
+      case 4: // Internet Check
+        if (formData.stableInternet === null) return 'Please indicate if you have stable internet.';
+        return null;
+      case 5: // Hardware
+        if (formData.hasRFID === null) return 'Please indicate if you have RFID hardware.';
+        return null;
+      case 6: // Attendance
+        if (!formData.trackingType) return 'Please select your attendance tracking method.';
+        return null;
+      case 8: // Plan Selection
+        if (!selectedPlanName) return 'Please select a plan.';
+        return null;
+      default:
+        return null;
+    }
+  };
+
   const nextStep = () => {
+    const error = validateStep();
+    if (error) {
+      setValidationError(error);
+      return;
+    }
+    setValidationError('');
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -101,6 +152,7 @@ export default function OnboardingPage() {
   };
 
   const prevStep = () => {
+    setValidationError('');
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -108,6 +160,7 @@ export default function OnboardingPage() {
   };
 
   const updateFormData = (key: string, value: any) => {
+    setValidationError('');
     setFormData(prev => ({ ...prev, [key]: value }));
   };
 
@@ -131,10 +184,14 @@ export default function OnboardingPage() {
   }, [formData]);
 
   useEffect(() => {
-    if (!selectedPlanName && currentStep >= 8) {
-      setSelectedPlanName(recommendation);
+    if (currentStep >= 8) {
+      if (formData.gymType === 'Multi-branch') {
+        setSelectedPlanName('Enterprise');
+      } else if (!selectedPlanName) {
+        setSelectedPlanName(recommendation);
+      }
     }
-  }, [recommendation, selectedPlanName, currentStep]);
+  }, [recommendation, selectedPlanName, currentStep, formData.gymType]);
 
   const estimate = useMemo(() => {
     let setup = 0;
@@ -603,22 +660,30 @@ export default function OnboardingPage() {
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="space-y-2">
                 <h2 className="text-3xl font-display font-bold tracking-tight text-white">Choose Your Plan</h2>
-                <p className="text-white/40 text-sm">We&apos;ve recommended a plan based on your gym profile.</p>
+                <p className="text-white/40 text-sm">
+                  {formData.gymType === 'Multi-branch'
+                    ? 'Multi-branch gyms require the Enterprise plan for full multi-location support.'
+                    : 'We\u0027ve recommended a plan based on your gym profile.'}
+                </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {plans.map((p) => (
-                  <PlanCard 
-                    key={p.name}
-                    name={p.name}
-                    price={p.basePrice}
-                    description={p.description}
-                    features={p.features}
-                    recommended={p.name === recommendation}
-                    selected={selectedPlanName === p.name}
-                    onClick={() => setSelectedPlanName(p.name)}
-                  />
-                ))}
+                {plans.map((p) => {
+                  const isLocked = formData.gymType === 'Multi-branch' && p.name !== 'Enterprise';
+                  return (
+                    <PlanCard 
+                      key={p.name}
+                      name={p.name}
+                      price={p.basePrice}
+                      description={p.description}
+                      features={p.features}
+                      recommended={p.name === recommendation}
+                      selected={selectedPlanName === p.name}
+                      onClick={() => !isLocked && setSelectedPlanName(p.name)}
+                      disabled={isLocked}
+                    />
+                  );
+                })}
               </div>
             </div>
           )}
@@ -767,13 +832,20 @@ export default function OnboardingPage() {
           </button>
 
           {currentStep < steps.length - 1 && (
-            <button
-              onClick={nextStep}
-              className="flex items-center gap-2 px-10 py-4 bg-primary text-canvas rounded-2xl font-bold uppercase tracking-widest text-xs hover:scale-[1.02] hover:bg-white transition-all duration-300 shadow-glow"
-            >
-              Next Step
-              <ChevronRight className="w-4 h-4" />
-            </button>
+            <div className="flex flex-col items-end gap-2">
+              {validationError && (
+                <p className="text-[10px] font-bold text-red-400 uppercase tracking-wider animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  {validationError}
+                </p>
+              )}
+              <button
+                onClick={nextStep}
+                className="flex items-center gap-2 px-10 py-4 bg-primary text-canvas rounded-2xl font-bold uppercase tracking-widest text-xs hover:scale-[1.02] hover:bg-white transition-all duration-300 shadow-glow"
+              >
+                Next Step
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           )}
 
           {currentStep === steps.length - 1 && (
@@ -798,20 +870,24 @@ interface PlanCardProps {
   features: string[];
   recommended?: boolean;
   selected?: boolean;
+  disabled?: boolean;
   onClick: () => void;
 }
 
-function PlanCard({ name, price, description, features, recommended, selected, onClick }: PlanCardProps) {
+function PlanCard({ name, price, description, features, recommended, selected, disabled, onClick }: PlanCardProps) {
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       className={`relative p-6 rounded-[2rem] border text-left transition-all duration-500 group flex flex-col h-full bg-white/[0.01] ${
-        selected 
-          ? 'border-primary/50 shadow-glow bg-white/[0.03]' 
-          : 'border-white/5 hover:bg-white/[0.02] hover:border-white/10'
+        disabled
+          ? 'opacity-30 cursor-not-allowed border-white/5'
+          : selected 
+            ? 'border-primary/50 shadow-glow bg-white/[0.03]' 
+            : 'border-white/5 hover:bg-white/[0.02] hover:border-white/10'
       }`}
     >
-      {recommended && (
+      {recommended && !disabled && (
         <div className="absolute -top-3 left-6 px-3 py-1 bg-primary rounded-full text-[8px] font-bold text-canvas uppercase tracking-widest shadow-glow flex items-center gap-1">
           <Star className="w-2 h-2 fill-canvas" />
           Recommended
