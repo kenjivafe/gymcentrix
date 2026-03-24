@@ -168,9 +168,12 @@ export function PricingSection() {
                   <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
                 </Link>
                 <div className="text-center">
-                  <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] cursor-pointer hover:text-white/40 transition-colors">
+                  <Link 
+                    href="/get-a-quote"
+                    className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] cursor-pointer hover:text-white/40 transition-colors"
+                  >
                     or Get a quote
-                  </span>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -182,14 +185,15 @@ export function PricingSection() {
           <p className="text-xs sm:text-sm text-white/40 font-sans font-medium">
             Not sure which plan fits your gym?
           </p>
-          <div
+          <Link
+            href="/book-a-call"
             className="group flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-primary/20 transition-all duration-500 hover:shadow-glow-sm cursor-pointer"
           >
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/60 group-hover:text-white transition-colors">
               Talk to Us
             </span>
             <ArrowUpRight className="w-3 h-3 text-white/20 group-hover:text-primary transition-colors transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </div>
+          </Link>
         </div>
       </div>
     </section>
