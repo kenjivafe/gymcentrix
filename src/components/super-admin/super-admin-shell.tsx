@@ -99,7 +99,7 @@ export function SuperAdminShell({
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-white/5 bg-[#0A0A0A] md:bg-white/[0.01] p-4 md:p-6 space-y-6 md:space-y-8 flex flex-col transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-white/5 bg-[#0A0A0A]/80 md:bg-white/[0.01] backdrop-blur-2xl p-4 md:p-6 space-y-6 md:space-y-8 flex flex-col transition-transform duration-300 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 md:static md:z-auto`}
       >
