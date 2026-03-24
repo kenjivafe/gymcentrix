@@ -152,9 +152,14 @@ export default function OnboardingPage() {
       }
     }
 
-    // Hardware Adjustment
+    // Hardware Adjustment (RFID)
     if (formData.hasRFID === false) {
       setup += 7500;
+    }
+
+    // Hardware Adjustment (Device/PC)
+    if (formData.hasDevice === false) {
+      setup += 20000;
     }
 
     // Member Surcharge
@@ -612,7 +617,7 @@ export default function OnboardingPage() {
                       {formatPrice(estimate.setup)}
                     </div>
                     <p className="text-[10px] text-white/30 font-medium mt-4 leading-relaxed">
-                      Includes onboarding, system configuration, {formData.hasRFID === false ? 'RFID reader hardware, ' : ''} and remote installation support.
+                      Includes onboarding, system configuration, {formData.hasRFID === false ? 'RFID hardware, ' : ''} {formData.hasDevice === false ? 'device setup, ' : ''} and remote installation support.
                     </p>
                   </div>
                 </div>
