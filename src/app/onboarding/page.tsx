@@ -3,7 +3,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronRight, 
   ChevronLeft, 
@@ -18,14 +17,9 @@ import {
   Cpu,
   Settings,
   Target,
-  Calendar,
-  ArrowRight,
-  Calculator,
-  CreditCard,
   Zap,
   ShieldCheck,
-  Star,
-  Info
+  Star
 } from 'lucide-react';
 
 // Form Steps
@@ -64,7 +58,7 @@ const plans = [
   }
 ];
 
-export default function GetAQuotePage() {
+export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedPlanName, setSelectedPlanName] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -128,10 +122,10 @@ export default function GetAQuotePage() {
   }, [formData]);
 
   useEffect(() => {
-    if (!selectedPlanName) {
+    if (!selectedPlanName && currentStep >= 8) {
       setSelectedPlanName(recommendation);
     }
-  }, [recommendation, selectedPlanName]);
+  }, [recommendation, selectedPlanName, currentStep]);
 
   const estimate = useMemo(() => {
     let setup = 0;
@@ -159,7 +153,7 @@ export default function GetAQuotePage() {
       setup += 7500;
     }
 
-    // Member Surcharge (if they exceed plan limits or for extra volume)
+    // Member Surcharge
     const membersStr = formData.gymType === 'Multi-branch' ? formData.totalMembers : formData.activeMembers;
     const members = parseInt(membersStr) || 0;
     if (members > 2000) {

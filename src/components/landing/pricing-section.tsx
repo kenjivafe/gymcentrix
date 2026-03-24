@@ -157,7 +157,7 @@ export function PricingSection() {
 
               <div className="space-y-4">
                 <Link 
-                  href="/book-a-call"
+                  href="/onboarding"
                   className={`w-full uppercase text tracking-widest py-4 rounded-2xl font-bold transition-all duration-500 flex items-center justify-center gap-2 group/btn ${
                     plan.recommend 
                       ? 'bg-primary text-canvas hover:bg-white hover:scale-[1.02]' 
@@ -169,7 +169,7 @@ export function PricingSection() {
                 </Link>
                 <div className="text-center">
                   <Link 
-                    href="/get-a-quote"
+                    href="/onboarding"
                     className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em] cursor-pointer hover:text-white/40 transition-colors"
                   >
                     or Get a quote
@@ -186,7 +186,7 @@ export function PricingSection() {
             Not sure which plan fits your gym?
           </p>
           <Link
-            href="/book-a-call"
+            href="/onboarding"
             className="group flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-primary/20 transition-all duration-500 hover:shadow-glow-sm cursor-pointer"
           >
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/60 group-hover:text-white transition-colors">
