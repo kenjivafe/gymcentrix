@@ -65,7 +65,7 @@ export function WhoIsItFor() {
 
   return (
     <section className="pt-24 pb-12 relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 lg:px-14 mb-2 sm:mb-8">
+      <div className="mx-auto max-w-7xl px-6 lg:px-14">
         {/* Section Header */}
         <div className="text-center max-w-4xl mx-auto space-y-4">
           <h2 className="text-2xl sm:text-6xl font-display font-bold tracking-tighter text-white">
@@ -78,7 +78,7 @@ export function WhoIsItFor() {
       </div>
 
       {/* Carousel Container */}
-      <div className="relative">
+      <div className="relative -mt-8 sm:-mt-12">
         {/* Faded Edges */}
         <div className="absolute left-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-r from-canvas via-canvas/90 to-transparent z-10 pointer-events-none hidden sm:block" />
         <div className="absolute right-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-l from-canvas via-canvas/90 to-transparent z-10 pointer-events-none hidden sm:block" />
@@ -87,7 +87,7 @@ export function WhoIsItFor() {
         <div 
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pt-10 sm:pt-20 pb-20"
+          className="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pt-20 sm:pt-24 pb-20 sm:pb-24"
         >
           <div className="flex gap-4 sm:gap-8 px-[10vw]">
             {loopedTargets.map((target, i) => (
