@@ -13,6 +13,28 @@ export const metadata = {
 };
 
 export default function DashboardPage() {
+  const membersPath = "/dashboard/members" as Route;
+  const employeesPath = "/dashboard/employees" as Route;
+  const lockersPath = "/dashboard/lockers" as Route;
+  const accountingPath = "/dashboard/accounting" as Route;
+
+  return (
+    <AppShell activeHref={"/dashboard" as Route}>
+      <header className="flex flex-col gap-8 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <h1 className="text-4xl font-display font-bold tracking-tighter text-white text-glow">
+              Dashboard
+            </h1>
+            <p className="text-white/40 text-sm font-medium">
+              Welcome back! Here's what's happening today in your gym.
+            </p>
+          </div>
+          <button className="inline-flex items-center gap-2 rounded-2xl bg-primary px-6 py-3 text-xs font-bold text-black shadow-glow transition hover:scale-[1.02] hover:bg-white uppercase tracking-widest">
+            Send Announcement
+          </button>
+        </div>
+
         <div className="flex flex-wrap gap-4 pt-4">
           <Link
             href={membersPath}
