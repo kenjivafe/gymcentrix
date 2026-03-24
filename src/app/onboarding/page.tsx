@@ -65,7 +65,7 @@ export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedPlanName, setSelectedPlanName] = useState<string | null>(null);
   const [showBreakdown, setShowBreakdown] = useState(false);
-  const [validationError, setValidationError] = useState('');
+  const [showErrors, setShowErrors] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -94,57 +94,38 @@ export default function OnboardingPage() {
     essentialFeatures: '',
   });
 
-  const validateStep = (): string | null => {
+  const isStepValid = (): boolean => {
     switch (currentStep) {
-      case 0: // Contact Info
-        if (!formData.fullName.trim()) return 'Please enter your full name.';
-        if (!formData.email.trim()) return 'Please enter your email address.';
-        if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return 'Please enter a valid email address.';
-        return null;
-      case 1: // Gym Type
-        if (!formData.gymType) return 'Please select your gym type.';
-        return null;
-      case 2: // Gym Info
+      case 0:
+        return !!formData.fullName.trim() && !!formData.email.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+      case 1:
+        return !!formData.gymType;
+      case 2:
         if (formData.gymType === 'Multi-branch') {
-          if (!formData.brandName.trim()) return 'Please enter your brand name.';
-          if (!formData.branchCount.trim() || parseInt(formData.branchCount) < 2) return 'Please enter the number of branches (min. 2).';
-          if (!formData.totalMembers.trim()) return 'Please enter total active members.';
-          if (!formData.totalStaff.trim()) return 'Please enter total staff/admin users.';
-        } else {
-          if (!formData.gymName.trim()) return 'Please enter your gym name.';
-          if (!formData.location.trim()) return 'Please enter your gym location.';
-          if (!formData.activeMembers.trim()) return 'Please enter total active members.';
-          if (!formData.staffCount.trim()) return 'Please enter total staff/admin users.';
+          return !!formData.brandName.trim() && !!formData.branchCount.trim() && parseInt(formData.branchCount) >= 2 && !!formData.totalMembers.trim() && !!formData.totalStaff.trim();
         }
-        return null;
-      case 3: // Tech Setup
-        if (formData.hasSoftware === null) return 'Please indicate if you use any gym management software.';
-        if (formData.hasDevice === null) return 'Please indicate if you have a PC or tablet at the front desk.';
-        return null;
-      case 4: // Internet Check
-        if (formData.stableInternet === null) return 'Please indicate if you have stable internet.';
-        return null;
-      case 5: // Hardware
-        if (formData.hasRFID === null) return 'Please indicate if you have RFID hardware.';
-        return null;
-      case 6: // Attendance
-        if (!formData.trackingType) return 'Please select your attendance tracking method.';
-        return null;
-      case 8: // Plan Selection
-        if (!selectedPlanName) return 'Please select a plan.';
-        return null;
+        return !!formData.gymName.trim() && !!formData.location.trim() && !!formData.activeMembers.trim() && !!formData.staffCount.trim();
+      case 3:
+        return formData.hasSoftware !== null && formData.hasDevice !== null;
+      case 4:
+        return formData.stableInternet !== null;
+      case 5:
+        return formData.hasRFID !== null;
+      case 6:
+        return !!formData.trackingType;
+      case 8:
+        return !!selectedPlanName;
       default:
-        return null;
+        return true;
     }
   };
 
   const nextStep = () => {
-    const error = validateStep();
-    if (error) {
-      setValidationError(error);
+    if (!isStepValid()) {
+      setShowErrors(true);
       return;
     }
-    setValidationError('');
+    setShowErrors(false);
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -152,7 +133,7 @@ export default function OnboardingPage() {
   };
 
   const prevStep = () => {
-    setValidationError('');
+    setShowErrors(false);
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -160,9 +141,19 @@ export default function OnboardingPage() {
   };
 
   const updateFormData = (key: string, value: any) => {
-    setValidationError('');
     setFormData(prev => ({ ...prev, [key]: value }));
   };
+
+  // Helper: returns error string if showErrors is true and the field is empty
+  const fieldError = (value: string, msg: string) => showErrors && !value.trim() ? msg : undefined;
+  const emailError = () => {
+    if (!showErrors) return undefined;
+    if (!formData.email.trim()) return 'Required';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return 'Invalid email';
+    return undefined;
+  };
+  const boolError = (value: boolean | null, msg: string) => showErrors && value === null ? msg : undefined;
+  const selectError = (value: string, msg: string) => showErrors && !value ? msg : undefined;
 
   const recommendation = useMemo(() => {
     const isMulti = formData.gymType === 'Multi-branch';
@@ -324,6 +315,7 @@ export default function OnboardingPage() {
                   placeholder="e.g. Juan Dela Cruz"
                   value={formData.fullName}
                   onChange={(val: string) => updateFormData('fullName', val)}
+                  error={fieldError(formData.fullName, 'Required')}
                 />
                 <InputGroup 
                   label="Email Address" 
@@ -332,6 +324,7 @@ export default function OnboardingPage() {
                   placeholder="e.g. juan@gym.com"
                   value={formData.email}
                   onChange={(val: string) => updateFormData('email', val)}
+                  error={emailError()}
                 />
                 <InputGroup 
                   label="Phone Number" 
@@ -352,6 +345,9 @@ export default function OnboardingPage() {
                 <p className="text-white/40 text-sm">Select the category that best describes your gym.</p>
               </div>
               <div className="grid grid-cols-1 gap-4">
+                {showErrors && !formData.gymType && (
+                  <p className="text-[10px] font-bold text-red-400 uppercase tracking-wider">Please select a gym type</p>
+                )}
                 {(['Independent', 'Multi-branch'] as const).map(type => (
                   <ActionButton 
                     key={type}
@@ -383,6 +379,7 @@ export default function OnboardingPage() {
                     placeholder="e.g. Gold's Gym"
                     value={formData.brandName}
                     onChange={(val: string) => updateFormData('brandName', val)}
+                    error={fieldError(formData.brandName, 'Required')}
                   />
                   <InputGroup 
                     label="Number of Branches" 
@@ -391,6 +388,7 @@ export default function OnboardingPage() {
                     type="number"
                     value={formData.branchCount}
                     onChange={(val: string) => updateFormData('branchCount', val)}
+                    error={showErrors && (!formData.branchCount.trim() || parseInt(formData.branchCount) < 2) ? 'Min. 2 branches' : undefined}
                   />
                   <InputGroup 
                     label="Locations of branches (optional)" 
@@ -407,6 +405,7 @@ export default function OnboardingPage() {
                       type="number"
                       value={formData.totalMembers}
                       onChange={(val: string) => updateFormData('totalMembers', val)}
+                      error={fieldError(formData.totalMembers, 'Required')}
                     />
                     <InputGroup 
                       label="Total staff/admin users" 
@@ -415,6 +414,7 @@ export default function OnboardingPage() {
                       type="number"
                       value={formData.totalStaff}
                       onChange={(val: string) => updateFormData('totalStaff', val)}
+                      error={fieldError(formData.totalStaff, 'Required')}
                     />
                   </div>
                 </div>
@@ -426,6 +426,7 @@ export default function OnboardingPage() {
                     placeholder="e.g. Iron Paradise"
                     value={formData.gymName}
                     onChange={(val: string) => updateFormData('gymName', val)}
+                    error={fieldError(formData.gymName, 'Required')}
                   />
                   <InputGroup 
                     label="Where is your gym located?" 
@@ -433,6 +434,7 @@ export default function OnboardingPage() {
                     placeholder="e.g. BGC, Taguig"
                     value={formData.location}
                     onChange={(val: string) => updateFormData('location', val)}
+                    error={fieldError(formData.location, 'Required')}
                   />
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <InputGroup 
@@ -442,6 +444,7 @@ export default function OnboardingPage() {
                       type="number"
                       value={formData.activeMembers}
                       onChange={(val: string) => updateFormData('activeMembers', val)}
+                      error={fieldError(formData.activeMembers, 'Required')}
                     />
                     <InputGroup 
                       label="Staff/Admin users" 
@@ -450,6 +453,7 @@ export default function OnboardingPage() {
                       type="number"
                       value={formData.staffCount}
                       onChange={(val: string) => updateFormData('staffCount', val)}
+                      error={fieldError(formData.staffCount, 'Required')}
                     />
                   </div>
                 </div>
@@ -466,6 +470,9 @@ export default function OnboardingPage() {
               <div className="space-y-8">
                 <div className="space-y-4">
                   <span className="text-sm font-bold text-white uppercase tracking-wider block">Are you currently using any gym management software?</span>
+                  {showErrors && formData.hasSoftware === null && (
+                    <p className="text-[10px] font-bold text-red-400 uppercase tracking-wider">Please select an option</p>
+                  )}
                   <div className="grid grid-cols-2 gap-4">
                     <ToggleButton 
                       active={formData.hasSoftware === true} 
@@ -491,6 +498,9 @@ export default function OnboardingPage() {
 
                 <div className="space-y-4">
                   <span className="text-sm font-bold text-white uppercase tracking-wider block">Do you have a PC or tablet at the front desk?</span>
+                  {showErrors && formData.hasDevice === null && (
+                    <p className="text-[10px] font-bold text-red-400 uppercase tracking-wider">Please select an option</p>
+                  )}
                   <div className="grid grid-cols-2 gap-4">
                     <ToggleButton 
                       active={formData.hasDevice === true} 
@@ -533,6 +543,9 @@ export default function OnboardingPage() {
               <div className="space-y-8">
                 <div className="space-y-4">
                   <span className="text-sm font-bold text-white uppercase tracking-wider block">Do you have stable internet at the front desk?</span>
+                  {showErrors && formData.stableInternet === null && (
+                    <p className="text-[10px] font-bold text-red-400 uppercase tracking-wider">Please select an option</p>
+                  )}
                   <div className="grid grid-cols-2 gap-4">
                     <ToggleButton 
                       active={formData.stableInternet === true} 
@@ -566,6 +579,9 @@ export default function OnboardingPage() {
               <div className="space-y-8">
                 <div className="space-y-4">
                   <span className="text-sm font-bold text-white uppercase tracking-wider block">Do you already have RFID hardware installed?</span>
+                  {showErrors && formData.hasRFID === null && (
+                    <p className="text-[10px] font-bold text-red-400 uppercase tracking-wider">Please select an option</p>
+                  )}
                   <div className="grid grid-cols-2 gap-4">
                     <ToggleButton 
                       active={formData.hasRFID === true} 
@@ -832,20 +848,13 @@ export default function OnboardingPage() {
           </button>
 
           {currentStep < steps.length - 1 && (
-            <div className="flex flex-col items-end gap-2">
-              {validationError && (
-                <p className="text-[10px] font-bold text-red-400 uppercase tracking-wider animate-in fade-in slide-in-from-bottom-2 duration-300">
-                  {validationError}
-                </p>
-              )}
-              <button
-                onClick={nextStep}
-                className="flex items-center gap-2 px-10 py-4 bg-primary text-canvas rounded-2xl font-bold uppercase tracking-widest text-xs hover:scale-[1.02] hover:bg-white transition-all duration-300 shadow-glow"
-              >
-                Next Step
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
+            <button
+              onClick={nextStep}
+              className="flex items-center gap-2 px-10 py-4 bg-primary text-canvas rounded-2xl font-bold uppercase tracking-widest text-xs hover:scale-[1.02] hover:bg-white transition-all duration-300 shadow-glow"
+            >
+              Next Step
+              <ChevronRight className="w-4 h-4" />
+            </button>
           )}
 
           {currentStep === steps.length - 1 && (
@@ -930,6 +939,7 @@ interface InputGroupProps {
   textArea?: boolean;
   value: string;
   onChange: (val: string) => void;
+  error?: string;
 }
 
 function InputGroup({ 
@@ -940,20 +950,30 @@ function InputGroup({
   type = 'text', 
   textArea = false,
   value,
-  onChange
+  onChange,
+  error
 }: InputGroupProps) {
   return (
     <div className="space-y-3 group">
       <div className="flex flex-col">
-        <label className="text-xs font-bold text-white/60 uppercase tracking-[0.2em] group-focus-within:text-primary transition-colors">
-          {label}
-        </label>
+        <div className="flex items-center justify-between">
+          <label className={`text-xs font-bold uppercase tracking-[0.2em] transition-colors ${
+            error ? 'text-red-400' : 'text-white/60 group-focus-within:text-primary'
+          }`}>
+            {label}
+          </label>
+          {error && (
+            <span className="text-[10px] font-bold text-red-400 uppercase tracking-wider">{error}</span>
+          )}
+        </div>
         {subLabel && (
           <span className="text-[10px] text-white/30 font-medium">{subLabel}</span>
         )}
       </div>
       <div className="relative">
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-primary transition-colors">
+        <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${
+          error ? 'text-red-400/50' : 'text-white/20 group-focus-within:text-primary'
+        }`}>
           <Icon className="w-5 h-5" />
         </div>
         {textArea ? (
@@ -961,7 +981,9 @@ function InputGroup({
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
-            className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-12 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-primary/50 focus:bg-white/[0.04] transition-all min-h-[120px] resize-none"
+            className={`w-full bg-white/[0.02] border rounded-2xl px-12 py-4 text-white placeholder:text-white/10 focus:outline-none focus:bg-white/[0.04] transition-all min-h-[120px] resize-none ${
+              error ? 'border-red-400/50 focus:border-red-400' : 'border-white/5 focus:border-primary/50'
+            }`}
           />
         ) : (
           <input
@@ -969,7 +991,9 @@ function InputGroup({
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
-            className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-12 py-4 text-white placeholder:text-white/10 focus:outline-none focus:border-primary/50 focus:bg-white/[0.04] transition-all"
+            className={`w-full bg-white/[0.02] border rounded-2xl px-12 py-4 text-white placeholder:text-white/10 focus:outline-none focus:bg-white/[0.04] transition-all ${
+              error ? 'border-red-400/50 focus:border-red-400' : 'border-white/5 focus:border-primary/50'
+            }`}
           />
         )}
       </div>
