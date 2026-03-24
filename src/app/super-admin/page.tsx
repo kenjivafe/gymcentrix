@@ -1,6 +1,23 @@
 import prisma from "@/lib/prisma";
-import { Users, Activity, ArrowUpRight, Plus } from "lucide-react";
+import { Users, Activity, Building2, TrendingUp, Plus, ArrowRight } from "lucide-react";
 import Link from "next/link";
+
+const StatCard = ({ icon: Icon, label, value, trend, trendUp }: { icon: any, label: string, value: string | number, trend: string, trendUp: boolean }) => (
+  <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm hover:bg-white/[0.04] transition-all duration-300">
+    <div className="flex items-start justify-between mb-4">
+      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+        <Icon className="w-5 h-5 text-primary" />
+      </div>
+      <div className={`flex items-center gap-1 text-xs font-bold ${trendUp ? 'text-emerald-400' : 'text-rose-400'}`}>
+        {trendUp ? '+' : '-'}{trend}
+      </div>
+    </div>
+    <div className="space-y-1">
+      <p className="text-white/40 text-[10px] uppercase tracking-wider font-bold">{label}</p>
+      <h4 className="text-3xl font-display font-bold text-white tracking-tight">{value}</h4>
+    </div>
+  </div>
+);
 
 export default async function SuperAdminDashboard() {
   const [gymCount, ownerCount] = await Promise.all([
@@ -8,120 +25,119 @@ export default async function SuperAdminDashboard() {
     prisma.user.count({ where: { role: "GYM_OWNER" } }),
   ]);
 
-  const stats = [
-    {
-      label: "Total Gyms",
-      value: gymCount,
-      icon: <Buildings className="size-6 text-primary" />,
-      href: "/super-admin/gyms",
-    },
-    {
-      label: "Gym Owners",
-      value: ownerCount,
-      icon: <Users className="size-6 text-primary" />,
-      href: "/super-admin/owners",
-    },
-    {
-      label: "System Status",
-      value: "Healthy",
-      icon: <Activity className="size-6 text-primary" />,
-      href: "#",
-    },
-  ];
-
   return (
-    <div className="space-y-12">
-      <header className="space-y-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs uppercase tracking-[0.3em] text-primary font-bold">
-          System Command
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      
+      {/* Header section is lighter now because the sidebar/topbar handles branding */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="space-y-1">
+           <h2 className="text-3xl font-display font-bold text-white tracking-tight">Platform Overview</h2>
+           <p className="text-sm text-white/40">Manage global multitenant infrastructure and tenant growth.</p>
         </div>
-        <h2 className="text-5xl font-display font-bold tracking-tighter text-white">
-          System <span className="text-primary italic">Overview</span>
-        </h2>
-        <p className="text-lg text-white/40 max-w-2xl font-sans">
-          Monitor your multitenant infrastructure and tenant growth across all registered gym facilities globally.
-        </p>
-      </header>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {stats.map((stat) => (
-          <Link
-            key={stat.label}
-            href={stat.href as any}
-            className="group relative overflow-hidden p-10 bg-white/[0.02] border border-white/5 rounded-[3rem] shadow-glow hover:bg-white/[0.06] hover:border-primary/20 transition-all duration-500"
-          >
-            <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-40 transition-opacity">
-                <ArrowUpRight className="size-8 text-primary" />
-            </div>
-            <div className="size-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 border border-primary/20 group-hover:scale-110 transition-transform duration-500">
-                {stat.icon}
-            </div>
-            <p className="text-white/30 text-xs font-bold uppercase tracking-[0.2em] font-sans">
-              {stat.label}
-            </p>
-            <p className="text-5xl font-display font-bold text-white mt-4 tracking-tighter">
-              {stat.value}
-            </p>
-          </Link>
-        ))}
+        <div className="flex gap-3">
+           <Link href="/super-admin/gyms" className="px-4 py-2 rounded-xl text-xs font-bold bg-primary text-black hover:shadow-glow transition-all">
+             Register Gym
+           </Link>
+           <Link href="/super-admin/owners" className="px-4 py-2 rounded-xl text-xs font-bold border border-white/10 text-white hover:bg-white/5 transition-all">
+             Manage Owners
+           </Link>
+        </div>
       </div>
 
-      <div className="relative overflow-hidden bg-gradient-to-br from-primary/10 to-transparent border border-white/5 rounded-[4rem] p-12 lg:p-20 shadow-glow">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[120px] rounded-full -mr-48 -mt-48 pointer-events-none" />
-        <div className="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-12">
-            <div className="space-y-6">
-                <div className="w-16 h-16 rounded-3xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-glow">
-                  <Plus className="size-8 text-primary" />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-4xl font-display font-bold text-white tracking-tighter">
-                    Quick <span className="text-primary">Actions</span>
-                  </h3>
-                  <p className="text-white/40 max-w-md font-sans">
-                      Instantly deploy new gym environments or manage administrative credentials for existing tenant owners.
-                  </p>
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard icon={Building2} label="Total Gyms" value={gymCount} trend="12%" trendUp />
+        <StatCard icon={Users} label="Gym Owners" value={ownerCount} trend="8%" trendUp />
+        <StatCard icon={TrendingUp} label="Platform Revenue" value="₱0" trend="0%" trendUp />
+        <StatCard icon={Activity} label="System Status" value="100%" trend="Healthy" trendUp />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Analytics Main Block */}
+        <div className="lg:col-span-2 p-6 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm">
+          <div className="flex items-center justify-between mb-8">
+            <h5 className="text-lg font-bold text-white">Registration Trends</h5>
+            <div className="flex gap-2">
+              {['7D', '1M', '3M', 'YTD'].map(t => (
+                <button key={t} className={`px-3 py-1 text-xs rounded-lg border border-white/5 font-bold ${t === '1M' ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white'}`}>
+                  {t}
+                </button>
+              ))}
             </div>
-            <div className="flex flex-wrap gap-6 w-full lg:w-auto">
-              <Link
-                href={"/super-admin/gyms" as any}
-                className="flex-1 lg:flex-none text-center px-12 py-6 bg-primary hover:scale-105 active:scale-95 text-black font-bold rounded-2xl shadow-glow-strong transition-all uppercase tracking-widest text-sm"
-              >
-                Register Gym
-              </Link>
-              <Link
-                href={"/super-admin/owners" as any}
-                className="flex-1 lg:flex-none text-center px-12 py-6 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold rounded-2xl transition-all uppercase tracking-widest text-sm font-sans"
-              >
-                Manage Owners
-              </Link>
-            </div>
+          </div>
+          <div className="h-64 flex items-end gap-2 px-2">
+            {/* Placeholder Chart */}
+            {[20, 35, 25, 50, 45, 70, 60, 80, 50, 65, 90, 100].map((h, i) => (
+              <div key={i} className="flex-1 h-full flex items-end group relative">
+                <div 
+                  className="w-full bg-primary/20 rounded-t-lg group-hover:bg-primary/40 transition-all duration-500 cursor-pointer" 
+                  style={{ height: `${Math.max(10, h)}%` }}
+                >
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-primary text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    {h} Gyms
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-between mt-4 px-2">
+            {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(m => (
+              <span key={m} className="text-[10px] text-white/20 uppercase font-bold">{m}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* System Health / Quick Actions */}
+        <div className="space-y-6">
+           {/* Retention Circle */}
+           <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm flex flex-col items-center">
+             <h6 className="text-[10px] font-bold text-white/60 mb-6 uppercase tracking-widest self-start">Monthly Retention</h6>
+             <div className="relative w-32 h-32 mb-4">
+               <svg className="w-full h-full transform -rotate-90">
+                 <circle cx="64" cy="64" r="56" className="stroke-white/5 stroke-[8] fill-transparent" />
+                 <circle cx="64" cy="64" r="56" className="stroke-primary stroke-[8] fill-transparent transition-all duration-1000" strokeDasharray="351" strokeDashoffset="35" />
+               </svg>
+               <div className="absolute inset-0 flex flex-col items-center justify-center">
+                 <span className="text-xl font-display font-bold text-white">90%</span>
+               </div>
+             </div>
+             <div className="flex justify-around w-full">
+               <div className="flex items-center gap-2">
+                 <div className="w-2 h-2 rounded-full bg-primary" />
+                 <span className="text-[10px] font-bold text-white/60 uppercase">Active</span>
+               </div>
+               <div className="flex items-center gap-2">
+                 <div className="w-2 h-2 rounded-full bg-white/10" />
+                 <span className="text-[10px] font-bold text-white/60 uppercase">Churned</span>
+               </div>
+             </div>
+           </div>
+
+           {/* Quick Actions List */}
+           <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm">
+             <h6 className="text-[10px] font-bold text-white/60 mb-4 uppercase tracking-widest">System Actions</h6>
+             <div className="space-y-2">
+               <Link href="/super-admin/gyms" className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors group">
+                 <div className="flex items-center gap-3">
+                   <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                     <Plus className="w-4 h-4" />
+                   </div>
+                   <span className="text-xs font-bold text-white">New Deployment</span>
+                 </div>
+                 <ArrowRight className="w-4 h-4 text-white/20 group-hover:text-primary transition-colors" />
+               </Link>
+               <Link href="/super-admin/owners" className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors group">
+                 <div className="flex items-center gap-3">
+                   <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/60 group-hover:scale-110 transition-transform">
+                     <Users className="w-4 h-4" />
+                   </div>
+                   <span className="text-xs font-bold text-white">Owner Access</span>
+                 </div>
+                 <ArrowRight className="w-4 h-4 text-white/20 group-hover:text-white transition-colors" />
+               </Link>
+             </div>
+           </div>
         </div>
       </div>
     </div>
-  );
-}
-
-function Buildings({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M6 22V4c0-.5.2-1 .6-1.4C7 2.2 7.5 2 8 2h8c.5 0 1 .2 1.4.6.4.4.6.9.6 1.4v18" />
-      <path d="M6 18h12" />
-      <path d="M6 14h12" />
-      <path d="M6 10h12" />
-      <path d="M6 6h12" />
-      <path d="M2 22h20" />
-    </svg>
   );
 }
