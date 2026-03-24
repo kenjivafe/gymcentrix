@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -23,7 +23,9 @@ import {
   Calculator,
   CreditCard,
   Zap,
-  ShieldCheck
+  ShieldCheck,
+  Star,
+  Info
 } from 'lucide-react';
 
 // Form Steps
@@ -36,12 +38,35 @@ const steps = [
   { id: 'rfid-hardware', title: 'Hardware' },
   { id: 'attendance', title: 'Attendance' },
   { id: 'goals', title: 'Goals' },
+  { id: 'plan-selection', title: 'Plan' },
   { id: 'estimation', title: 'Estimation' },
   { id: 'schedule', title: 'Schedule' },
 ];
 
+const plans = [
+  {
+    name: 'Starter',
+    basePrice: 1500,
+    description: 'Perfect for small gyms & startups.',
+    features: ['Up to 100 members', 'Basic attendance', 'Email support']
+  },
+  {
+    name: 'Pro',
+    basePrice: 3000,
+    description: 'The standard for growing gyms.',
+    features: ['RFID tracking', 'Advanced insights', 'Staff controls']
+  },
+  {
+    name: 'Enterprise',
+    basePrice: 5000,
+    description: 'For multi-location & large scale.',
+    features: ['Multi-branch sync', 'API access', 'Priority support']
+  }
+];
+
 export default function GetAQuotePage() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [selectedPlanName, setSelectedPlanName] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -88,20 +113,41 @@ export default function GetAQuotePage() {
     setFormData(prev => ({ ...prev, [key]: value }));
   };
 
+  const recommendation = useMemo(() => {
+    const membersStr = formData.gymType === 'Multi-branch' ? formData.totalMembers : formData.activeMembers;
+    const members = parseInt(membersStr) || 0;
+    const branches = parseInt(formData.branchCount) || 1;
+
+    if (formData.gymType === 'Multi-branch' || branches > 1 || members > 1000) {
+      return 'Enterprise';
+    }
+    if (members > 200 || formData.hasRFID === true) {
+      return 'Pro';
+    }
+    return 'Starter';
+  }, [formData]);
+
+  useEffect(() => {
+    if (!selectedPlanName) {
+      setSelectedPlanName(recommendation);
+    }
+  }, [recommendation, selectedPlanName]);
+
   const estimate = useMemo(() => {
     let setup = 0;
     let monthly = 0;
 
-    // Base Monthly & Setup by Type
+    const selectedPlan = plans.find(p => p.name === selectedPlanName) || plans[0];
+    monthly = selectedPlan.basePrice;
+
+    // Base Setup by Type
     if (formData.gymType === 'New startup') {
       setup = 5000;
-      monthly = 1500;
     } else if (formData.gymType === 'Independent') {
       setup = 10000;
-      monthly = 3000;
     } else if (formData.gymType === 'Multi-branch') {
       setup = 25000;
-      monthly = 5000;
+      // Branch Monthly Multiplier
       const branches = parseInt(formData.branchCount) || 1;
       if (branches > 1) {
         monthly += (branches - 1) * 2000;
@@ -113,7 +159,7 @@ export default function GetAQuotePage() {
       setup += 7500;
     }
 
-    // Member Surcharge
+    // Member Surcharge (if they exceed plan limits or for extra volume)
     const membersStr = formData.gymType === 'Multi-branch' ? formData.totalMembers : formData.activeMembers;
     const members = parseInt(membersStr) || 0;
     if (members > 2000) {
@@ -123,7 +169,7 @@ export default function GetAQuotePage() {
     }
 
     return { setup, monthly };
-  }, [formData]);
+  }, [formData, selectedPlanName]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-PH', {
@@ -160,7 +206,7 @@ export default function GetAQuotePage() {
         </Link>
       </nav>
 
-      <div className="relative z-10 mx-auto max-w-3xl px-6 pb-24 lg:px-14 mt-8 sm:mt-16">
+      <div className="relative z-10 mx-auto max-w-4xl px-6 pb-24 lg:px-14 mt-8 sm:mt-16">
         {/* Progress Bar */}
         <div className="mb-12">
           <div className="flex justify-between items-end mb-4">
@@ -527,10 +573,34 @@ export default function GetAQuotePage() {
           )}
 
           {currentStep === 8 && (
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-display font-bold tracking-tight text-white">Choose Your Plan</h2>
+                <p className="text-white/40 text-sm">We&apos;ve recommended a plan based on your gym profile.</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {plans.map((p) => (
+                  <PlanCard 
+                    key={p.name}
+                    name={p.name}
+                    price={p.basePrice}
+                    description={p.description}
+                    features={p.features}
+                    recommended={p.name === recommendation}
+                    selected={selectedPlanName === p.name}
+                    onClick={() => setSelectedPlanName(p.name)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {currentStep === 9 && (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <div className="space-y-2">
                 <h2 className="text-3xl font-display font-bold tracking-tight text-white">Your Estimate</h2>
-                <p className="text-white/40 text-sm">Based on your gym profile, here is your estimated investment.</p>
+                <p className="text-white/40 text-sm">Final cost breakdown for {selectedPlanName} plan.</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
@@ -568,22 +638,22 @@ export default function GetAQuotePage() {
               <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10 flex items-start gap-4">
                 <ShieldCheck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                 <div className="space-y-1">
-                  <p className="text-xs font-bold text-white">Ready to proceed?</p>
+                  <p className="text-xs font-bold text-white">Transparency Guarantee</p>
                   <p className="text-[10px] text-white/50 leading-relaxed font-sans">
-                    This is an preliminary estimate. We&apos;ll confirm the final details during our call to ensure everything is perfectly tailored to your facility.
+                    These costs are calculated based on your specific requirements. We don&apos;t believe in hidden fees or surprises.
                   </p>
                 </div>
               </div>
 
               <div className="pt-4 text-left">
                 <p className="text-sm text-primary italic font-medium">
-                  Next up: Schedule a 15-min discovery call to lock in this setup!
+                  Ready to lock this in? Schedule your discovery call below.
                 </p>
               </div>
             </div>
           )}
 
-          {currentStep === 9 && (
+          {currentStep === 10 && (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <div className="space-y-2 mb-8">
                 <h2 className="text-3xl font-display font-bold tracking-tight text-white">Schedule Your Onboarding</h2>
@@ -593,7 +663,6 @@ export default function GetAQuotePage() {
               </div>
               
               <div className="w-full h-[600px] border border-white/5 rounded-[2.5rem] bg-white/[0.01] overflow-hidden backdrop-blur-md">
-                {/* Calendly Inline Widget placeholder */}
                 <iframe 
                   src={`https://calendly.com/kenjivafe?name=${encodeURIComponent(formData.fullName)}&email=${encodeURIComponent(formData.email)}`} 
                   width="100%" 
@@ -649,7 +718,61 @@ export default function GetAQuotePage() {
   );
 }
 
-// Sub-components for better organization
+// Sub-components
+interface PlanCardProps {
+  name: string;
+  price: number;
+  description: string;
+  features: string[];
+  recommended?: boolean;
+  selected?: boolean;
+  onClick: () => void;
+}
+
+function PlanCard({ name, price, description, features, recommended, selected, onClick }: PlanCardProps) {
+  return (
+    <button
+      onClick={onClick}
+      className={`relative p-6 rounded-[2rem] border text-left transition-all duration-500 group flex flex-col h-full bg-white/[0.01] ${
+        selected 
+          ? 'border-primary/50 shadow-glow bg-white/[0.03]' 
+          : 'border-white/5 hover:bg-white/[0.02] hover:border-white/10'
+      }`}
+    >
+      {recommended && (
+        <div className="absolute -top-3 left-6 px-3 py-1 bg-primary rounded-full text-[8px] font-bold text-canvas uppercase tracking-widest shadow-glow flex items-center gap-1">
+          <Star className="w-2 h-2 fill-canvas" />
+          Recommended
+        </div>
+      )}
+      
+      <div className="mb-4">
+        <h3 className="text-xl font-display font-bold text-white mb-1">{name}</h3>
+        <div className="text-2xl font-display font-bold text-primary">
+          ₱{price.toLocaleString()}<span className="text-[10px] text-white/20 font-sans ml-1">/mo</span>
+        </div>
+      </div>
+      
+      <p className="text-[10px] text-white/40 mb-6 leading-relaxed font-sans">{description}</p>
+      
+      <div className="space-y-2 mt-auto">
+        {features.map((f, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <Check className="w-3 h-3 text-primary" />
+            <span className="text-[10px] text-white/60 font-medium">{f}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className={`mt-6 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+        selected ? 'bg-primary text-canvas' : 'bg-white/5 text-white/20 group-hover:bg-primary/20 group-hover:text-primary'
+      }`}>
+        <Check className="w-4 h-4" />
+      </div>
+    </button>
+  );
+}
+
 interface InputGroupProps {
   label: string;
   subLabel?: string;
