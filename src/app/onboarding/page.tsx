@@ -19,8 +19,11 @@ import {
   Target,
   Zap,
   ShieldCheck,
-  Star
+  Star,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Form Steps
 const steps = [
@@ -61,6 +64,7 @@ const plans = [
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedPlanName, setSelectedPlanName] = useState<string | null>(null);
+  const [showBreakdown, setShowBreakdown] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -134,32 +138,42 @@ export default function OnboardingPage() {
   const estimate = useMemo(() => {
     let setup = 0;
     let monthly = 0;
+    const setupItems: { label: string; price: number }[] = [];
+    const monthlyItems: { label: string; price: number }[] = [];
 
     const selectedPlan = plans.find(p => p.name === selectedPlanName) || plans[0];
     monthly = selectedPlan.basePrice;
+    monthlyItems.push({ label: `${selectedPlan.name} Plan (Base)`, price: selectedPlan.basePrice });
 
     // Base Setup by Type
     if (formData.gymType === 'New startup') {
       setup = 5000;
+      setupItems.push({ label: 'New Startup Onboarding', price: 5000 });
     } else if (formData.gymType === 'Independent') {
       setup = 10000;
+      setupItems.push({ label: 'Independent Gym Setup', price: 10000 });
     } else if (formData.gymType === 'Multi-branch') {
       setup = 25000;
+      setupItems.push({ label: 'Multi-branch Integration', price: 25000 });
       // Branch Monthly Multiplier
       const branches = parseInt(formData.branchCount) || 1;
       if (branches > 1) {
-        monthly += (branches - 1) * 2000;
+        const extraPrice = (branches - 1) * 2000;
+        monthly += extraPrice;
+        monthlyItems.push({ label: `Additional Branches (${branches - 1})`, price: extraPrice });
       }
     }
 
     // Hardware Adjustment (RFID)
     if (formData.hasRFID === false) {
       setup += 7500;
+      setupItems.push({ label: 'RFID Reader Hardware', price: 7500 });
     }
 
     // Hardware Adjustment (Device/PC)
     if (formData.hasDevice === false) {
       setup += 20000;
+      setupItems.push({ label: 'Dedicated Device Setup', price: 20000 });
     }
 
     // Member Surcharge
@@ -167,11 +181,13 @@ export default function OnboardingPage() {
     const members = parseInt(membersStr) || 0;
     if (members > 2000) {
       monthly += 1500;
+      monthlyItems.push({ label: 'High Member Volume (>2k)', price: 1500 });
     } else if (members > 500) {
       monthly += 500;
+      monthlyItems.push({ label: 'Mid-Tier Member Volume (>500)', price: 500 });
     }
 
-    return { setup, monthly };
+    return { setup, monthly, setupItems, monthlyItems };
   }, [formData, selectedPlanName]);
 
   const formatPrice = (price: number) => {
@@ -616,9 +632,6 @@ export default function OnboardingPage() {
                     <div className="text-4xl font-display font-bold text-white tracking-tighter">
                       {formatPrice(estimate.setup)}
                     </div>
-                    <p className="text-[10px] text-white/30 font-medium mt-4 leading-relaxed">
-                      Includes onboarding, system configuration, {formData.hasRFID === false ? 'RFID hardware, ' : ''} {formData.hasDevice === false ? 'device setup, ' : ''} and remote installation support.
-                    </p>
                   </div>
                 </div>
 
@@ -631,11 +644,59 @@ export default function OnboardingPage() {
                     <div className="text-4xl font-display font-bold text-white tracking-tighter">
                       {formatPrice(estimate.monthly)}<span className="text-sm font-sans text-white/20 ml-1">/mo</span>
                     </div>
-                    <p className="text-[10px] text-white/30 font-medium mt-4 leading-relaxed">
-                      Includes cloud hosting, unlimited member check-ins, staff updates, and priority tech support.
-                    </p>
                   </div>
                 </div>
+              </div>
+
+              <div className="space-y-4">
+                <button 
+                  onClick={() => setShowBreakdown(!showBreakdown)}
+                  className="flex items-center gap-2 text-[10px] font-bold text-primary uppercase tracking-[0.2em] hover:text-white transition-colors group"
+                >
+                  {showBreakdown ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  {showBreakdown ? 'Hide Breakdown' : 'View Breakdown'}
+                </button>
+
+                <AnimatePresence>
+                  {showBreakdown && (
+                    <motion.div 
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden space-y-6"
+                    >
+                      <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 space-y-4">
+                        <div className="space-y-3">
+                          <h4 className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em]">Setup Breakdown</h4>
+                          {estimate.setupItems.map((item, i) => (
+                            <div key={i} className="flex justify-between items-center">
+                              <span className="text-xs text-white/60">{item.label}</span>
+                              <span className="text-xs font-bold text-white">{formatPrice(item.price)}</span>
+                            </div>
+                          ))}
+                          <div className="pt-2 border-t border-white/5 flex justify-between items-center">
+                            <span className="text-xs font-bold text-white">Total Setup</span>
+                            <span className="text-xs font-bold text-primary">{formatPrice(estimate.setup)}</span>
+                          </div>
+                        </div>
+
+                        <div className="space-y-3 pt-4">
+                          <h4 className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em]">Monthly Breakdown</h4>
+                          {estimate.monthlyItems.map((item, i) => (
+                            <div key={i} className="flex justify-between items-center">
+                              <span className="text-xs text-white/60">{item.label}</span>
+                              <span className="text-xs font-bold text-white">{formatPrice(item.price)}</span>
+                            </div>
+                          ))}
+                          <div className="pt-2 border-t border-white/5 flex justify-between items-center">
+                            <span className="text-xs font-bold text-white">Total Monthly</span>
+                            <span className="text-xs font-bold text-primary">{formatPrice(estimate.monthly)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10 flex items-start gap-4">
