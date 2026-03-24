@@ -136,7 +136,7 @@ export default function BookACallPage() {
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="space-y-2">
                 <h2 className="text-3xl font-display font-bold tracking-tight text-white">Contact Info</h2>
-                <p className="text-white/40 text-sm">Let's start with how we can reach you.</p>
+                <p className="text-white/40 text-sm">Let&apos;s start with how we can reach you.</p>
               </div>
               <div className="grid gap-6">
                 <InputGroup 
@@ -483,7 +483,7 @@ export default function BookACallPage() {
               <div className="space-y-2 mb-8">
                 <h2 className="text-3xl font-display font-bold tracking-tight text-white">Schedule Your Onboarding</h2>
                 <p className="text-white/60">
-                  Pick a time that works for you. We'll walk you through the platform and your questions.
+                  Pick a time that works for you. We&apos;ll walk you through the platform and your questions.
                 </p>
               </div>
               
@@ -499,7 +499,7 @@ export default function BookACallPage() {
 
               <div className="pt-8 text-left text-sm text-primary italic font-medium">
                 <p>
-                  Thanks! Once you schedule your call, we'll be ready to get your gym set up for seamless attendance tracking.
+                  Thanks! Once you schedule your call, we&apos;ll be ready to get your gym set up for seamless attendance tracking.
                 </p>
               </div>
             </div>

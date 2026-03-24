@@ -27,7 +27,7 @@ export default function DashboardPage() {
               Dashboard
             </h1>
             <p className="text-white/40 text-sm font-medium">
-              Welcome back! Here's what's happening today in your gym.
+              Welcome back! Here&apos;s what&apos;s happening today in your gym.
             </p>
           </div>
           <button className="inline-flex items-center gap-2 rounded-2xl bg-primary px-6 py-3 text-xs font-bold text-black shadow-glow transition hover:scale-[1.02] hover:bg-white uppercase tracking-widest">
