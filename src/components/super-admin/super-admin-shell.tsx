@@ -66,7 +66,7 @@ export function SuperAdminShell({
 
       {/* Mobile Header */}
       <header
-        className={`fixed top-0 left-0 right-0 ${sidebarOpen ? "z-30" : "z-50"} md:hidden border-b border-white/10 px-4 py-3 backdrop-blur-2xl bg-black/40 flex justify-between items-center`}
+        className={`fixed top-0 left-0 right-0 ${sidebarOpen ? "z-30" : "z-50"} md:hidden border-b border-white/5 px-4 py-3 backdrop-blur-md bg-white/[0.01] flex justify-between items-center`}
       >
         <div className="flex items-center gap-2">
             <Image 
@@ -167,7 +167,7 @@ export function SuperAdminShell({
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-h-screen relative z-10 bg-white/[0.01]">
         {/* Top Bar */}
-        <header className="hidden md:flex h-16 border-b border-white/10 px-8 items-center justify-between sticky top-0 bg-black/40 backdrop-blur-2xl z-20">
+        <header className="hidden md:flex h-16 border-b border-white/5 px-8 items-center justify-between sticky top-0 bg-white/[0.01] backdrop-blur-md z-20">
           <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-xl border border-white/5 flex-1 max-w-md">
              <Search className="w-4 h-4 text-white/20 shrink-0" />
              <input 
