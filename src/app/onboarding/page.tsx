@@ -112,12 +112,16 @@ export default function OnboardingPage() {
     const members = parseInt(membersStr) || 0;
     const branches = parseInt(formData.branchCount) || 1;
 
+    // Enterprise: Multi-branch or High Volume
     if (formData.gymType === 'Multi-branch' || branches > 1 || members > 1000) {
       return 'Enterprise';
     }
-    if (members > 200 || formData.hasRFID === true) {
+
+    // Pro: Large Independent or RFID needed (any automatic tracking or existing hardware)
+    if (members > 200 || formData.trackingType === 'automatic' || formData.hasRFID === true) {
       return 'Pro';
     }
+
     return 'Starter';
   }, [formData]);
 
