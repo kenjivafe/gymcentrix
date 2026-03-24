@@ -185,7 +185,7 @@ export function SuperAdminShell({
         </header>
 
         {/* View Content */}
-        <div className="flex-1 overflow-x-hidden p-6 md:p-10 pt-20 md:pt-10 max-w-7xl mx-auto w-full">
+        <div className="flex-1 overflow-x-hidden p-6 md:p-8 pt-24 md:pt-8 w-full">
           {children}
         </div>
       </main>
