@@ -4,6 +4,7 @@ import type { Route } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Building2,
@@ -74,15 +75,19 @@ const SidebarItem = ({ icon: Icon, label, active, onClick, href }: { icon: any, 
 
 export function SuperAdminShell({
   children,
-  activeHref = "/super-admin" as Route,
   userName,
 }: {
   children: ReactNode;
-  activeHref?: Route;
   userName?: string | null;
 }) {
+  const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+
+  const isActive = (href: string) => {
+    if (href === "/super-admin") return pathname === "/super-admin";
+    return pathname.startsWith(href);
+  };
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -169,7 +174,7 @@ export function SuperAdminShell({
                     key={item.label}
                     icon={item.icon} 
                     label={item.label} 
-                    active={item.href === activeHref} 
+                    active={isActive(item.href)} 
                     onClick={closeSidebar} 
                     href={item.href}
                   />
