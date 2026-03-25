@@ -5,10 +5,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import {
-  ShieldAlert,
-  Building2,
-  Users,
   LayoutDashboard,
+  Building2,
+  GitBranch,
+  Users,
+  Cpu,
+  CreditCard,
+  Receipt,
+  BarChart3,
+  ScrollText,
+  Settings,
   Menu,
   X,
   LogOut,
@@ -17,10 +23,37 @@ import {
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 
-const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, href: "/super-admin" as Route },
-  { label: "Gyms", icon: Building2, href: "/super-admin/gyms" as Route },
-  { label: "Owners", icon: Users, href: "/super-admin/owners" as Route },
+const navSections = [
+  {
+    label: "Core",
+    items: [
+      { label: "Dashboard", icon: LayoutDashboard, href: "/super-admin" as Route },
+      { label: "Gyms", icon: Building2, href: "/super-admin/gyms" as Route },
+      { label: "Branches", icon: GitBranch, href: "/super-admin/branches" as Route },
+      { label: "Users", icon: Users, href: "/super-admin/users" as Route },
+      { label: "Agents", icon: Cpu, href: "/super-admin/agents" as Route },
+    ],
+  },
+  {
+    label: "Management",
+    items: [
+      { label: "Membership Plans", icon: CreditCard, href: "/super-admin/membership-plans" as Route },
+      { label: "Subscriptions", icon: Receipt, href: "/super-admin/subscriptions" as Route },
+    ],
+  },
+  {
+    label: "Intelligence",
+    items: [
+      { label: "Analytics", icon: BarChart3, href: "/super-admin/analytics" as Route },
+      { label: "System Logs", icon: ScrollText, href: "/super-admin/system-logs" as Route },
+    ],
+  },
+  {
+    label: "System",
+    items: [
+      { label: "Settings", icon: Settings, href: "/super-admin/settings" as Route },
+    ],
+  },
 ];
 
 const SidebarItem = ({ icon: Icon, label, active, onClick, href }: { icon: any, label: string, active: boolean, onClick: () => void, href: Route }) => (
@@ -125,16 +158,24 @@ export function SuperAdminShell({
           </button>
         </div>
 
-        <nav className="flex-1 space-y-2">
-          {navItems.map((item) => (
-            <SidebarItem 
-              key={item.label}
-              icon={item.icon} 
-              label={item.label} 
-              active={item.href === activeHref} 
-              onClick={closeSidebar} 
-              href={item.href}
-            />
+        <nav className="flex-1 space-y-5 overflow-y-auto">
+          {navSections.map((section, idx) => (
+            <div key={section.label}>
+              {idx > 0 && <div className="border-t border-white/5 mb-3" />}
+              <p className="px-4 mb-2 text-[9px] font-black uppercase tracking-[0.2em] text-white/20">{section.label}</p>
+              <div className="space-y-1">
+                {section.items.map((item) => (
+                  <SidebarItem 
+                    key={item.label}
+                    icon={item.icon} 
+                    label={item.label} 
+                    active={item.href === activeHref} 
+                    onClick={closeSidebar} 
+                    href={item.href}
+                  />
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
 
