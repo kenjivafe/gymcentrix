@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Edit2, LayoutDashboard } from "lucide-react";
+import { Edit2, LayoutDashboard, Plus } from "lucide-react";
 import Link from "next/link";
 import { EditGymModal } from "@/components/super-admin/edit-gym-modal";
+import { AddBranchModal } from "@/components/super-admin/add-branch-modal";
 
 interface GymDetailsClientProps {
   gym: {
@@ -18,6 +19,7 @@ interface GymDetailsClientProps {
 
 export function GymDetailsClient({ gym }: GymDetailsClientProps) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAddBranchModalOpen, setIsAddBranchModalOpen] = useState(false);
 
   return (
     <>
@@ -38,19 +40,35 @@ export function GymDetailsClient({ gym }: GymDetailsClientProps) {
           <p className="text-sm text-white/40 font-medium italic underline decoration-primary/20 underline-offset-4">Cluster ID: {gym.id}</p>
         </div>
         
-        <button 
-          onClick={() => setIsEditModalOpen(true)}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black bg-white/5 text-white/60 border border-white/10 hover:text-white hover:bg-white/10 transition-all active:scale-95"
-        >
-          <Edit2 className="w-4 h-4" />
-          Edit Tenant Configuration
-        </button>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => setIsEditModalOpen(true)}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black bg-white/5 text-white/60 border border-white/10 hover:text-white hover:bg-white/10 transition-all active:scale-95"
+          >
+            <Edit2 className="w-4 h-4" />
+            Edit Facility
+          </button>
+          <button 
+            onClick={() => setIsAddBranchModalOpen(true)}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black bg-primary text-black hover:shadow-glow transition-all active:scale-95"
+          >
+            <Plus className="w-4 h-4" />
+            Deploy Branch
+          </button>
+        </div>
       </div>
 
       {isEditModalOpen && (
         <EditGymModal 
           gym={gym} 
           onClose={() => setIsEditModalOpen(false)} 
+        />
+      )}
+
+      {isAddBranchModalOpen && (
+        <AddBranchModal 
+          onClose={() => setIsAddBranchModalOpen(false)}
+          defaultGymId={gym.id}
         />
       )}
     </>

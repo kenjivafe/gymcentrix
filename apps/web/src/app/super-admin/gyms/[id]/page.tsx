@@ -102,8 +102,11 @@ export default async function GymViewPage({ params }: { params: { id: string } }
 
            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {gym.branches.length === 0 ? (
-                <div className="col-span-2 py-12 text-center border border-white/5 border-dashed rounded-2xl bg-white/[0.01]">
-                   <p className="text-xs text-white/20 uppercase tracking-widest font-black">No Active Branches Found</p>
+                <div className="col-span-2 py-16 text-center border border-white/5 border-dashed rounded-[2rem] bg-white/[0.01]">
+                   <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mx-auto mb-4 border border-white/5">
+                      <GitBranch className="w-6 h-6 text-white/20" />
+                   </div>
+                   <p className="text-xs text-white/20 uppercase tracking-[0.2em] font-black mb-6">No Active Branches Found</p>
                 </div>
               ) : (
                 gym.branches.map((branch) => (

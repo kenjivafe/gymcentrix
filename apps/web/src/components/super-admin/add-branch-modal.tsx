@@ -6,10 +6,11 @@ import { registerBranch } from "@/lib/actions/branch";
 
 interface AddBranchModalProps {
   onClose: () => void;
-  gyms: { id: string; name: string }[];
+  gyms?: { id: string; name: string }[];
+  defaultGymId?: string;
 }
 
-export function AddBranchModal({ onClose, gyms }: AddBranchModalProps) {
+export function AddBranchModal({ onClose, gyms = [], defaultGymId }: AddBranchModalProps) {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
@@ -24,7 +25,7 @@ export function AddBranchModal({ onClose, gyms }: AddBranchModalProps) {
     const data = {
       name: formData.get("name") as string,
       address: formData.get("address") as string,
-      gymId: formData.get("gymId") as string,
+      gymId: (formData.get("gymId") || defaultGymId) as string,
     };
 
     const result = await registerBranch(data);
@@ -64,26 +65,28 @@ export function AddBranchModal({ onClose, gyms }: AddBranchModalProps) {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Gym Entity</label>
-                <div className="relative group">
-                  <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
-                  <select
-                    name="gymId"
-                    required
-                    defaultValue=""
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm text-white focus:outline-none focus:border-primary/50 transition-all appearance-none"
-                  >
-                    <option value="" disabled className="bg-[#0A0A0A]">Select a Parent Gym</option>
-                    {gyms.map((gym) => (
-                      <option key={gym.id} value={gym.id} className="bg-[#0A0A0A]">
-                        {gym.name}
-                      </option>
-                    ))}
-                  </select>
+              {!defaultGymId && (
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Gym Entity</label>
+                  <div className="relative group">
+                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
+                    <select
+                      name="gymId"
+                      required
+                      defaultValue=""
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm text-white focus:outline-none focus:border-primary/50 transition-all appearance-none"
+                    >
+                      <option value="" disabled className="bg-[#0A0A0A]">Select a Parent Gym</option>
+                      {gyms.map((gym) => (
+                        <option key={gym.id} value={gym.id} className="bg-[#0A0A0A]">
+                          {gym.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {fieldErrors.gymId && <p className="text-[10px] text-rose-400 font-bold mt-1 ml-1">{fieldErrors.gymId[0]}</p>}
                 </div>
-                {fieldErrors.gymId && <p className="text-[10px] text-rose-400 font-bold mt-1 ml-1">{fieldErrors.gymId[0]}</p>}
-              </div>
+              )}
 
               <div className="space-y-1.5">
                 <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Branch Name</label>
