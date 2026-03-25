@@ -1,35 +1,36 @@
 import prisma from "@/lib/prisma";
-import { GitBranch, Building2, MapPin, Calendar, ChevronRight, Plus } from "lucide-react";
+import { GitBranch, Building2, MapPin, Calendar, ChevronRight } from "lucide-react";
+import { BranchesClient } from "@/components/super-admin/branches-client";
 
 export default async function BranchesManagementPage() {
-  const branches = await prisma.branch.findMany({
-    include: {
-      gym: true,
-      _count: {
-        select: {
-          members: true,
-          agents: true,
+  const [branches, gyms] = await Promise.all([
+    prisma.branch.findMany({
+      include: {
+        gym: true,
+        _count: {
+          select: {
+            members: true,
+            agents: true,
+          },
         },
       },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+      orderBy: {
+        createdAt: "desc",
+      },
+    }),
+    prisma.gym.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    }),
+  ]);
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div className="space-y-1">
-           <h2 className="text-3xl font-display font-bold text-white tracking-tight">Branches</h2>
-           <p className="text-sm text-white/40">Manage branch locations across all gym facilities.</p>
-        </div>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-primary text-black hover:shadow-glow transition-all active:scale-95">
-          <Plus className="w-4 h-4" />
-          Add Branch
-        </button>
-      </div>
-
+    <BranchesClient gyms={gyms}>
       <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-x-auto">
         {branches.length === 0 ? (
           <div className="py-24 flex flex-col items-center justify-center text-center">
@@ -100,6 +101,6 @@ export default async function BranchesManagementPage() {
           </table>
         )}
       </div>
-    </div>
+    </BranchesClient>
   );
 }
