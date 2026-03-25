@@ -71,9 +71,10 @@ export function AddBranchModal({ onClose, gyms }: AddBranchModalProps) {
                   <select
                     name="gymId"
                     required
+                    defaultValue=""
                     className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm text-white focus:outline-none focus:border-primary/50 transition-all appearance-none"
                   >
-                    <option value="" disabled selected className="bg-[#0A0A0A]">Select a Parent Gym</option>
+                    <option value="" disabled className="bg-[#0A0A0A]">Select a Parent Gym</option>
                     {gyms.map((gym) => (
                       <option key={gym.id} value={gym.id} className="bg-[#0A0A0A]">
                         {gym.name}
