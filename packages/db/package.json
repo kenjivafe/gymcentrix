@@ -1,0 +1,13 @@
+{
+  "name": "@gymcentrix/db",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "types": "index.ts",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "prisma": "^5.22.0"
+  },
+  "scripts": {
+    "generate": "prisma generate"
+  }
+}

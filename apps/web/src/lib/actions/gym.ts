@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { Role } from "@prisma/client";
+import { Role } from "@gymcentrix/db";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 

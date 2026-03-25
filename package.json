@@ -1,45 +1,19 @@
 {
-  "name": "gym-membership-card-system",
-  "version": "0.1.0",
+  "name": "gymcentrix-monorepo",
   "private": true,
+  "packageManager": "npm@10.2.4",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "prisma generate && next build",
-    "start": "next start",
-    "lint": "next lint",
-    "test": "vitest run"
-  },
-  "dependencies": {
-    "@auth/prisma-adapter": "^2.11.1",
-    "@hookform/resolvers": "^5.2.2",
-    "@prisma/client": "^5.22.0",
-    "bcryptjs": "^3.0.3",
-    "framer-motion": "^12.38.0",
-    "lucide-react": "^0.562.0",
-    "next": "^15.1.7",
-    "next-auth": "^4.24.7",
-    "prisma": "^5.22.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-hook-form": "^7.71.2",
-    "zod": "^4.3.6"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/node": "^20.11.20",
-    "@types/react": "18.2.46",
-    "@types/react-dom": "18.2.18",
-    "autoprefixer": "10.4.16",
-    "eslint": "8.57.0",
-    "eslint-config-next": "^15.1.7",
-    "postcss": "8.4.35",
-    "tailwindcss": "3.4.1",
-    "tsx": "^4.21.0",
-    "typescript": "5.3.3",
-    "vite-tsconfig-paths": "^6.0.5",
-    "vitest": "^4.0.18"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "turbo": "^2.4.0",
+    "typescript": "5.3.3"
   }
 }
