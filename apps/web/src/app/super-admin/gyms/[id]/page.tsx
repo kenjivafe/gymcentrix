@@ -51,7 +51,7 @@ export default async function GymViewPage({ params }: { params: { id: string } }
                </div>
                 <div className="flex items-center gap-3">
                   <Calendar className="w-4 h-4 text-white/20" />
-                  <span className="text-xs text-white/40 uppercase tracking-widest font-bold">Joined {gym.owner.createdAt ? new Date(gym.owner.createdAt).toLocaleDateString() : 'N/A'}</span>
+                  <span className="text-xs text-white/40 uppercase tracking-widest font-bold">Joined {(gym.owner as any).createdAt ? new Date((gym.owner as any).createdAt).toLocaleDateString() : 'N/A'}</span>
                </div>
             </div>
           </div>
@@ -66,7 +66,7 @@ export default async function GymViewPage({ params }: { params: { id: string } }
                 </div>
              </div>
              <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5">
-                <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-2">Deployments</p>
+                <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-2">Agents</p>
                 <div className="flex items-end justify-between">
                    <h4 className="text-2xl font-display font-bold text-white">
                       {gym.branches.reduce((acc, b) => acc + b._count.agents, 0)}
@@ -110,7 +110,11 @@ export default async function GymViewPage({ params }: { params: { id: string } }
                 </div>
               ) : (
                 gym.branches.map((branch) => (
-                  <div key={branch.id} className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group cursor-pointer">
+                  <Link 
+                    href={`/super-admin/branches/${branch.id}`}
+                    key={branch.id} 
+                    className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group cursor-pointer"
+                  >
                     <div className="flex items-start justify-between mb-6">
                        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-primary/10 transition-colors">
                           <Activity className="w-5 h-5 text-white/20 group-hover:text-primary transition-colors" />
@@ -138,7 +142,7 @@ export default async function GymViewPage({ params }: { params: { id: string } }
                           <p className="text-[10px] font-black text-primary/60 uppercase tracking-widest">{branch._count.agents} Agents</p>
                        </div>
                     </div>
-                  </div>
+                  </Link>
                 ))
               )}
            </div>

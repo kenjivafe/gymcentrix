@@ -60,9 +60,6 @@ export default async function SuperAdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Growth Chart */}
         <div className="lg:col-span-2 p-8 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-sm relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none group-hover:opacity-20 transition-opacity">
-             <TrendingUp className="w-48 h-48 text-primary" />
-          </div>
           <div className="relative z-10 flex flex-col h-full">
             <div className="flex items-center justify-between mb-12">
               <div className="space-y-1">

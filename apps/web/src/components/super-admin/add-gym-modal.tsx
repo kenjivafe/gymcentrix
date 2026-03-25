@@ -1,167 +1,143 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { useState } from "react";
 import { X, Loader2, Building2, User2, Mail, ShieldCheck } from "lucide-react";
 import { registerGym } from "@/lib/actions/gym";
 
-const formSchema = z.object({
-  name: z.string().min(2, "Gym name is required"),
-  ownerName: z.string().min(2, "Owner name is required"),
-  ownerEmail: z.string().email("Valid email is required"),
-});
-
-type FormValues = z.infer<typeof formSchema>;
-
 export function AddGymModal({ onClose }: { onClose: () => void }) {
-  const [mounted, setMounted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
-  useEffect(() => {
-    setMounted(true);
-    // Prevent scrolling when modal is open
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, []);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-  });
-
-  const onSubmit = async (data: FormValues) => {
-    setIsSubmitting(true);
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsPending(true);
     setError(null);
-    
-    try {
-      const result = await registerGym(data);
-      if (result.error) {
-        if (typeof result.error === "string") {
-          setError(result.error);
-        } else {
-          setError("Validation failed. Check your inputs.");
-        }
+    setFieldErrors({});
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name") as string,
+      ownerName: formData.get("ownerName") as string,
+      ownerEmail: formData.get("ownerEmail") as string,
+    };
+
+    const result = await registerGym(data);
+
+    if (result.error) {
+      if (typeof result.error === "string") {
+        setError(result.error);
       } else {
-        onClose();
+        setFieldErrors(result.error as Record<string, string[]>);
       }
-    } catch (err) {
-      setError("An unexpected error occurred.");
-    } finally {
-      setIsSubmitting(false);
+      setIsPending(false);
+    } else {
+      onClose();
     }
-  };
+  }
 
-  if (!mounted) return null;
-
-  return createPortal(
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div 
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm" 
-        onClick={onClose}
-      />
-      
-      {/* Modal */}
-      <div className="relative w-full max-w-lg bg-canvas-subtle border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
-        <div className="absolute top-0 right-0 p-6 z-10">
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
+      <div className="w-full max-w-lg bg-[#0A0A0A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
+        <div className="relative p-8">
           <button 
             onClick={onClose}
-            className="p-2 text-white/40 hover:text-white hover:bg-white/5 rounded-full transition-all"
+            className="absolute top-6 right-6 p-2 rounded-xl text-white/20 hover:text-white hover:bg-white/5 transition-all"
           >
-            <X className="size-6" />
+            <X className="w-5 h-5" />
           </button>
-        </div>
 
-        <div className="p-10 lg:p-12">
-          <div className="flex flex-col items-center text-center mb-10">
-            <div className="size-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">
-              <Building2 className="size-8 text-primary" />
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <Building2 className="w-6 h-6 text-primary" />
             </div>
-            <h2 className="text-3xl font-bold text-white mb-2">Register Gym</h2>
-            <p className="text-white/50">Configure a new tenant and assign an owner.</p>
+            <div>
+              <h3 className="text-xl font-display font-bold text-white tracking-tight">Register New Gym</h3>
+              <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-black mt-1">Tenant Infrastructure Provisioning</p>
+            </div>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-white/40 uppercase tracking-widest flex items-center gap-2">
-                <Building2 className="size-3" />
-                Gym Name
-              </label>
-              <input
-                {...register("name")}
-                placeholder="Metabolic Fitness Center"
-                className="w-full px-6 py-4 bg-white/5 border border-white/5 focus:border-primary/50 focus:bg-white/10 rounded-2xl text-white outline-none transition-all"
-              />
-              {errors.name && (
-                <p className="text-xs text-rose-400 font-medium ml-1">{errors.name.message}</p>
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-white/40 uppercase tracking-widest flex items-center gap-2">
-                  <User2 className="size-3" />
-                  Owner Name
-                </label>
-                <input
-                  {...register("ownerName")}
-                  placeholder="John Doe"
-                  className="w-full px-6 py-4 bg-white/5 border border-white/5 focus:border-primary/50 focus:bg-white/10 rounded-2xl text-white outline-none transition-all"
-                />
-                {errors.ownerName && (
-                  <p className="text-xs text-rose-400 font-medium ml-1">{errors.ownerName.message}</p>
-                )}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Gym Facility Name</label>
+                <div className="relative group">
+                  <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
+                  <input
+                    name="name"
+                    required
+                    placeholder="e.g. Metabolic Fitness Center"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm text-white placeholder:text-white/10 focus:outline-none focus:border-primary/50 transition-all font-medium"
+                  />
+                </div>
+                {fieldErrors.name && <p className="text-[10px] text-rose-400 font-bold mt-1 ml-1">{fieldErrors.name[0]}</p>}
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-white/40 uppercase tracking-widest flex items-center gap-2">
-                  <Mail className="size-3" />
-                  Owner Email
-                </label>
-                <input
-                  {...register("ownerEmail")}
-                  type="email"
-                  placeholder="john@example.com"
-                  className="w-full px-6 py-4 bg-white/5 border border-white/5 focus:border-primary/50 focus:bg-white/10 rounded-2xl text-white outline-none transition-all"
-                />
-                {errors.ownerEmail && (
-                  <p className="text-xs text-rose-400 font-medium ml-1">{errors.ownerEmail.message}</p>
-                )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Primary Owner</label>
+                  <div className="relative group">
+                    <User2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
+                    <input
+                      name="ownerName"
+                      required
+                      placeholder="Full Name"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm text-white placeholder:text-white/10 focus:outline-none focus:border-primary/50 transition-all font-medium"
+                    />
+                  </div>
+                  {fieldErrors.ownerName && <p className="text-[10px] text-rose-400 font-bold mt-1 ml-1">{fieldErrors.ownerName[0]}</p>}
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Identity & Auth</label>
+                  <div className="relative group">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
+                    <input
+                      name="ownerEmail"
+                      required
+                      type="email"
+                      placeholder="Email Address"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm text-white placeholder:text-white/10 focus:outline-none focus:border-primary/50 transition-all font-medium"
+                    />
+                  </div>
+                  {fieldErrors.ownerEmail && <p className="text-[10px] text-rose-400 font-bold mt-1 ml-1">{fieldErrors.ownerEmail[0]}</p>}
+                </div>
               </div>
             </div>
 
             {error && (
-              <div className="p-4 bg-rose-500/10 border border-rose-500/20 rounded-2xl text-rose-400 text-sm font-medium text-center">
+              <div className="p-4 rounded-xl bg-rose-400/10 border border-rose-400/20 text-rose-400 text-xs font-bold text-center">
                 {error}
               </div>
             )}
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full py-5 bg-primary hover:bg-primary/90 text-white font-bold rounded-2xl shadow-xl shadow-primary/20 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-3"
-            >
-              {isSubmitting ? (
-                <Loader2 className="size-5 animate-spin" />
-              ) : (
-                <>
-                  <ShieldCheck className="size-5" />
-                  Authorize & Register
-                </>
-              )}
-            </button>
+            <div className="flex gap-3 pt-2">
+              <button
+                type="button"
+                onClick={onClose}
+                disabled={isPending}
+                className="flex-1 py-3 px-4 rounded-xl text-xs font-bold text-white/60 hover:text-white hover:bg-white/5 border border-white/5 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isPending}
+                className="flex-[2] py-3 px-4 rounded-xl text-xs font-black bg-primary text-black hover:shadow-glow transition-all active:scale-95 flex items-center justify-center gap-2"
+              >
+                {isPending ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    <ShieldCheck className="w-4 h-4" />
+                    Authorize & Register
+                  </>
+                )}
+              </button>
+            </div>
           </form>
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }

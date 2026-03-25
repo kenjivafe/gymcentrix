@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { GitBranch, Building2, MapPin, Calendar, ChevronRight } from "lucide-react";
 import { BranchesClient } from "@/components/super-admin/branches-client";
+import Link from "next/link";
 
 export default async function BranchesManagementPage() {
   const [branches, gyms] = await Promise.all([
@@ -91,9 +92,12 @@ export default async function BranchesManagementPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button className="text-white/20 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5">
+                    <Link 
+                      href={`/super-admin/branches/${branch.id}`}
+                      className="text-white/10 hover:text-primary transition-colors p-2 rounded-lg hover:bg-primary/5 inline-block"
+                    >
                       <ChevronRight className="w-5 h-5" />
-                    </button>
+                    </Link>
                   </td>
                 </tr>
               ))}
