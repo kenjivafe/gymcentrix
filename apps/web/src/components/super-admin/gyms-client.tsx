@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Plus, LayoutGrid, List, Building2, User2, Calendar, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { AddGymModal } from "@/components/super-admin/add-gym-modal";
 
 interface GymsClientProps {
@@ -105,9 +106,12 @@ export function GymsClient({ gyms }: GymsClientProps) {
                      </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button className="text-white/10 hover:text-primary transition-colors p-2 rounded-lg hover:bg-primary/5">
+                    <Link 
+                      href={`/super-admin/gyms/${gym.id}`}
+                      className="text-white/10 hover:text-primary transition-colors p-2 rounded-lg hover:bg-primary/5 inline-block"
+                    >
                       <ChevronRight className="w-5 h-5" />
-                    </button>
+                    </Link>
                   </td>
                 </tr>
               ))}
@@ -149,10 +153,13 @@ export function GymsClient({ gyms }: GymsClientProps) {
                      </div>
                   </div>
 
-                  <button className="w-full py-3.5 rounded-2xl bg-white/5 border border-white/10 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] group-hover:bg-primary group-hover:text-black group-hover:border-transparent transition-all active:scale-95 flex items-center justify-center gap-2">
+                  <Link 
+                     href={`/super-admin/gyms/${gym.id}`}
+                     className="w-full py-3.5 rounded-2xl bg-white/5 border border-white/10 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] group-hover:bg-primary group-hover:text-black group-hover:border-transparent transition-all active:scale-95 flex items-center justify-center gap-2"
+                  >
                      Manage Infrastructure
                      <ChevronRight className="w-4 h-4" />
-                  </button>
+                  </Link>
                </div>
             </div>
           ))}

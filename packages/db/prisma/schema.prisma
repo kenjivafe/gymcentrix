@@ -57,6 +57,8 @@ model User {
   password      String?
   role          Role      @default(EMPLOYEE)
   gymId         String?   // The gym this user belongs to
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   accounts      Account[]
   sessions      Session[]

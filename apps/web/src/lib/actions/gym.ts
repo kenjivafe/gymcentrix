@@ -65,3 +65,42 @@ export async function registerGym(formData: z.infer<typeof RegisterGymSchema>) {
     return { error: "Failed to register gym. Please try again." };
   }
 }
+const UpdateGymSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(2, "Gym name must be at least 2 characters"),
+  ownerName: z.string().min(2, "Owner name must be at least 2 characters"),
+  ownerEmail: z.string().email("Invalid owner email address"),
+});
+
+export async function updateGym(formData: z.infer<typeof UpdateGymSchema>) {
+  const result = UpdateGymSchema.safeParse(formData);
+
+  if (!result.success) {
+    return { error: result.error.flatten().fieldErrors };
+  }
+
+  const { id, name, ownerName, ownerEmail } = result.data;
+
+  try {
+    await prisma.$transaction([
+      prisma.gym.update({
+        where: { id },
+        data: { name },
+      }),
+      prisma.user.update({
+        where: { id: (await prisma.gym.findUnique({ where: { id }, select: { ownerId: true } }))?.ownerId },
+        data: {
+          name: ownerName,
+          email: ownerEmail,
+        },
+      }),
+    ]);
+
+    revalidatePath("/super-admin/gyms");
+    revalidatePath(`/super-admin/gyms/${id}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Gym update error:", error);
+    return { error: "Failed to update gym details. Please try again." };
+  }
+}
