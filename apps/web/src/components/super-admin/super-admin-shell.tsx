@@ -109,7 +109,7 @@ export function SuperAdminShell({
   }, [closeSidebar]);
 
   return (
-    <div className="relative min-h-screen text-white bg-[#0A0A0A] overflow-x-hidden flex flex-col md:flex-row">
+    <div className="relative h-screen overflow-hidden text-white bg-[#0A0A0A] flex flex-col md:flex-row">
       {/* Decorative Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
@@ -150,7 +150,7 @@ export function SuperAdminShell({
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-white/5 bg-[#0A0A0A]/80 md:bg-white/[0.02] backdrop-blur-2xl p-4 md:p-6 space-y-6 md:space-y-8 flex flex-col transition-transform duration-300 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 md:sticky md:top-0 md:h-screen`}
+        } md:translate-x-0 md:static md:h-screen`}
       >
         <div className="flex justify-between items-center mb-2 md:mb-0">
           <div className="flex items-center gap-3 px-2">
@@ -235,9 +235,9 @@ export function SuperAdminShell({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col min-h-screen relative z-10 bg-white/[0.01]">
+      <main className="flex-1 flex flex-col h-screen overflow-hidden relative z-10 bg-white/[0.01]">
         {/* Top Bar */}
-        <header className="hidden md:flex h-16 border-b border-white/5 px-8 items-center justify-between sticky top-0 bg-white/[0.01] backdrop-blur-md z-20">
+        <header className="hidden md:flex h-16 border-b border-white/5 px-8 items-center justify-between bg-[#0A0A0A]/50 backdrop-blur-md z-20">
           <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-xl border border-white/5 flex-1 max-w-md">
              <Search className="w-4 h-4 text-white/20 shrink-0" />
              <input 
@@ -255,10 +255,11 @@ export function SuperAdminShell({
         </header>
 
         {/* View Content */}
-        <div className="flex-1 overflow-x-hidden p-6 md:p-8 pt-24 md:pt-8 w-full">
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 pt-24 md:pt-8 w-full custom-scrollbar">
           {children}
         </div>
       </main>
     </div>
   );
 }
+
