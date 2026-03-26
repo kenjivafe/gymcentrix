@@ -19,8 +19,9 @@ import {
   Menu,
   X,
   LogOut,
-  Search,
   Bell,
+  Search,
+  ChevronDown,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 
@@ -89,6 +90,16 @@ export function SuperAdminShell({
     return pathname.startsWith(href);
   };
 
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    navSections.forEach(s => { initial[s.label] = true; });
+    return initial;
+  });
+
+  const toggleSection = (label: string) => {
+    setExpandedSections(prev => ({ ...prev, [label]: !prev[label] }));
+  };
+
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeSidebar();
@@ -139,7 +150,7 @@ export function SuperAdminShell({
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-white/5 bg-[#0A0A0A]/80 md:bg-white/[0.02] backdrop-blur-2xl p-4 md:p-6 space-y-6 md:space-y-8 flex flex-col transition-transform duration-300 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 md:static md:z-auto`}
+        } md:translate-x-0 md:sticky md:top-0 md:h-screen`}
       >
         <div className="flex justify-between items-center mb-2 md:mb-0">
           <div className="flex items-center gap-3 px-2">
@@ -163,12 +174,22 @@ export function SuperAdminShell({
           </button>
         </div>
 
-        <nav className="flex-1 space-y-5 overflow-y-auto">
+        <nav className="flex-1 space-y-5 overflow-y-auto pr-2 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
           {navSections.map((section, idx) => (
             <div key={section.label}>
               {idx > 0 && <div className="border-t border-white/5 mb-3" />}
-              <p className="px-4 mb-2 text-[9px] font-black uppercase tracking-[0.2em] text-white/20">{section.label}</p>
-              <div className="space-y-1">
+              <button 
+                onClick={() => toggleSection(section.label)}
+                className="w-full flex items-center justify-between px-4 mb-2 group text-left"
+              >
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/20 group-hover:text-white/40 transition-colors">{section.label}</p>
+                <ChevronDown className={`w-3 h-3 text-white/20 transition-transform duration-300 ${expandedSections[section.label] ? '' : '-rotate-90'}`} />
+              </button>
+              <div 
+                className={`space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${
+                  expandedSections[section.label] ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                }`}
+              >
                 {section.items.map((item) => (
                   <SidebarItem 
                     key={item.label}
