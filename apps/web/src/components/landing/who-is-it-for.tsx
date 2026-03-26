@@ -67,9 +67,9 @@ export function WhoIsItFor() {
     <section className="pt-24 pb-12 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-14">
         {/* Section Header */}
-        <div className="text-center max-w-4xl mx-auto space-y-4">
-          <h2 className="text-2xl sm:text-6xl font-display font-bold tracking-tighter text-white">
-            Who <span className="uppercase text-primary">Gymcentrix</span> Is For
+        <div className="text-center max-w-6xl mx-auto space-y-4">
+          <h2 className="text-2xl uppercase sm:text-7xl font-display font-bold tracking-tighter text-white">
+            Who <span className="text-primary">Gymcentrix</span> Is For
           </h2>
           <p className="text-base sm:text-lg text-white/50 leading-relaxed font-sans">
             Gymcentrix is built to simplify gym operations, automate attendance, and help gym owners manage their business more efficiently.
@@ -78,7 +78,7 @@ export function WhoIsItFor() {
       </div>
 
       {/* Carousel Container */}
-      <div className="relative -mt-8 sm:-mt-12">
+      <div className="relative -mt-8 sm:mt-0">
         {/* Faded Edges */}
         <div className="absolute left-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-r from-canvas via-canvas/90 to-transparent z-10 pointer-events-none hidden sm:block" />
         <div className="absolute right-0 top-0 bottom-0 w-32 sm:w-80 bg-gradient-to-l from-canvas via-canvas/90 to-transparent z-10 pointer-events-none hidden sm:block" />
@@ -108,8 +108,8 @@ export function WhoIsItFor() {
                 </div>
 
                 {/* Content */}
-                <div className="relative z-10 space-y-4">
-                  <h3 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight group-hover:text-primary transition-colors leading-tight">
+                <div className="relative z-10 space-y-4 text-left">
+                  <h3 className="text-3xl sm:text-4xl font-display font-semibold text-white tracking-tight group-hover:text-primary transition-colors leading-tight">
                     {target.title}
                   </h3>
                   <p className="text-sm sm:text-lg text-white/50 leading-relaxed font-sans max-w-sm">

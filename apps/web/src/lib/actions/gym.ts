@@ -50,12 +50,20 @@ export async function registerGym(formData: z.infer<typeof RegisterGymSchema>) {
       }
 
       // Create gym
-      return await tx.gym.create({
+      const newGym = await tx.gym.create({
         data: {
           name,
           ownerId: owner.id,
         },
       });
+
+      // Crucial: Set the gymId on the owner user so session scoping works
+      await tx.user.update({
+        where: { id: owner.id },
+        data: { gymId: newGym.id },
+      });
+
+      return newGym;
     });
 
     revalidatePath("/super-admin/gyms");

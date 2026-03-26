@@ -73,7 +73,7 @@ export function ProblemSection() {
         {/* Header Section */}
         <div className="text-center lg:text-left mb-10 sm:mb-20 space-y-6">
           <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-primary">PROBLEM</h3>
-          <h2 className="text-4xl font-display font-bold tracking-tighter sm:text-7xl leading-[1.1] max-w-9xl mx-auto">
+          <h2 className="text-4xl uppercase font-display font-bold tracking-tighter sm:text-7xl leading-[1.1] max-w-9xl mx-auto">
             Running a Gym <br className="hidden sm:block" />
             <span className="text-white/50">Shouldn&apos;t Be This</span> <span className="text-primary italic">Messy.</span>
           </h2>

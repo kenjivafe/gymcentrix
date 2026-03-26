@@ -381,7 +381,7 @@ export function DashboardPreview() {
         {/* Header */}
         <div className="text-center lg:text-left mb-16 space-y-6">
           <h3 className="text-xs font-bold uppercase tracking-[0.4em] text-primary">LIVE PREVIEW</h3>
-          <h2 className="text-4xl sm:text-7xl font-display font-bold tracking-tighter leading-tight max-w-4xl">
+          <h2 className="text-4xl uppercase sm:text-7xl font-display font-bold tracking-tighter leading-tight max-w-4xl">
             Explore the <span className="text-primary italic">Dashboard</span>
           </h2>
           <p className="text-base sm:text-xl text-white/50 max-w-3xl leading-relaxed font-sans">

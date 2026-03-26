@@ -10,5 +10,8 @@
   "scripts": {
     "build": "prisma generate",
     "generate": "prisma generate"
+  },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
   }
 }
