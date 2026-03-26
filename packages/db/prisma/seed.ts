@@ -42,8 +42,6 @@ async function main() {
     },
   });
 
-  console.log("Users created/verified:", { admin: admin.email, owner: owner.email });
-
   // Create a test Gym
   const testGym = await prisma.gym.upsert({
     where: { id: "test-gym-1" },
@@ -55,7 +53,34 @@ async function main() {
     },
   });
 
-  console.log("Gym created/verified:", { testGym: testGym.name });
+  // Create a Branch
+  const testBranch = await prisma.branch.upsert({
+    where: { id: "test-branch-1" },
+    update: {},
+    create: {
+      id: "test-branch-1",
+      gymId: testGym.id,
+      name: "Main Branch",
+      address: "123 Main St, Metro Manila",
+    },
+  });
+
+  // Create a Test Member
+  const testMember = await prisma.member.upsert({
+    where: { id: "test-member-1" },
+    update: {},
+    create: {
+      id: "test-member-1",
+      gymId: testGym.id,
+      branchId: testBranch.id,
+      name: "John Doe",
+      rfidUid: "1234567890",
+      membershipStatus: "ACTIVE",
+    },
+  });
+
+  console.log("Users created/verified:", { admin: admin.email, owner: owner.email });
+  console.log("Gym/Branch/Member created:", { gym: testGym.name, branch: testBranch.name, member: testMember.name, rfid: testMember.rfidUid });
 }
 
 main()

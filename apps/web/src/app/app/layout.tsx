@@ -2,7 +2,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
-import { AppShell } from "@/components/app/app-shell";
 
 export default async function AppLayout({
   children,
@@ -35,12 +34,8 @@ export default async function AppLayout({
   }
 
   return (
-    <AppShell 
-      userName={session.user?.name} 
-      role={user.role}
-      gymId={user.gymId}
-    >
-        {children}
-    </AppShell>
+    <>
+      {children}
+    </>
   );
 }
