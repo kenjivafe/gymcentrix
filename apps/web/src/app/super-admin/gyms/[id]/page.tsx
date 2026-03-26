@@ -4,9 +4,10 @@ import { Building2, User2, Mail, MapPin, Calendar, GitBranch, Cpu, Activity, Arr
 import { GymDetailsClient } from "@/components/super-admin/gym-details-client";
 import Link from "next/link";
 
-export default async function GymViewPage({ params }: { params: { id: string } }) {
+export default async function GymViewPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
   const gym = await prisma.gym.findUnique({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
     include: {
       owner: true,
       branches: {

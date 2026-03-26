@@ -4,9 +4,10 @@ import { Building2, MapPin, Calendar, GitBranch, Cpu, Activity, User2, ArrowRigh
 import { BranchDetailsClient } from "@/components/super-admin/branch-details-client";
 import Link from "next/link";
 
-export default async function BranchViewPage({ params }: { params: { id: string } }) {
+export default async function BranchViewPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
   const branch = await prisma.branch.findUnique({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
     include: {
       gym: true,
       agents: {
@@ -27,7 +28,7 @@ export default async function BranchViewPage({ params }: { params: { id: string 
 
   // Fetch recent attendance
   const recentAttendance = await prisma.attendance.findMany({
-    where: { branchId: params.id },
+    where: { branchId: resolvedParams.id },
     include: {
       member: true,
       agent: true,

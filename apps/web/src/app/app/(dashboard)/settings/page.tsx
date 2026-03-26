@@ -27,7 +27,7 @@ export default async function AppSettingsPage() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">
            <h2 className="text-3xl font-display font-bold text-white tracking-tight">Facility Settings</h2>
-           <p className="text-sm text-white/40">Manage your gym's identity, administrative security, and billing cluster.</p>
+           <p className="text-sm text-white/40">Manage your gym&apos;s identity, administrative security, and billing cluster.</p>
         </div>
         <button className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold bg-primary text-black hover:shadow-glow transition-all active:scale-95">
           <Save className="w-4 h-4" />
