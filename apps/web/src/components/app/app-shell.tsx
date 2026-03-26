@@ -171,20 +171,22 @@ export function AppShell({
                 <ChevronDown className={`w-3 h-3 text-white/20 transition-transform duration-300 ${expandedSections[section.label] ? '' : '-rotate-90'}`} />
               </button>
               <div 
-                className={`space-y-1 overflow-hidden transition-all duration-300 ease-in-out ${
-                  expandedSections[section.label] ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
+                  expandedSections[section.label] ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
                 }`}
               >
-                {section.items.map((item) => (
-                  <SidebarItem 
-                    key={item.label}
-                    icon={item.icon} 
-                    label={item.label} 
-                    active={isActive(item.href)} 
-                    onClick={closeSidebar} 
-                    href={item.href}
-                  />
-                ))}
+                <div className="overflow-hidden space-y-1">
+                  {section.items.map((item) => (
+                    <SidebarItem 
+                      key={item.label}
+                      icon={item.icon} 
+                      label={item.label} 
+                      active={isActive(item.href)} 
+                      onClick={closeSidebar} 
+                      href={item.href}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           ))}
