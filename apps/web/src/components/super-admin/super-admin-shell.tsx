@@ -148,7 +148,7 @@ export function SuperAdminShell({
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-white/5 bg-[#0A0A0A]/80 md:bg-white/[0.02] backdrop-blur-2xl p-4 md:p-6 space-y-6 md:space-y-8 flex flex-col transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-white/5 bg-[#0A0A0A]/80 md:bg-white/[0.02] backdrop-blur-2xl p-4 md:p-6 pt-[calc(1rem+env(safe-area-inset-top))] md:pt-8 space-y-6 md:space-y-8 flex flex-col transition-transform duration-300 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 md:static md:h-screen`}
       >
@@ -255,7 +255,8 @@ export function SuperAdminShell({
         </header>
 
         {/* View Content */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 pt-[calc(3rem+env(safe-area-inset-top))] md:pt-8 w-full custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 pt-[calc(5rem+env(safe-area-inset-top))] md:pt-8 w-full custom-scrollbar">
+
 
           {children}
         </div>
