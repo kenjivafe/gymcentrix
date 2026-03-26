@@ -104,7 +104,7 @@ export function AppShell({
         className={`fixed top-0 left-0 right-0 ${sidebarOpen ? "z-30" : "z-50"} md:hidden border-b border-white/5 px-4 py-3 backdrop-blur-md bg-white/[0.01] flex justify-between items-center`}
       >
         <div className="flex items-center gap-3">
-            <Image src="/app/gymcentrix-logo.png" alt="Logo" width={20} height={20} className="brightness-0 invert" />
+            <Image src="/app/gymcentrix-logo.png" alt="Logo" width={20} height={20} className="object-contain logo-glow" />
             <span className="font-display font-bold text-white tracking-tighter uppercase">GYMCENTRIX</span>
         </div>
         <button
@@ -132,7 +132,7 @@ export function AppShell({
       >
         <div className="flex justify-between items-center mb-2 md:mb-0">
           <div className="flex items-center gap-3 px-2">
-            <Image src="/app/gymcentrix-logo.png" alt="Logo" width={28} height={28} className="brightness-0 invert" />
+            <Image src="/app/gymcentrix-logo.png" alt="Logo" width={28} height={28} className="object-contain logo-glow" />
             <div className="flex flex-col">
                <span className="font-display font-bold text-white tracking-tighter text-base md:text-lg uppercase leading-tight">GYMCENTRIX</span>
                <span className="text-[8px] font-black uppercase text-primary tracking-[0.2em] leading-tight">
