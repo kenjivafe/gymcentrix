@@ -1,0 +1,31 @@
+{
+  "name": "Gymcentrix",
+  "short_name": "Gymcentrix",
+  "description": "The OS for Modern Gyms – staff and owner dashboard",
+  "start_url": "/app",
+  "scope": "/app/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#87f100",
+  "background_color": "#111111",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
+
+

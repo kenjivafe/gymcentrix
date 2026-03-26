@@ -2,6 +2,21 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
+import type { Metadata } from "next";
+import { PWAManager } from "@/components/app/pwa-manager";
+import { PWAInstallBanner } from "@/components/app/pwa-install-banner";
+
+export const metadata: Metadata = {
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Gymcentrix",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
+};
 
 export default async function AppLayout({
   children,
@@ -30,12 +45,13 @@ export default async function AppLayout({
   if (!user.gymId) {
     // This could happen for new owners who haven't completed onboarding
     // For now, let's redirect or show a setup page if needed
-    // redirect("/onboarding"); 
+    // redirect("/onboarding");
   }
 
   return (
-    <>
+    <PWAManager>
       {children}
-    </>
+      <PWAInstallBanner />
+    </PWAManager>
   );
 }
