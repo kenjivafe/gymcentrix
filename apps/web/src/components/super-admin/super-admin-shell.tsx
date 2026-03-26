@@ -115,7 +115,7 @@ export function SuperAdminShell({
 
       {/* Mobile Header */}
       <header
-        className={`fixed top-0 left-0 right-0 ${sidebarOpen ? "z-30" : "z-50"} md:hidden border-b border-white/5 px-4 py-3 backdrop-blur-md bg-white/[0.01] flex justify-between items-center`}
+        className={`fixed top-0 left-0 right-0 ${sidebarOpen ? "z-30" : "z-50"} md:hidden border-b border-white/5 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))] backdrop-blur-md bg-white/[0.01] flex justify-between items-center`}
       >
         <div className="flex items-center gap-2">
             <Image 
@@ -255,7 +255,8 @@ export function SuperAdminShell({
         </header>
 
         {/* View Content */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 pt-24 md:pt-8 w-full custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 pt-[calc(3rem+env(safe-area-inset-top))] md:pt-8 w-full custom-scrollbar">
+
           {children}
         </div>
       </main>

@@ -112,7 +112,7 @@ export function AppShell({
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
       <header
-        className={`fixed top-0 left-0 right-0 ${sidebarOpen ? "z-30" : "z-50"} md:hidden border-b border-white/5 px-4 py-3 backdrop-blur-md bg-white/[0.01] flex justify-between items-center`}
+        className={`fixed top-0 left-0 right-0 ${sidebarOpen ? "z-30" : "z-50"} md:hidden border-b border-white/5 px-4 pb-3 pt-[calc(0.75rem+env(safe-area-inset-top))] backdrop-blur-md bg-white/[0.01] flex justify-between items-center`}
       >
         <div className="flex items-center gap-3">
             <Image src="/app/gymcentrix-logo.png" alt="Logo" width={20} height={20} className="object-contain logo-glow" />
@@ -221,7 +221,7 @@ export function AppShell({
 
       <main className="flex-1 flex flex-col h-screen overflow-hidden relative z-10 bg-white/[0.01]">
         <header className="hidden md:flex h-16 border-b border-white/5 px-8 items-center justify-between bg-white/[0.02] backdrop-blur-2xl z-20">
-          <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-xl border border-white/5 flex-1 max-w-md">
+          <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-xl border border-white/5 flex-1 max-md">
              <Search className="w-4 h-4 text-white/20 shrink-0" />
              <input 
                type="text" 
@@ -237,7 +237,8 @@ export function AppShell({
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 pt-24 md:pt-8 w-full custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 pt-[calc(3rem+env(safe-area-inset-top))] md:pt-8 w-full custom-scrollbar">
+
           {children}
         </div>
       </main>
