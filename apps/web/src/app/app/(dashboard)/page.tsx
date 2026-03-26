@@ -86,9 +86,9 @@ export default async function AppPage() {
         <StatCard icon={Activity} label="Scan Rate" value="98%" trend="1.2%" trendUp />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         {/* Main Growth Chart (Placeholder) */}
-        <div className="lg:col-span-2 p-8 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-sm relative overflow-hidden group">
+        <div className="lg:col-span-2 p-8 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-sm relative overflow-hidden group h-[450px]">
           <div className="relative z-10 flex flex-col h-full">
             <div className="flex items-center justify-between mb-12">
               <div className="space-y-1">
@@ -114,6 +114,7 @@ export default async function AppPage() {
             </div>
           </div>
         </div>
+
 
         {/* Right column: Recent Activity */}
         <div className="space-y-6">
