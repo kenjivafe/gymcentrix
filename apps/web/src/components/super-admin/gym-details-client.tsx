@@ -23,7 +23,7 @@ export function GymDetailsClient({ gym }: GymDetailsClientProps) {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 relative z-10">
         <div className="space-y-1">
           <div className="flex items-center gap-2 mb-2">
             <Link 

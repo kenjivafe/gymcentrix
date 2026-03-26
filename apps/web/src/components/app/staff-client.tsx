@@ -26,7 +26,8 @@ export function StaffClient({ staff }: StaffClientProps) {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <>
+      <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-1">
            <h2 className="text-3xl font-display font-bold text-white tracking-tight">Staff Management</h2>
@@ -175,8 +176,9 @@ export function StaffClient({ staff }: StaffClientProps) {
           ))}
         </div>
       )}
+      </div>
 
       {isModalOpen && <AddStaffModal onClose={() => setIsModalOpen(false)} />}
-    </div>
+    </>
   );
 }

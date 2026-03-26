@@ -34,7 +34,8 @@ export function MemberClient({ members, branches, gymId }: MemberClientProps) {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <>
+      <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-1">
            <h2 className="text-3xl font-display font-bold text-white tracking-tight">Member Directory</h2>
@@ -163,8 +164,9 @@ export function MemberClient({ members, branches, gymId }: MemberClientProps) {
            ))}
         </div>
       )}
+      </div>
 
       {isModalOpen && <AddMemberModal branches={branches} gymId={gymId} onClose={() => setIsModalOpen(false)} />}
-    </div>
+    </>
   );
 }
