@@ -46,8 +46,9 @@ export function RfidAnimationSection() {
 
   // Cleanup all Object URLs on unmount
   useEffect(() => {
+    const blobs = blobsRef.current;
     return () => {
-      Object.values(blobsRef.current).forEach(url => URL.revokeObjectURL(url));
+      Object.values(blobs).forEach(url => URL.revokeObjectURL(url));
     };
   }, []);
 
@@ -121,7 +122,7 @@ export function RfidAnimationSection() {
       window.removeEventListener('click', activateVideo);
       cancelAnimationFrame(rafId);
     };
-  }, [videoSrc]);
+  }, [videoSrc, isMobile]);
 
   return (
     <section id="features" ref={containerRef} className="h-[300vh] relative bg-black">
