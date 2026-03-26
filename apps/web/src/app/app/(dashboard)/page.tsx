@@ -52,7 +52,7 @@ export default async function AppPage() {
     }),
     prisma.attendance.findMany({
       where: { branch: { gymId } },
-      take: 5,
+      take: 10,
       orderBy: { timestamp: "desc" },
       include: {
         member: true,
@@ -122,7 +122,7 @@ export default async function AppPage() {
                <h6 className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Recent Tap Events</h6>
                <Link href="/app/attendance" className="text-[10px] font-bold text-primary hover:underline">View All</Link>
              </div>
-             <div className="space-y-6">
+             <div className="space-y-6 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
                 {recentAttendance.length === 0 ? (
                   <p className="text-xs text-white/20 italic">No tap events recorded today.</p>
                 ) : (
@@ -142,6 +142,7 @@ export default async function AppPage() {
                   ))
                 )}
              </div>
+
            </div>
 
            {/* Branch Health Status (Preview) */}
