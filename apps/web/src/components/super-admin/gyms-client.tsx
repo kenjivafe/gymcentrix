@@ -11,7 +11,7 @@ interface GymsClientProps {
 
 export function GymsClient({ gyms }: GymsClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [view, setView] = useState<'table' | 'cards'>('table');
+  const [view, setView] = useState<'table' | 'cards'>('cards');
 
   return (
     <>
