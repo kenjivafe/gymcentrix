@@ -71,19 +71,7 @@ export default async function DashboardBranchesPage() {
                         </div>
                         
                         <div className="flex flex-col items-end gap-2">
-                          {/* Hardware Health Badge (Always visible) */}
-                           {!isLocked && (
-                            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border shadow-glow-sm whitespace-nowrap ${
-                                branch.agents.some(a => a.status === 'ONLINE')
-                                  ? 'bg-emerald-400/10 text-emerald-400 border-emerald-400/20'
-                                  : 'bg-rose-400/10 text-rose-400 border-rose-400/20'
-                            }`}>
-                                <div className={`w-1 h-1 rounded-full ${branch.agents.some(a => a.status === 'ONLINE') ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
-                                <span className="leading-none mt-[0.5px]">
-                                  {branch.agents.some(a => a.status === 'ONLINE') ? 'Operational' : 'Offline'}
-                                </span>
-                            </span>
-                          )}
+                          {/* Hardware Health Badge has been moved to the absolute stack at the bottom of card block */}
                         </div>
                       </div>
 
@@ -124,12 +112,12 @@ export default async function DashboardBranchesPage() {
                   </div>
                 </div>
 
-                {/* Status Badges - Rendered AFTER overlay to prevent blur */}
+                {/* Status Badges Stack - Rendered AFTER overlay to prevent blur and consolidated to prevent overlap */}
                 <div className="absolute top-8 right-8 flex flex-col items-end gap-2 z-50 pointer-events-none">
                    {isLocked && (
-                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-glow-sm backdrop-blur-none">
-                        <Lock className="w-3 h-3 text-rose-400" />
-                        <span className="text-[10px] font-black text-rose-400 uppercase tracking-widest leading-none">Locked</span>
+                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 shadow-glow-sm backdrop-blur-none">
+                        <Lock className="w-3 h-3 text-white/40" />
+                        <span className="text-[10px] font-black text-white/60 uppercase tracking-widest leading-none">Locked</span>
                       </div>
                     )}
 
@@ -138,6 +126,20 @@ export default async function DashboardBranchesPage() {
                         <Activity className="w-3 h-3 text-primary animate-pulse" />
                         <span className="text-[10px] font-black text-primary uppercase tracking-widest leading-none">Active Branch</span>
                       </div>
+                    )}
+
+                    {/* Hardware Health Badge (Consolidated into the stack) */}
+                    {!isLocked && (
+                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border shadow-glow-sm backdrop-blur-none whitespace-nowrap ${
+                          branch.agents.some(a => a.status === 'ONLINE')
+                            ? 'bg-emerald-400/10 text-emerald-400 border-emerald-400/20'
+                            : 'bg-rose-400/10 text-rose-400 border-rose-400/20'
+                      }`}>
+                          <div className={`w-1 h-1 rounded-full ${branch.agents.some(a => a.status === 'ONLINE') ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
+                          <span className="leading-none mt-[0.5px]">
+                            {branch.agents.some(a => a.status === 'ONLINE') ? 'Operational' : 'Offline'}
+                          </span>
+                      </span>
                     )}
                 </div>
 
