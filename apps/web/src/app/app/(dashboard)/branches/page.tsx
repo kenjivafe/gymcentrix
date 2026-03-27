@@ -38,6 +38,7 @@ export default async function DashboardBranchesPage() {
 
   const dbActiveBranchId = (gym as any)?.activeBranchId || (gym as any)?.activebranchid;
   const effectiveActiveId = dbActiveBranchId || branches[0]?.id;
+  const currentActiveBranchName = branches.find(b => b.id === effectiveActiveId)?.name;
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -164,6 +165,7 @@ export default async function DashboardBranchesPage() {
                         gymId={gymId} 
                         branchId={branch.id} 
                         branchName={branch.name}
+                        currentActiveBranchName={currentActiveBranchName}
                       />
                     </div>
                   </>

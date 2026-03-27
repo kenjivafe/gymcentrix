@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X, UserPlus, CreditCard, Building2, Calendar, Loader2, ChevronRight } from "lucide-react";
 import { registerMember } from "@/lib/actions/member";
 
@@ -11,7 +12,12 @@ interface AddMemberModalProps {
 }
 
 export function AddMemberModal({ branches, gymId, onClose }: AddMemberModalProps) {
+  const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -39,8 +45,10 @@ export function AddMemberModal({ branches, gymId, onClose }: AddMemberModalProps
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 bg-black/80 backdrop-blur-xl animate-in fade-in duration-300">
+  if (!mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 md:p-6 bg-black/80 backdrop-blur-xl animate-in fade-in duration-300">
       <div className="w-full max-w-lg bg-[#0A0A0A] border border-white/5 rounded-[2.5rem] shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-500">
          <div className="absolute top-0 right-0 p-8 opacity-5">
             <UserPlus className="w-32 h-32 text-white" />
@@ -104,6 +112,7 @@ export function AddMemberModal({ branches, gymId, onClose }: AddMemberModalProps
             </form>
          </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

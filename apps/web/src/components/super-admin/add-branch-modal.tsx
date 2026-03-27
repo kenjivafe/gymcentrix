@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X, Loader2, Building2, MapPin, GitBranch } from "lucide-react";
 import { registerBranch } from "@/lib/actions/branch";
 
@@ -16,7 +17,12 @@ interface AddBranchModalProps {
 }
 
 export function AddBranchModal({ onClose, gyms = [], defaultGymId }: AddBranchModalProps) {
+  const [mounted, setMounted] = useState(false);
   const [isPending, setIsPending] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
@@ -47,8 +53,10 @@ export function AddBranchModal({ onClose, gyms = [], defaultGymId }: AddBranchMo
     }
   }
 
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
+  if (!mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
       <div className="w-full max-w-lg bg-[#0A0A0A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
         <div className="relative p-8">
           <button 
@@ -162,6 +170,7 @@ export function AddBranchModal({ onClose, gyms = [], defaultGymId }: AddBranchMo
           </form>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
