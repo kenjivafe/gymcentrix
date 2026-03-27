@@ -39,13 +39,6 @@ export default async function DashboardBranchesPage() {
   const dbActiveBranchId = (gym as any)?.activeBranchId || (gym as any)?.activebranchid;
   const effectiveActiveId = dbActiveBranchId || branches[0]?.id;
 
-  console.log("Branches page debugging:", {
-    gymId,
-    dbActiveBranchId,
-    firstBranchId: branches[0]?.id,
-    effectiveActiveId,
-  });
-
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -170,6 +163,7 @@ export default async function DashboardBranchesPage() {
                       <ActivateBranchButton 
                         gymId={gymId} 
                         branchId={branch.id} 
+                        branchName={branch.name}
                       />
                     </div>
                   </>

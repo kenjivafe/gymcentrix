@@ -4,6 +4,8 @@ import { Building2, MapPin, Calendar, GitBranch, Cpu, Activity, User2, ArrowRigh
 import { BranchDetailsClient } from "@/components/super-admin/branch-details-client";
 import Link from "next/link";
 
+export const dynamic = 'force-dynamic';
+
 export default async function BranchViewPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const branch = await prisma.branch.findUnique({
@@ -33,8 +35,27 @@ export default async function BranchViewPage({ params }: { params: Promise<{ id:
 
   if (!branch) notFound();
 
-  const effectiveActiveId = (branch.gym as any).activeBranchId || branch.gym.branches[0]?.id;
-  const isLocked = branch.gym.plan !== 'ENTERPRISE' && branch.id !== effectiveActiveId;
+  // Use raw query for gym because Prisma Client might be out of sync on Windows (missing 'plan' or 'activeBranchId')
+  const gyms = await (prisma as any).$queryRawUnsafe(
+    'SELECT * FROM "Gym" WHERE id = $1',
+    branch.gymId
+  );
+  const rawGym = gyms[0];
+
+  const dbActiveBranchId = rawGym?.activeBranchId || rawGym?.activebranchid;
+  const effectiveActiveId = dbActiveBranchId || branch.gym.branches[0]?.id;
+  const isLocked = rawGym?.plan !== 'ENTERPRISE' && branch.id !== effectiveActiveId;
+
+  // Enhance the branch object with the raw gym data for the UI
+  const enhancedBranch = {
+    ...branch,
+    gym: {
+      ...branch.gym,
+      ...rawGym,
+      activeBranchId: dbActiveBranchId,
+      plan: rawGym?.plan
+    }
+  };
 
   // Fetch recent attendance
   const recentAttendance = await prisma.attendance.findMany({
@@ -51,7 +72,7 @@ export default async function BranchViewPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
-      <BranchDetailsClient branch={branch as any} isLocked={isLocked} />
+      <BranchDetailsClient branch={enhancedBranch as any} isLocked={isLocked} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Stats & Info */}

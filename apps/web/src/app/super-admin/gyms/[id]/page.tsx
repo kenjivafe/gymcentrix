@@ -87,7 +87,7 @@ export default async function GymViewPage({ params }: { params: Promise<{ id: st
                 <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-2">Agents</p>
                 <div className="flex items-end justify-between">
                    <h4 className="text-2xl font-display font-bold text-white">
-                      {gym.branches.reduce((acc, b) => acc + b._count.agents, 0)}
+                      {gym.branches.reduce((acc: number, b: any) => acc + b._count.agents, 0)}
                    </h4>
                    <Cpu className="w-5 h-5 text-primary/40" />
                 </div>
@@ -127,7 +127,7 @@ export default async function GymViewPage({ params }: { params: Promise<{ id: st
                    <p className="text-xs text-white/20 uppercase tracking-[0.2em] font-black mb-6">No Active Branches Found</p>
                 </div>
               ) : (() => {
-                const sortedBranches = [...gym.branches].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+                const sortedBranches = [...gym.branches].sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
                 const effectiveActiveId = (gym as any).activeBranchId || sortedBranches[0]?.id;
 
                 return sortedBranches.map((branch) => {
