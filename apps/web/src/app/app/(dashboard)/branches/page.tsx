@@ -144,7 +144,7 @@ export default async function DashboardBranchesPage() {
                 </div>
 
                 {isLocked && (
-                  <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-[2.5rem] z-30">
+                  <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-[2.5rem] z-30 select-none cursor-default">
                     <div className="flex flex-col items-center gap-3">
                        <p className="text-[10px] font-black text-white uppercase tracking-[0.2em] bg-black/80 px-6 py-3 rounded-full border border-white/10 shadow-glow-sm truncate max-w-[280px]">Enterprise Plan Required</p>
                        <p className="text-[8px] font-bold text-primary uppercase tracking-widest whitespace-nowrap">Upgrade to Enterprise to manage multiple branches</p>
@@ -158,7 +158,7 @@ export default async function DashboardBranchesPage() {
 
         {/* Add Branch Card (Always visible, state depends on plan) */}
         {branches.length > 0 && (
-          <div className="relative group pointer-events-none md:pointer-events-auto">
+          <div className="relative group cursor-pointer md:cursor-default">
             <div className={`p-8 rounded-[2.5rem] border border-dashed transition-all duration-500 h-full flex flex-col items-center justify-center text-center gap-6 ${
               (gym as any)?.plan !== 'ENTERPRISE'
                 ? 'bg-white/[0.01] border-white/5 grayscale opacity-50'
@@ -169,14 +169,14 @@ export default async function DashboardBranchesPage() {
               }`}>
                 <Plus className="w-8 h-8" />
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 select-none">
                 <p className="text-xl font-display font-bold text-white tracking-tight">Expand Infrastructure</p>
                 <p className="text-[10px] text-white/20 uppercase tracking-[0.3em] font-black">Add New Branch</p>
               </div>
             </div>
 
             {(gym as any)?.plan !== 'ENTERPRISE' && (
-              <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-[2.5rem] z-30">
+              <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-[2.5rem] z-30 select-none cursor-default">
                 <div className="flex flex-col items-center gap-3">
                    <p className="text-[10px] font-black text-white uppercase tracking-[0.2em] bg-black/80 px-6 py-3 rounded-full border border-white/10 shadow-glow-sm truncate max-w-[280px]">Enterprise Plan Required</p>
                    <p className="text-[8px] font-bold text-primary uppercase tracking-widest whitespace-nowrap">Upgrade to Enterprise to add new branch</p>
