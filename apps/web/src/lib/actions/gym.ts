@@ -9,6 +9,7 @@ const RegisterGymSchema = z.object({
   name: z.string().min(2, "Gym name must be at least 2 characters"),
   ownerName: z.string().min(2, "Owner name must be at least 2 characters"),
   ownerEmail: z.string().email("Invalid owner email address"),
+  plan: z.enum(["BASIC", "PRO", "ENTERPRISE"]).default("BASIC"),
 });
 
 export async function registerGym(formData: z.infer<typeof RegisterGymSchema>) {
@@ -18,7 +19,7 @@ export async function registerGym(formData: z.infer<typeof RegisterGymSchema>) {
     return { error: result.error.flatten().fieldErrors };
   }
 
-  const { name, ownerName, ownerEmail } = result.data;
+  const { name, ownerName, ownerEmail, plan } = result.data;
 
   try {
     // 1. Atomic transaction to create/update owner and create gym
@@ -54,6 +55,7 @@ export async function registerGym(formData: z.infer<typeof RegisterGymSchema>) {
         data: {
           name,
           ownerId: owner.id,
+          plan,
         },
       });
 
@@ -78,6 +80,7 @@ const UpdateGymSchema = z.object({
   name: z.string().min(2, "Gym name must be at least 2 characters"),
   ownerName: z.string().min(2, "Owner name must be at least 2 characters"),
   ownerEmail: z.string().email("Invalid owner email address"),
+  plan: z.enum(["BASIC", "PRO", "ENTERPRISE"]),
 });
 
 export async function updateGym(formData: z.infer<typeof UpdateGymSchema>) {
@@ -87,13 +90,13 @@ export async function updateGym(formData: z.infer<typeof UpdateGymSchema>) {
     return { error: result.error.flatten().fieldErrors };
   }
 
-  const { id, name, ownerName, ownerEmail } = result.data;
+  const { id, name, ownerName, ownerEmail, plan } = result.data;
 
   try {
     await prisma.$transaction([
       prisma.gym.update({
         where: { id },
-        data: { name },
+        data: { name, plan },
       }),
       prisma.user.update({
         where: { id: (await prisma.gym.findUnique({ where: { id }, select: { ownerId: true } }))?.ownerId },

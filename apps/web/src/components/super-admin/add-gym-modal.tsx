@@ -20,6 +20,7 @@ export function AddGymModal({ onClose }: { onClose: () => void }) {
       name: formData.get("name") as string,
       ownerName: formData.get("ownerName") as string,
       ownerEmail: formData.get("ownerEmail") as string,
+      plan: formData.get("plan") as any,
     };
 
     const result = await registerGym(data);
@@ -103,7 +104,32 @@ export function AddGymModal({ onClose }: { onClose: () => void }) {
                   {fieldErrors.ownerEmail && <p className="text-[10px] text-rose-400 font-bold mt-1 ml-1">{fieldErrors.ownerEmail[0]}</p>}
                 </div>
               </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Subscription Plan</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {["BASIC", "PRO", "ENTERPRISE"].map((p) => (
+                    <label key={p} className="relative cursor-pointer group">
+                      <input
+                        type="radio"
+                        name="plan"
+                        value={p}
+                        defaultChecked={p === "BASIC"}
+                        className="peer sr-only"
+                      />
+                      <div className="flex flex-col items-center justify-center py-3 px-2 rounded-2xl bg-white/5 border border-white/10 peer-checked:bg-primary/10 peer-checked:border-primary/40 group-hover:bg-white/10 transition-all">
+                        <span className={`text-[9px] font-black tracking-widest uppercase transition-colors ${
+                          p === "BASIC" ? "text-slate-400" : p === "PRO" ? "text-primary" : "text-violet-400"
+                        }`}>
+                          {p}
+                        </span>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </div>
             </div>
+
 
             {error && (
               <div className="p-4 rounded-xl bg-rose-400/10 border border-rose-400/20 text-rose-400 text-xs font-bold text-center">

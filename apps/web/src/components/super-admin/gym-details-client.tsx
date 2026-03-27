@@ -14,6 +14,7 @@ interface GymDetailsClientProps {
       name: string;
       email: string;
     };
+    plan: "BASIC" | "PRO" | "ENTERPRISE";
   };
 }
 
@@ -36,8 +37,18 @@ export function GymDetailsClient({ gym }: GymDetailsClientProps) {
             <span className="text-white/10">/</span>
             <span className="text-[10px] font-black uppercase tracking-widest text-primary">Details</span>
           </div>
-          <h2 className="text-3xl font-display font-bold text-white tracking-tight">{gym.name}</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-3xl font-display font-bold text-white tracking-tight">{gym.name}</h2>
+            <span className={`px-2 py-0.5 rounded-md text-[8px] font-black border uppercase tracking-[0.2em] mt-1 ${
+              gym.plan === 'ENTERPRISE' ? 'bg-violet-500/10 text-violet-400 border-violet-500/20' :
+              gym.plan === 'PRO' ? 'bg-primary/10 text-primary border-primary/20' :
+              'bg-slate-400/10 text-slate-400 border-slate-400/20'
+            }`}>
+              {gym.plan} Plan
+            </span>
+          </div>
           <p className="text-[10px] text-white/20 font-mono uppercase tracking-[0.2em] mt-0.5">Gym Cluster ID: {gym.id}</p>
+
         </div>
         
         <div className="flex items-center gap-3">

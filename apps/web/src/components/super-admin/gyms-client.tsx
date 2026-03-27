@@ -71,6 +71,7 @@ export function GymsClient({ gyms }: GymsClientProps) {
               <tr className="border-b border-white/5 bg-white/[0.02]">
                 <th className="px-6 py-4 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] leading-tight">Gym Facility</th>
                 <th className="px-6 py-4 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] leading-tight">Identity</th>
+                <th className="px-6 py-4 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] leading-tight">Subscription</th>
                 <th className="px-6 py-4 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] leading-tight">Deployment</th>
                 <th className="px-6 py-4 text-[10px] font-black text-white/40 uppercase tracking-[0.2em] leading-tight hidden xl:table-cell">Status</th>
                 <th className="px-6 py-4 text-right text-[10px] font-black text-white/40 uppercase tracking-[0.2em] leading-tight">Control</th>
@@ -96,6 +97,15 @@ export function GymsClient({ gyms }: GymsClientProps) {
                     </div>
                   </td>
                   <td className="px-6 py-4">
+                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black border uppercase tracking-widest ${
+                        gym.plan === 'ENTERPRISE' ? 'bg-violet-500/10 text-violet-400 border-violet-500/20' :
+                        gym.plan === 'PRO' ? 'bg-primary/10 text-primary border-primary/20' :
+                        'bg-slate-400/10 text-slate-400 border-slate-400/20'
+                     }`}>
+                        {gym.plan}
+                     </span>
+                  </td>
+                  <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                        <Calendar className="w-4 h-4 text-white/20" />
                        <span className="text-xs font-bold text-white/40 uppercase tracking-widest">{new Date(gym.createdAt).toLocaleDateString()}</span>
@@ -118,6 +128,7 @@ export function GymsClient({ gyms }: GymsClientProps) {
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
       ) : (
@@ -128,21 +139,31 @@ export function GymsClient({ gyms }: GymsClientProps) {
                   <Building2 className="w-24 h-24 text-white" />
                </div>
 
-               <div className="relative z-10 space-y-8">
+                <div className="relative z-10 space-y-8">
                   <div className="flex items-start justify-between">
                      <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary/20 transition-all duration-500 shadow-glow-sm">
                         <Building2 className="w-7 h-7 text-white/40 group-hover:text-primary transition-colors" />
                      </div>
-                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black bg-emerald-400/10 text-emerald-400 border border-emerald-400/20 uppercase tracking-[0.2em]">
-                        <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-                        Online
-                     </span>
+                     <div className="flex flex-col items-end gap-2">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black bg-emerald-400/10 text-emerald-400 border border-emerald-400/20 uppercase tracking-[0.2em]">
+                           <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                           Online
+                        </span>
+                        <span className={`px-2 py-0.5 rounded-md text-[8px] font-black border uppercase tracking-[0.2em] ${
+                           gym.plan === 'ENTERPRISE' ? 'bg-violet-500/10 text-violet-400 border-violet-500/20' :
+                           gym.plan === 'PRO' ? 'bg-primary/10 text-primary border-primary/20' :
+                           'bg-slate-400/10 text-slate-400 border-slate-400/20'
+                        }`}>
+                           {gym.plan} Plan
+                        </span>
+                     </div>
                   </div>
 
                   <div>
                      <h3 className="text-xl font-display font-bold text-white group-hover:text-primary transition-colors tracking-tight">{gym.name}</h3>
                      <p className="text-[10px] text-white/20 uppercase tracking-[0.3em] font-black mt-1">Tenant Facility Cluster</p>
                   </div>
+
 
                   <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
                      <div className="space-y-1">
