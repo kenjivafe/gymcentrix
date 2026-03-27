@@ -44,9 +44,9 @@ export function AppShell({
       label: "Operations",
       items: [
         { label: "Overview", icon: LayoutDashboard, href: "/app" as Route },
+        { label: "Branches", icon: GitBranch, href: "/app/branches" as Route },
         { label: "Members", icon: Users, href: "/app/members" as Route },
         { label: "Attendance", icon: History, href: "/app/attendance" as Route },
-        { label: "Branches", icon: GitBranch, href: "/app/branches" as Route },
         { label: "Kiosk", icon: Monitor, href: "/app/kiosk" as Route },
       ],
     },
