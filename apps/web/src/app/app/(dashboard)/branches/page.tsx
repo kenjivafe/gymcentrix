@@ -70,24 +70,9 @@ export default async function DashboardBranchesPage() {
                             <Building2 className="w-7 h-7" />
                         </div>
                         
-                        <div className="flex flex-col items-end gap-2 relative z-40">
-                          {/* Subscription Tier Status Badge */}
-                          {isLocked && (
-                            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-glow-sm">
-                              <Lock className="w-3 h-3 text-rose-400" />
-                              <span className="text-[10px] font-black text-rose-400 uppercase tracking-widest leading-none">Locked</span>
-                            </div>
-                          )}
-
-                          {isActive && !isLocked && (gym as any)?.plan !== 'ENTERPRISE' && (
-                            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 shadow-glow-sm">
-                              <Activity className="w-3 h-3 text-primary animate-pulse" />
-                              <span className="text-[10px] font-black text-primary uppercase tracking-widest leading-none">Active Branch</span>
-                            </div>
-                          )}
-
-                          {/* Operational Status Badge */}
-                          {!isLocked && (
+                        <div className="flex flex-col items-end gap-2">
+                          {/* Hardware Health Badge (Always visible) */}
+                           {!isLocked && (
                             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border shadow-glow-sm whitespace-nowrap ${
                                 branch.agents.some(a => a.status === 'ONLINE')
                                   ? 'bg-emerald-400/10 text-emerald-400 border-emerald-400/20'
@@ -102,17 +87,15 @@ export default async function DashboardBranchesPage() {
                         </div>
                       </div>
 
-                      <div>
-                        <h3 className={`text-xl font-display font-bold transition-colors tracking-tight ${
-                          isLocked ? 'text-white/20' : 'text-white group-hover:text-primary'
-                        }`}>{branch.name}</h3>
-                        <p className="text-[10px] text-white/20 uppercase tracking-[0.3em] font-black mt-1 flex items-center gap-2">
+                      <div className="space-y-1 mt-6">
+                        <p className="text-xl font-display font-medium text-white tracking-tight">{branch.name}</p>
+                        <p className="text-[10px] text-white/40 flex items-center gap-1.5 font-medium">
                             <MapPin className="w-3 h-3" />
                             {branch.address || 'Location Pending'}
                         </p>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+                      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5 mt-4">
                         <div className="space-y-1">
                             <p className="text-[9px] font-black text-white/20 uppercase tracking-widest">Identity</p>
                             <p className="text-[10px] font-mono text-white/40 truncate">{branch.id}</p>
@@ -123,25 +106,39 @@ export default async function DashboardBranchesPage() {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5">
+                      <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 mt-4">
                         <div className="flex-1">
                             <p className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">Hardware Nodes</p>
                             <div className="flex items-center gap-1.5">
                               {branch.agents.length === 0 ? (
-                                <span className="text-[10px] text-white/20 italic">No agents registered</span>
+                                <p className="text-[10px] font-black text-white/10 uppercase tracking-tighter">No Agents Configured</p>
                               ) : (
-                                branch.agents.map(agent => (
-                                  <div key={agent.id} className={`w-2 h-2 rounded-full ${agent.status === 'ONLINE' ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]' : 'bg-white/10'}`} title={agent.name} />
-                                ))
+                                <p className="text-xs font-bold text-white/60">{branch.agents.length} Registered Agents</p>
                               )}
                             </div>
                         </div>
-                        <div className="text-right">
-                            <p className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">Scan Count</p>
-                            <p className="text-[10px] font-bold text-white/60">{branch._count.attendance}</p>
+                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/5">
+                           <Activity className="w-4 h-4 text-white/20" />
                         </div>
                       </div>
                   </div>
+                </div>
+
+                {/* Status Badges - Rendered AFTER overlay to prevent blur */}
+                <div className="absolute top-8 right-8 flex flex-col items-end gap-2 z-50 pointer-events-none">
+                   {isLocked && (
+                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-glow-sm backdrop-blur-none">
+                        <Lock className="w-3 h-3 text-rose-400" />
+                        <span className="text-[10px] font-black text-rose-400 uppercase tracking-widest leading-none">Locked</span>
+                      </div>
+                    )}
+
+                    {isActive && !isLocked && (gym as any)?.plan !== 'ENTERPRISE' && (
+                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 shadow-glow-sm backdrop-blur-none">
+                        <Activity className="w-3 h-3 text-primary animate-pulse" />
+                        <span className="text-[10px] font-black text-primary uppercase tracking-widest leading-none">Active Branch</span>
+                      </div>
+                    )}
                 </div>
 
                 {isLocked && (
