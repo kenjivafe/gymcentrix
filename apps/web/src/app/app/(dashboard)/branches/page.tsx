@@ -155,7 +155,7 @@ export default async function DashboardBranchesPage() {
                        <div className="pt-2 border-t border-white/5 w-full flex justify-center">
                           <ActivateBranchButton 
                             gymId={gymId} 
-                            branchId={branchId} 
+                            branchId={branch.id} 
                           />
                        </div>
                     </div>
