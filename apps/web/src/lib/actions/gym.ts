@@ -126,8 +126,14 @@ export async function setActiveBranch(gymId: string, branchId: string) {
     revalidatePath(`/super-admin/gyms/${gymId}`);
     revalidatePath("/app/branches");
     return { success: true };
-  } catch (error) {
-    console.error("Set active branch error:", error);
-    return { error: "Failed to set active branch." };
+  } catch (error: any) {
+    console.error("Set active branch error:", {
+      message: error.message,
+      code: error.code,
+      meta: error.meta,
+      gymId,
+      branchId
+    });
+    return { error: `Failed to set active branch: ${error.message || 'Unknown error'}` };
   }
 }

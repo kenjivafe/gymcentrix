@@ -152,7 +152,7 @@ export default async function DashboardBranchesPage() {
                           <p className="text-[8px] font-bold text-primary uppercase tracking-widest whitespace-nowrap">Upgrade to Enterprise to manage multiple branches</p>
                        </div>
                        
-                       <div className="pt-2 border-t border-white/5 w-full flex justify-center">
+                       <div className="pt-12 border-t border-white/5 w-full flex justify-center mt-4">
                           <ActivateBranchButton 
                             gymId={gymId} 
                             branchId={branch.id} 
