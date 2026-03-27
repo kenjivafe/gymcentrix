@@ -179,7 +179,7 @@ export default async function DashboardBranchesPage() {
                 <Plus className="w-8 h-8" />
               </div>
               <div className="space-y-1 select-none">
-                <p className="text-xl font-display font-bold text-white tracking-tight">Expand Infrastructure</p>
+                {/* <p className="text-xl font-display font-bold text-white tracking-tight">Expand Infrastructure</p> */}
                 <p className="text-[10px] text-white/20 uppercase tracking-[0.3em] font-black">Add New Branch</p>
               </div>
             </div>

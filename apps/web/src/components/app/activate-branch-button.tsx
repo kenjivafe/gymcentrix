@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { Power } from "lucide-react";
 import { setActiveBranch } from "@/lib/actions/gym";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface ActivateBranchButtonProps {
   gymId: string;
@@ -13,12 +14,16 @@ interface ActivateBranchButtonProps {
 
 export function ActivateBranchButton({ gymId, branchId, className }: ActivateBranchButtonProps) {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const handleActivate = () => {
     startTransition(async () => {
       const result = await setActiveBranch(gymId, branchId);
       if (result.error) {
         alert(result.error);
+      } else {
+        // Force a UI refresh to reflect the new active branch
+        router.refresh();
       }
     });
   };

@@ -118,14 +118,19 @@ export async function updateGym(formData: z.infer<typeof UpdateGymSchema>) {
 
 export async function setActiveBranch(gymId: string, branchId: string) {
   try {
-    await prisma.gym.update({
-      where: { id: gymId },
-      data: { activeBranchId: branchId } as any
-    });
+    // Note: We use a raw query here to bypass Prisma Client's internal validation,
+    // which may be out of sync due to persistent Windows file-locks on the binary.
+    const result = await (prisma as any).$executeRawUnsafe(
+      'UPDATE "Gym" SET "activeBranchId" = $1, "updatedAt" = NOW() WHERE "id" = $2',
+      branchId,
+      gymId
+    );
+
+    console.log("Active branch update result:", { result, gymId, branchId });
 
     revalidatePath(`/super-admin/gyms/${gymId}`);
     revalidatePath("/app/branches");
-    return { success: true };
+    return { success: true, affectedRows: result };
   } catch (error: any) {
     console.error("Set active branch error:", {
       message: error.message,
