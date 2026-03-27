@@ -78,7 +78,7 @@ export function ActivateBranchButton({ gymId, branchId, branchName, currentActiv
               
               <h3 className="text-xl font-display font-bold text-white mb-2 tracking-tight">Activate Facility</h3>
               <p className="text-xs text-white/40 leading-relaxed font-medium mb-6">
-                This action is destructive and will immediately suspend operations for your other facilities. Upon confirmation, <strong className="text-white">{currentActiveBranchName ? `the currently active branch (${currentActiveBranchName})` : 'your other branches'}</strong> will be set to <span className="text-rose-400 font-bold">locked/inactive</span> and its API access revoked until upgraded to the Enterprise tier.
+                The current active branch <strong className="text-white">{currentActiveBranchName ? `(${currentActiveBranchName})` : ''}</strong> will be set to <span className="text-rose-400 font-bold">locked/inactive</span>. Its API access will be suspended until your gym upgrades to the Enterprise tier.
               </p>
 
               <div className="space-y-4">
