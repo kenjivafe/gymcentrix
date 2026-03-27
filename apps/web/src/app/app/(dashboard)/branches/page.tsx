@@ -61,41 +61,44 @@ export default async function DashboardBranchesPage() {
                     ? 'bg-white/[0.01] border-white/5 grayscale opacity-50' 
                     : 'bg-white/[0.02] border-white/5 hover:border-primary/20 hover:bg-primary/[0.02]'
                 }`}>
-                  <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <GitBranch className="w-24 h-24 text-white" />
-                  </div>
-
-                  {isLocked && (
-                    <div className="absolute top-6 right-8 flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 z-20">
-                      <Lock className="w-3 h-3 text-rose-400" />
-                      <span className="text-[10px] font-black text-rose-400 uppercase tracking-widest">Locked</span>
-                    </div>
-                  )}
-
-                  {isActive && !isLocked && (gym as any)?.plan !== 'ENTERPRISE' && (
-                    <div className="absolute top-6 right-8 flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 z-20 shadow-glow-sm">
-                      <Activity className="w-3 h-3 text-primary animate-pulse" />
-                      <span className="text-[10px] font-black text-primary uppercase tracking-widest">Active Branch</span>
-                    </div>
-                  )}
-
                   <div className="relative z-10 space-y-8">
-                      <div className="flex items-start justify-between">
+                      <div className="flex items-start justify-between gap-4">
                         <div className={`w-14 h-14 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center transition-all duration-500 shadow-glow-sm ${
                           !isLocked && 'group-hover:bg-primary/10 group-hover:border-primary/20 text-white/40 group-hover:text-primary'
                         }`}>
                             <Building2 className="w-7 h-7" />
                         </div>
-                        {!isLocked && (
-                          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border ${
-                              branch.agents.some(a => a.status === 'ONLINE')
-                                ? 'bg-emerald-400/10 text-emerald-400 border-emerald-400/20'
-                                : 'bg-rose-400/10 text-rose-400 border-rose-400/20'
-                          }`}>
-                              <div className={`w-1 h-1 rounded-full ${branch.agents.some(a => a.status === 'ONLINE') ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
-                              {branch.agents.some(a => a.status === 'ONLINE') ? 'Operational' : 'Offline'}
-                          </span>
-                        )}
+                        
+                        <div className="flex flex-col items-end gap-2">
+                          {/* Subscription Tier Status Badge */}
+                          {isLocked && (
+                            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-glow-sm">
+                              <Lock className="w-3 h-3 text-rose-400" />
+                              <span className="text-[10px] font-black text-rose-400 uppercase tracking-widest leading-none">Locked</span>
+                            </div>
+                          )}
+
+                          {isActive && !isLocked && (gym as any)?.plan !== 'ENTERPRISE' && (
+                            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 shadow-glow-sm">
+                              <Activity className="w-3 h-3 text-primary animate-pulse" />
+                              <span className="text-[10px] font-black text-primary uppercase tracking-widest leading-none">Active Branch</span>
+                            </div>
+                          )}
+
+                          {/* Operational Status Badge */}
+                          {!isLocked && (
+                            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border shadow-glow-sm whitespace-nowrap ${
+                                branch.agents.some(a => a.status === 'ONLINE')
+                                  ? 'bg-emerald-400/10 text-emerald-400 border-emerald-400/20'
+                                  : 'bg-rose-400/10 text-rose-400 border-rose-400/20'
+                            }`}>
+                                <div className={`w-1 h-1 rounded-full ${branch.agents.some(a => a.status === 'ONLINE') ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
+                                <span className="leading-none mt-[0.5px]">
+                                  {branch.agents.some(a => a.status === 'ONLINE') ? 'Operational' : 'Offline'}
+                                </span>
+                            </span>
+                          )}
+                        </div>
                       </div>
 
                       <div>
