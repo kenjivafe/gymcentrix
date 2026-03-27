@@ -24,16 +24,7 @@ export function GymsClient({ gyms }: GymsClientProps) {
         
         <div className="flex items-center gap-3">
            {/* View Toggle */}
-           <div className="flex items-center p-1 bg-white/5 border border-white/10 rounded-xl overflow-hidden shrink-0">
-              <button 
-                onClick={() => setView('table')}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
-                  view === 'table' ? 'bg-primary text-black' : 'text-white/40 hover:text-white'
-                }`}
-              >
-                <List className="w-3.5 h-3.5" />
-                Table
-              </button>
+            <div className="flex items-center p-1 bg-white/5 border border-white/10 rounded-xl overflow-hidden shrink-0">
               <button 
                 onClick={() => setView('cards')}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
@@ -43,7 +34,17 @@ export function GymsClient({ gyms }: GymsClientProps) {
                 <LayoutGrid className="w-3.5 h-3.5" />
                 Cards
               </button>
-           </div>
+              <button 
+                onClick={() => setView('table')}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
+                  view === 'table' ? 'bg-primary text-black' : 'text-white/40 hover:text-white'
+                }`}
+              >
+                <List className="w-3.5 h-3.5" />
+                Table
+              </button>
+            </div>
+
 
            <button 
              onClick={() => setIsModalOpen(true)}
