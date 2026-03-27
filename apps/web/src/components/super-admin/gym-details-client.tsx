@@ -75,9 +75,10 @@ export function GymDetailsClient({ gym, branchCount }: GymDetailsClientProps) {
             <div className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black bg-white/5 text-white/20 border border-white/5 cursor-not-allowed group relative">
               <Lock className="w-4 h-4" />
               Add Branch
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg bg-[#1A1A1A] border border-white/10 text-[10px] text-white/60 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <div className="absolute bottom-full right-0 mb-2 px-3 py-2 rounded-lg bg-[#1A1A1A] border border-white/10 text-[10px] text-white/60 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-2xl">
                  Upgrade to <span className="text-violet-400 font-bold">Enterprise</span> for multi-location clusters
               </div>
+
             </div>
           )}
         </div>
