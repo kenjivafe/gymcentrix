@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Power, AlertTriangle, X } from "lucide-react";
 import { setActiveBranch } from "@/lib/actions/gym";
 import { cn } from "@/lib/utils";
@@ -17,7 +18,12 @@ export function ActivateBranchButton({ gymId, branchId, branchName, className }:
   const [isPending, startTransition] = useTransition();
   const [showModal, setShowModal] = useState(false);
   const [confirmText, setConfirmText] = useState("");
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const isConfirmed = confirmText === branchName;
 
@@ -49,8 +55,8 @@ export function ActivateBranchButton({ gymId, branchId, branchName, className }:
         Set as Active
       </button>
 
-      {showModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300 cursor-default">
+      {showModal && mounted && createPortal(
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300 cursor-default">
           <div className="w-full max-w-md bg-[#0A0A0A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
             <div className="relative p-8">
               <button 
@@ -104,7 +110,8 @@ export function ActivateBranchButton({ gymId, branchId, branchName, className }:
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
