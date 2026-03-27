@@ -75,8 +75,9 @@ model Gym {
   id        String   @id @default(cuid())
   name      String
   ownerId   String
-  plan      Plan     @default(BASIC)
-  createdAt DateTime @default(now())
+  plan           Plan     @default(BASIC)
+  activeBranchId String?
+  createdAt      DateTime @default(now())
   updatedAt DateTime @updatedAt
 
 

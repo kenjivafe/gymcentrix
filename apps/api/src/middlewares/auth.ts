@@ -17,7 +17,39 @@ export const requireAgentApiKey = async (req: Request, res: Response, next: Next
       return res.status(401).json({ error: 'Invalid API key' });
     }
 
+    // Check if the agent's branch is active based on gym plan
+    const branch = await prisma.branch.findUnique({
+      where: { id: agent.branchId },
+      include: {
+        gym: {
+          include: {
+            branches: {
+              orderBy: { createdAt: 'asc' },
+              select: { id: true }
+            }
+          }
+        }
+      }
+    });
+
+    if (!branch) {
+      return res.status(404).json({ error: 'Agent branch not found' });
+    }
+
+    const gym = (branch as any).gym;
+    if (gym.plan !== 'ENTERPRISE') {
+      // If a specific branch is designated as active, use that. Otherwise, default to the oldest (primary).
+      const activeBranchId = gym.activeBranchId || gym.branches[0]?.id;
+      
+      if (branch.id !== activeBranchId) {
+        return res.status(403).json({ 
+          error: 'Branch Service Suspended. This facility is currently inactive under your subscription plan. Adjust your active branch or upgrade to ENTERPRISE.' 
+        });
+      }
+    }
+
     if (agent.status !== 'ONLINE') {
+
       await prisma.agent.update({
         where: { id: agent.id },
         data: { status: 'ONLINE', lastSeen: new Date() }

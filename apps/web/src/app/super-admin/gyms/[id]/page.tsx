@@ -1,8 +1,9 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { Building2, User2, Mail, MapPin, Calendar, GitBranch, Cpu, Activity, ArrowRight, ChevronRight } from "lucide-react";
+import { Building2, User2, Mail, MapPin, Calendar, GitBranch, Cpu, Activity, ArrowRight, ChevronRight, Lock } from "lucide-react";
 import { GymDetailsClient } from "@/components/super-admin/gym-details-client";
 import Link from "next/link";
+import { setActiveBranch } from "@/lib/actions/gym";
 
 export default async function GymViewPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -110,43 +111,100 @@ export default async function GymViewPage({ params }: { params: Promise<{ id: st
                    </div>
                    <p className="text-xs text-white/20 uppercase tracking-[0.2em] font-black mb-6">No Active Branches Found</p>
                 </div>
-              ) : (
-                gym.branches.map((branch) => (
-                  <Link 
-                    href={`/super-admin/branches/${branch.id}`}
-                    key={branch.id} 
-                    className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group cursor-pointer"
-                  >
-                    <div className="flex items-start justify-between mb-6">
-                       <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-primary/10 transition-colors">
-                          <Activity className="w-5 h-5 text-white/20 group-hover:text-primary transition-colors" />
-                       </div>
-                       <ChevronRight className="w-4 h-4 text-white/10 group-hover:text-white transition-colors" />
-                    </div>
-                    <div className="space-y-4">
-                       <div>
-                          <p className="text-sm font-bold text-white tracking-tight">{branch.name}</p>
-                          <div className="flex items-center gap-2 mt-1">
-                             <MapPin className="w-3 h-3 text-white/20" />
-                             <p className="text-[10px] text-white/40 truncate font-medium">{branch.address}</p>
+              ) : (() => {
+                const sortedBranches = [...gym.branches].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+                const effectiveActiveId = (gym as any).activeBranchId || sortedBranches[0]?.id;
+
+                return sortedBranches.map((branch) => {
+                  const isLocked = (gym as any).plan !== 'ENTERPRISE' && branch.id !== effectiveActiveId;
+                  const isActive = branch.id === effectiveActiveId;
+                  
+                  return (
+                    <div key={branch.id} className="relative group">
+                      <Link 
+                        href={`/super-admin/branches/${branch.id}`}
+                        className={`block p-6 rounded-2xl border transition-all cursor-pointer relative overflow-hidden h-full ${
+                          isLocked 
+                            ? 'bg-white/[0.01] border-white/5 grayscale opacity-50 pointer-events-none' 
+                            : 'bg-white/[0.02] border-white/5 hover:border-white/10'
+                        }`}
+                      >
+                        {isLocked && (
+                          <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-rose-500/10 border border-rose-500/20 z-20">
+                            <Lock className="w-3 h-3 text-rose-400" />
+                            <span className="text-[8px] font-black text-rose-400 uppercase tracking-widest">Locked</span>
                           </div>
-                       </div>
-                       
-                       <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                          <div className="flex items-center gap-3">
-                             <div className="flex -space-x-2">
-                                {[1,2,3].map(i => (
-                                   <div key={i} className="w-5 h-5 rounded-full bg-white/5 border-2 border-[#0A0A0A]" />
-                                ))}
-                             </div>
-                             <p className="text-[10px] font-black text-white/30 uppercase tracking-tighter">{branch._count.members} Members</p>
+                        )}
+
+                        {isActive && !isLocked && (
+                          <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-primary/10 border border-primary/20 z-20">
+                            <Activity className="w-3 h-3 text-primary" />
+                            <span className="text-[8px] font-black text-primary uppercase tracking-widest">Active Branch</span>
                           </div>
-                          <p className="text-[10px] font-black text-primary/60 uppercase tracking-widest">{branch._count.agents} Agents</p>
-                       </div>
+                        )}
+
+                        <div className="flex items-start justify-between mb-6">
+                           <div className={`w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/5 transition-colors ${
+                             !isLocked && 'group-hover:bg-primary/10'
+                           }`}>
+                              <Activity className={`w-5 h-5 transition-colors ${
+                                isLocked ? 'text-white/10' : 'text-white/20 group-hover:text-primary'
+                              }`} />
+                           </div>
+                        </div>
+                        <div className="space-y-4">
+                           <div>
+                              <p className={`text-sm font-bold tracking-tight ${isLocked ? 'text-white/20' : 'text-white'}`}>{branch.name}</p>
+                              <div className="flex items-center gap-2 mt-1">
+                                 <MapPin className="w-3 h-3 text-white/20" />
+                                 <p className="text-[10px] text-white/40 truncate font-medium">{branch.address}</p>
+                              </div>
+                           </div>
+                           
+                           <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                              <div className="flex items-center gap-3">
+                                 <div className="flex -space-x-2">
+                                    {[1,2,3].map(i => (
+                                       <div key={i} className="w-5 h-5 rounded-full bg-white/5 border-2 border-[#0A0A0A]" />
+                                    ))}
+                                 </div>
+                                 <p className="text-[10px] font-black text-white/30 uppercase tracking-tighter">{branch._count.members} Members</p>
+                              </div>
+                              <p className={`text-[10px] font-black uppercase tracking-widest ${isLocked ? 'text-white/10' : 'text-primary/60'}`}>
+                                {branch._count.agents} Agents
+                              </p>
+                           </div>
+                        </div>
+                        
+                        {isLocked && (
+                          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                             <p className="text-[9px] font-black text-white uppercase tracking-[0.2em] bg-black/80 px-4 py-2 rounded-full border border-white/10">Enterprise Required</p>
+                          </div>
+                        )}
+                      </Link>
+
+                      {/* Manual Activation Control (Only for locked/inactive branches) */}
+                      {(gym as any).plan !== 'ENTERPRISE' && !isActive && (
+                        <form 
+                          action={async () => {
+                            'use server';
+                            await setActiveBranch(gym.id, branch.id);
+                          }}
+                          className="absolute bottom-4 right-6 opacity-0 group-hover:opacity-100 transition-opacity z-30"
+                        >
+                          <button 
+                            type="submit"
+                            className="bg-white text-black text-[8px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg hover:bg-primary transition-colors flex items-center gap-1.5"
+                          >
+                            <Activity className="w-3 h-3" />
+                            Set as Active
+                          </button>
+                        </form>
+                      )}
                     </div>
-                  </Link>
-                ))
-              )}
+                  );
+                });
+              })()}
            </div>
            
            <Link 

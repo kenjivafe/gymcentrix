@@ -9,7 +9,14 @@ export default async function BranchViewPage({ params }: { params: Promise<{ id:
   const branch = await prisma.branch.findUnique({
     where: { id: resolvedParams.id },
     include: {
-      gym: true,
+      gym: {
+        include: {
+          branches: {
+            orderBy: { createdAt: 'asc' },
+            select: { id: true }
+          }
+        }
+      },
       agents: {
         orderBy: {
           lastSeen: "desc",
@@ -26,6 +33,9 @@ export default async function BranchViewPage({ params }: { params: Promise<{ id:
 
   if (!branch) notFound();
 
+  const effectiveActiveId = (branch.gym as any).activeBranchId || branch.gym.branches[0]?.id;
+  const isLocked = branch.gym.plan !== 'ENTERPRISE' && branch.id !== effectiveActiveId;
+
   // Fetch recent attendance
   const recentAttendance = await prisma.attendance.findMany({
     where: { branchId: resolvedParams.id },
@@ -41,7 +51,7 @@ export default async function BranchViewPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
-      <BranchDetailsClient branch={branch as any} />
+      <BranchDetailsClient branch={branch as any} isLocked={isLocked} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Stats & Info */}

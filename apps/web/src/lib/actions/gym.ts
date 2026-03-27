@@ -56,7 +56,7 @@ export async function registerGym(formData: z.infer<typeof RegisterGymSchema>) {
           name,
           ownerId: owner.id,
           plan,
-        },
+        } as any,
       });
 
       // Crucial: Set the gymId on the owner user so session scoping works
@@ -96,7 +96,7 @@ export async function updateGym(formData: z.infer<typeof UpdateGymSchema>) {
     await prisma.$transaction([
       prisma.gym.update({
         where: { id },
-        data: { name, plan },
+        data: { name, plan } as any,
       }),
       prisma.user.update({
         where: { id: (await prisma.gym.findUnique({ where: { id }, select: { ownerId: true } }))?.ownerId },
@@ -113,5 +113,20 @@ export async function updateGym(formData: z.infer<typeof UpdateGymSchema>) {
   } catch (error) {
     console.error("Gym update error:", error);
     return { error: "Failed to update gym details. Please try again." };
+  }
+}
+
+export async function setActiveBranch(gymId: string, branchId: string) {
+  try {
+    await prisma.gym.update({
+      where: { id: gymId },
+      data: { activeBranchId: branchId } as any
+    });
+
+    revalidatePath(`/super-admin/gyms/${gymId}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Set active branch error:", error);
+    return { error: "Failed to set active branch." };
   }
 }
