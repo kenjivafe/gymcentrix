@@ -81,33 +81,43 @@ export function ActivateBranchButton({ gymId, branchId, branchName, currentActiv
                 The current active branch <strong className="text-white">{currentActiveBranchName ? `(${currentActiveBranchName})` : ''}</strong> will be set to <span className="text-rose-400 font-bold">locked/inactive</span>. Its API access will be suspended until your gym upgrades to the Enterprise tier.
               </p>
 
-              <div className="space-y-4">
-                <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-3">
-                  <p className="text-[10px] font-black text-white/40 uppercase tracking-widest">Type to confirm active branch</p>
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-[#050505] border border-white/5 select-none text-sm font-bold text-white/60">
-                    {branchName}
-                  </div>
-                </div>
-
+              <div className="space-y-6">
                 <div className="space-y-2">
+                  <label className="text-sm font-bold text-white/60">
+                    To confirm, type <span className="text-white select-none">"{branchName}"</span>
+                  </label>
                   <input
                     type="text"
                     value={confirmText}
                     onChange={(e) => setConfirmText(e.target.value)}
                     placeholder="Enter branch name..."
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-rose-500/50 focus:ring-1 focus:ring-rose-500/50 transition-all text-white placeholder:text-white/20 text-sm font-medium"
+                    className="w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-rose-500/50 focus:ring-1 focus:ring-rose-500/50 transition-all text-white placeholder:text-white/20 text-sm font-medium"
                     disabled={isPending}
                   />
                 </div>
 
-                <button
-                  onClick={handleActivate}
-                  disabled={!isConfirmed || isPending}
-                  className="w-full mt-6 bg-rose-500 hover:bg-rose-400 text-white font-bold py-3.5 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
-                >
-                  <Power className={cn("w-4 h-4", isPending && "animate-pulse")} />
-                  {isPending ? "Activating..." : "Confirm Activation"}
-                </button>
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowModal(false);
+                      setConfirmText("");
+                    }}
+                    disabled={isPending}
+                    className="flex-1 py-3.5 px-4 rounded-xl text-xs font-bold text-white/40 hover:text-white hover:bg-white/5 border border-white/5 transition-all"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleActivate}
+                    disabled={!isConfirmed || isPending}
+                    className="flex-[2] bg-rose-500 hover:bg-rose-400 text-white text-xs font-bold py-3.5 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                  >
+                    <Power className={cn("w-4 h-4", isPending && "animate-pulse")} />
+                    {isPending ? "Activating..." : "Activate Branch"}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
