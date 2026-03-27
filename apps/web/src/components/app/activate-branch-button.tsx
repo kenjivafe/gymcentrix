@@ -76,7 +76,7 @@ export function ActivateBranchButton({ gymId, branchId, branchName, currentActiv
                 <AlertTriangle className="w-6 h-6 text-rose-500" />
               </div>
               
-              <h3 className="text-xl font-display font-bold text-white mb-2 tracking-tight">Activate Facility</h3>
+              <h3 className="text-xl font-display font-bold text-white mb-2 tracking-tight">Activate Branch</h3>
               <p className="text-xs text-white/40 leading-relaxed font-medium mb-6">
                 The current active branch <strong className="text-white">{currentActiveBranchName ? `(${currentActiveBranchName})` : ''}</strong> will be set to <span className="text-rose-400 font-bold">locked/inactive</span>. Its API access will be suspended until your gym upgrades to the Enterprise tier.
               </p>
