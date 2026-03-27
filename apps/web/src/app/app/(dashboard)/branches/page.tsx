@@ -144,8 +144,11 @@ export default async function DashboardBranchesPage() {
                 </div>
 
                 {isLocked && (
-                  <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-[2.5rem]">
-                      <p className="text-[9px] font-black text-white uppercase tracking-[0.1em] bg-black/80 px-4 py-2.5 rounded-full border border-white/10 shadow-glow-sm">Upgrade to Enterprise to manage multiple branches</p>
+                  <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-[2.5rem] z-30">
+                    <div className="flex flex-col items-center gap-3">
+                       <p className="text-[10px] font-black text-white uppercase tracking-[0.2em] bg-black/80 px-6 py-3 rounded-full border border-white/10 shadow-glow-sm truncate max-w-[280px]">Enterprise Plan Required</p>
+                       <p className="text-[8px] font-bold text-primary uppercase tracking-widest whitespace-nowrap">Upgrade to Enterprise to manage multiple branches</p>
+                    </div>
                   </div>
                 )}
               </div>
