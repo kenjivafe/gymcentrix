@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { Activity } from "lucide-react";
+import { Power } from "lucide-react";
 import { setActiveBranch } from "@/lib/actions/gym";
 import { cn } from "@/lib/utils";
 
@@ -28,11 +28,11 @@ export function ActivateBranchButton({ gymId, branchId, className }: ActivateBra
       onClick={handleActivate}
       disabled={isPending}
       className={cn(
-        "bg-white text-black text-[8px] font-black uppercase tracking-widest px-4 py-2 rounded-lg hover:bg-primary transition-colors flex items-center gap-1.5 disabled:opacity-50",
+        "bg-primary text-black text-[10px] font-black uppercase tracking-widest px-5 py-2.5 rounded-lg transition-all flex items-center gap-2 shadow-glow-sm hover:scale-105 hover:shadow-[0_0_20px_rgba(182,255,0,0.4)] active:scale-95 disabled:opacity-50",
         className
       )}
     >
-      <Activity className={cn("w-3 h-3", isPending && "animate-pulse")} />
+      <Power className={cn("w-4 h-4", isPending && "animate-pulse")} />
       {isPending ? "Activating..." : "Set as Active"}
     </button>
   );
