@@ -4,17 +4,23 @@ import { authOptions } from "@/lib/auth";
 import { GitBranch, MapPin, Building2, Cpu, ChevronRight, Activity, Lock, Plus } from "lucide-react";
 import Link from "next/link";
 import { ActivateBranchButton } from "@/components/app/activate-branch-button";
+import { unstable_noStore as noStore } from 'next/cache';
+
+export const dynamic = 'force-dynamic';
 
 export default async function DashboardBranchesPage() {
+  noStore();
   const session = await getServerSession(authOptions);
   const user = session?.user as any;
   const gymId = user?.gymId;
 
   if (!gymId) return null;
 
-  const gym = await prisma.gym.findUnique({
-    where: { id: gymId }
-  });
+  // Use raw query to bypass client validation for the same reason as setActiveBranch
+  const gyms = await prisma.$queryRaw<any[]>`
+    SELECT * FROM "Gym" WHERE id = ${gymId}
+  `;
+  const gym = gyms[0];
 
   const branches = await prisma.branch.findMany({
     where: { gymId },
@@ -30,7 +36,15 @@ export default async function DashboardBranchesPage() {
     orderBy: { createdAt: "asc" },
   });
 
-  const effectiveActiveId = (gym as any)?.activeBranchId || branches[0]?.id;
+  const dbActiveBranchId = (gym as any)?.activeBranchId || (gym as any)?.activebranchid;
+  const effectiveActiveId = dbActiveBranchId || branches[0]?.id;
+
+  console.log("Branches page debugging:", {
+    gymId,
+    dbActiveBranchId,
+    firstBranchId: branches[0]?.id,
+    effectiveActiveId,
+  });
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">

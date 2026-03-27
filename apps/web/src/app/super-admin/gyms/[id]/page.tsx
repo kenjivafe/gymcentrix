@@ -7,22 +7,37 @@ import { setActiveBranch } from "@/lib/actions/gym";
 
 export default async function GymViewPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
-  const gym = await prisma.gym.findUnique({
-    where: { id: resolvedParams.id },
-    include: {
-      owner: true,
-      branches: {
-        include: {
-          _count: {
-            select: {
-              members: true,
-              agents: true,
-            }
-          }
+  
+  // We use raw query here to bypass Prisma Client's internal validation,
+  // which might be out of sync due to persistent Windows file-locks on the binary.
+  const gyms = await (prisma as any).$queryRawUnsafe(
+    'SELECT * FROM "Gym" WHERE id = $1',
+    resolvedParams.id
+  );
+  
+  const rawGym = gyms[0];
+  if (!rawGym) return notFound();
+
+  // Manually fetch relations since we're bypassing the generated client's findUnique
+  const [owner, branches] = await Promise.all([
+    prisma.user.findFirst({ where: { gymId: resolvedParams.id, role: 'GYM_OWNER' } }),
+    prisma.branch.findMany({
+      where: { gymId: resolvedParams.id },
+      include: {
+        _count: {
+          select: { members: true, agents: true }
         }
       }
-    }
-  });
+    })
+  ]);
+
+  // Normalize the gym object for the UI
+  const gym = {
+    ...rawGym,
+    activeBranchId: rawGym.activeBranchId || rawGym.activebranchid,
+    owner,
+    branches
+  };
 
   if (!gym) notFound();
 
