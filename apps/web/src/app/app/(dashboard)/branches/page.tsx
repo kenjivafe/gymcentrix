@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { GitBranch, MapPin, Building2, Cpu, ChevronRight, Activity, Lock } from "lucide-react";
+import { GitBranch, MapPin, Building2, Cpu, ChevronRight, Activity, Lock, Plus } from "lucide-react";
 import Link from "next/link";
 
 export default async function DashboardBranchesPage() {
@@ -167,7 +167,7 @@ export default async function DashboardBranchesPage() {
               <div className={`w-16 h-16 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center transition-all duration-500 ${
                 (gym as any)?.plan === 'ENTERPRISE' && 'group-hover:bg-primary/10 group-hover:border-primary/20 text-white/40 group-hover:text-primary'
               }`}>
-                <GitBranch className="w-8 h-8" />
+                <Plus className="w-8 h-8" />
               </div>
               <div className="space-y-1">
                 <p className="text-xl font-display font-bold text-white tracking-tight">Expand Infrastructure</p>
