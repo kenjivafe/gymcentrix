@@ -125,7 +125,7 @@ export default async function GymViewPage({ params }: { params: Promise<{ id: st
                         href={`/super-admin/branches/${branch.id}`}
                         className={`block p-6 rounded-2xl border transition-all cursor-pointer relative overflow-hidden h-full ${
                           isLocked 
-                            ? 'bg-white/[0.01] border-white/5 grayscale opacity-50 pointer-events-none' 
+                            ? 'bg-white/[0.01] border-white/5 grayscale opacity-50' 
                             : 'bg-white/[0.02] border-white/5 hover:border-white/10'
                         }`}
                       >
