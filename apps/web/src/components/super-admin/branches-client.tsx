@@ -6,7 +6,12 @@ import { AddBranchModal } from "@/components/super-admin/add-branch-modal";
 
 interface BranchesClientProps {
   children: ReactNode;
-  gyms: { id: string; name: string }[];
+  gyms: { 
+    id: string; 
+    name: string; 
+    plan: "BASIC" | "PRO" | "ENTERPRISE";
+    _count: { branches: number };
+  }[];
 }
 
 export function BranchesClient({ children, gyms }: BranchesClientProps) {

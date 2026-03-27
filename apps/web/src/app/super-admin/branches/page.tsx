@@ -23,11 +23,16 @@ export default async function BranchesManagementPage() {
       select: {
         id: true,
         name: true,
+        plan: true,
+        _count: {
+          select: { branches: true }
+        }
       },
       orderBy: {
         name: "asc",
       },
     }),
+
   ]);
 
   return (

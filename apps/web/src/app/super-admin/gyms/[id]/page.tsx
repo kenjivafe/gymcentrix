@@ -27,7 +27,8 @@ export default async function GymViewPage({ params }: { params: Promise<{ id: st
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
-      <GymDetailsClient gym={gym as any} />
+      <GymDetailsClient gym={gym as any} branchCount={gym.branches.length} />
+
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Stats & Info */}

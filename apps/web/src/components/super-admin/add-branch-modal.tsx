@@ -6,7 +6,12 @@ import { registerBranch } from "@/lib/actions/branch";
 
 interface AddBranchModalProps {
   onClose: () => void;
-  gyms?: { id: string; name: string }[];
+  gyms?: { 
+    id: string; 
+    name: string; 
+    plan: "BASIC" | "PRO" | "ENTERPRISE";
+    _count: { branches: number };
+  }[];
   defaultGymId?: string;
 }
 
@@ -77,11 +82,20 @@ export function AddBranchModal({ onClose, gyms = [], defaultGymId }: AddBranchMo
                       className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm text-white focus:outline-none focus:border-primary/50 transition-all appearance-none"
                     >
                       <option value="" disabled className="bg-[#0A0A0A]">Select a Parent Gym</option>
-                      {gyms.map((gym) => (
-                        <option key={gym.id} value={gym.id} className="bg-[#0A0A0A]">
-                          {gym.name}
-                        </option>
-                      ))}
+                      {gyms.map((gym) => {
+                        const isLocked = gym.plan !== "ENTERPRISE" && gym._count.branches >= 1;
+                        return (
+                          <option 
+                            key={gym.id} 
+                            value={gym.id} 
+                            disabled={isLocked}
+                            className="bg-[#0A0A0A]"
+                          >
+                            {gym.name} {isLocked ? "(Locked - Upgrade Required)" : ""}
+                          </option>
+                        );
+                      })}
+
                     </select>
                   </div>
                   {fieldErrors.gymId && <p className="text-[10px] text-rose-400 font-bold mt-1 ml-1">{fieldErrors.gymId[0]}</p>}

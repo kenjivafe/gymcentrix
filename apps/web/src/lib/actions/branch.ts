@@ -20,6 +20,25 @@ export async function registerBranch(formData: z.infer<typeof RegisterBranchSche
   const { name, address, gymId } = result.data;
 
   try {
+    // Check branch limits based on subscription plan
+    const gym = await prisma.gym.findUnique({
+      where: { id: gymId },
+      select: {
+        plan: true,
+        _count: {
+          select: { branches: true }
+        }
+      }
+    });
+
+    if (!gym) return { error: "Gym facility not found." };
+    
+    if (gym.plan !== "ENTERPRISE" && gym._count.branches >= 1) {
+      return { 
+        error: "Branch limit reached. Enterprise subscription is required for multi-facility clusters." 
+      };
+    }
+
     const branch = await prisma.branch.create({
       data: {
         name,
