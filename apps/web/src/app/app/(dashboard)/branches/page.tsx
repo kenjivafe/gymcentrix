@@ -70,7 +70,7 @@ export default async function DashboardBranchesPage() {
                             <Building2 className="w-7 h-7" />
                         </div>
                         
-                        <div className="flex flex-col items-end gap-2">
+                        <div className="flex flex-col items-end gap-2 relative z-40">
                           {/* Subscription Tier Status Badge */}
                           {isLocked && (
                             <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 shadow-glow-sm">
