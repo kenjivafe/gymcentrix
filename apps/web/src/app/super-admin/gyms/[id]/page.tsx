@@ -136,7 +136,7 @@ export default async function GymViewPage({ params }: { params: Promise<{ id: st
                           </div>
                         )}
 
-                        {isActive && !isLocked && (
+                        {isActive && !isLocked && (gym as any).plan !== 'ENTERPRISE' && (
                           <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2 py-1 rounded-lg bg-primary/10 border border-primary/20 z-20">
                             <Activity className="w-3 h-3 text-primary" />
                             <span className="text-[8px] font-black text-primary uppercase tracking-widest">Active Branch</span>
