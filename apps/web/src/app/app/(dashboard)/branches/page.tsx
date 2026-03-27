@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { GitBranch, MapPin, Building2, Cpu, ChevronRight, Activity, Lock, Plus } from "lucide-react";
 import Link from "next/link";
+import { ActivateBranchButton } from "@/components/app/activate-branch-button";
 
 export default async function DashboardBranchesPage() {
   const session = await getServerSession(authOptions);
@@ -144,10 +145,19 @@ export default async function DashboardBranchesPage() {
                 </div>
 
                 {isLocked && (
-                  <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-[2.5rem] z-30 select-none cursor-default">
-                    <div className="flex flex-col items-center gap-3">
-                       <p className="text-[10px] font-black text-white uppercase tracking-[0.2em] bg-black/80 px-6 py-3 rounded-full border border-white/10 shadow-glow-sm truncate max-w-[280px]">Enterprise Plan Required</p>
-                       <p className="text-[8px] font-bold text-primary uppercase tracking-widest whitespace-nowrap">Upgrade to Enterprise to manage multiple branches</p>
+                  <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-[2.5rem] z-30 select-none cursor-default p-6">
+                    <div className="flex flex-col items-center gap-6 text-center">
+                       <div className="space-y-3">
+                          <p className="text-[10px] font-black text-white uppercase tracking-[0.2em] bg-black/80 px-6 py-3 rounded-full border border-white/10 shadow-glow-sm truncate max-w-[280px]">Enterprise Plan Required</p>
+                          <p className="text-[8px] font-bold text-primary uppercase tracking-widest whitespace-nowrap">Upgrade to Enterprise to manage multiple branches</p>
+                       </div>
+                       
+                       <div className="pt-2 border-t border-white/5 w-full flex justify-center">
+                          <ActivateBranchButton 
+                            gymId={gymId} 
+                            branchId={branchId} 
+                          />
+                       </div>
                     </div>
                   </div>
                 )}

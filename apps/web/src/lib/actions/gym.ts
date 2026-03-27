@@ -124,6 +124,7 @@ export async function setActiveBranch(gymId: string, branchId: string) {
     });
 
     revalidatePath(`/super-admin/gyms/${gymId}`);
+    revalidatePath("/app/branches");
     return { success: true };
   } catch (error) {
     console.error("Set active branch error:", error);
