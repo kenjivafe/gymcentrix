@@ -135,11 +135,8 @@ export function GymsClient({ gyms }: GymsClientProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {gyms.map((gym: any) => (
             <div key={gym.id} className="group p-8 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:border-primary/20 hover:bg-primary/[0.02] transition-all duration-500 relative overflow-hidden">
-               <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Building2 className="w-24 h-24 text-white" />
-               </div>
-
                 <div className="relative z-10 space-y-8">
+
                   <div className="flex items-start justify-between">
                      <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary/20 transition-all duration-500 shadow-glow-sm">
                         <Building2 className="w-7 h-7 text-white/40 group-hover:text-primary transition-colors" />
