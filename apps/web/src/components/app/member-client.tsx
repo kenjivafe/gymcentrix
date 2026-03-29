@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, LayoutGrid, List, UserCheck, Search, Filter, MoreVertical, CreditCard, Calendar, Clock, Trash2 } from "lucide-react";
+import { Plus, LayoutGrid, List, UserCheck, Search, Filter, CreditCard, Edit2, Trash2 } from "lucide-react";
 import { deleteMember } from "@/lib/actions/member";
 import { AddMemberModal } from "./add-member-modal";
+import { EditMemberModal } from "./edit-member-modal";
 
 interface MemberClientProps {
   members: any[];
@@ -17,6 +18,7 @@ export function MemberClient({ members, branches, gymId }: MemberClientProps) {
   const [search, setSearch] = useState("");
   const [branchFilter, setBranchFilter] = useState("all");
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [editingMember, setEditingMember] = useState<any | null>(null);
 
   const filteredMembers = members.filter(m => {
     const matchesSearch = m.name.toLowerCase().includes(search.toLowerCase()) || 
@@ -125,7 +127,10 @@ export function MemberClient({ members, branches, gymId }: MemberClientProps) {
                        </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                       <button onClick={() => handleDelete(m.id)} disabled={deletingId === m.id} className="p-2 text-white/10 hover:text-rose-400 hover:bg-rose-400/5 rounded-lg transition-all"><Trash2 className="w-4 h-4" /></button>
+                       <div className="flex items-center justify-end gap-1">
+                          <button onClick={() => setEditingMember(m)} className="p-2 text-white/10 hover:text-white hover:bg-white/5 rounded-lg transition-all"><Edit2 className="w-4 h-4" /></button>
+                          <button onClick={() => handleDelete(m.id)} disabled={deletingId === m.id} className="p-2 text-white/10 hover:text-rose-400 hover:bg-rose-400/5 rounded-lg transition-all"><Trash2 className="w-4 h-4" /></button>
+                       </div>
                     </td>
                  </tr>
                ))}
@@ -140,7 +145,10 @@ export function MemberClient({ members, branches, gymId }: MemberClientProps) {
                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-white/20 shadow-glow-sm">
                       <UserCheck className="w-6 h-6" />
                    </div>
-                   <button onClick={() => handleDelete(m.id)} disabled={deletingId === m.id} className="p-2 text-white/10 hover:text-rose-400 hover:bg-rose-400/5 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
+                   <div className="flex items-center gap-1">
+                      <button onClick={() => setEditingMember(m)} className="p-2 text-white/10 hover:text-white hover:bg-white/5 rounded-xl transition-all"><Edit2 className="w-4 h-4" /></button>
+                      <button onClick={() => handleDelete(m.id)} disabled={deletingId === m.id} className="p-2 text-white/10 hover:text-rose-400 hover:bg-rose-400/5 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
+                   </div>
                 </div>
                 <div className="space-y-4">
                    <div>
@@ -167,6 +175,7 @@ export function MemberClient({ members, branches, gymId }: MemberClientProps) {
       </div>
 
       {isModalOpen && <AddMemberModal branches={branches} gymId={gymId} onClose={() => setIsModalOpen(false)} />}
+      {editingMember && <EditMemberModal branches={branches} gymId={gymId} initialData={editingMember} onClose={() => setEditingMember(null)} />}
     </>
   );
 }

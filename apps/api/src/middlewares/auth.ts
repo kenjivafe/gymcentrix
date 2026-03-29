@@ -37,6 +37,11 @@ export const requireAgentApiKey = async (req: Request, res: Response, next: Next
     }
 
     const gym = (branch as any).gym;
+
+    if (!gym) {
+      return res.status(500).json({ error: 'Branch is not associated with a valid gym. Check database integrity.' });
+    }
+
     if (gym.plan !== 'ENTERPRISE') {
       // If a specific branch is designated as active, use that. Otherwise, default to the oldest (primary).
       const activeBranchId = gym.activeBranchId || gym.branches[0]?.id;
@@ -63,8 +68,8 @@ export const requireAgentApiKey = async (req: Request, res: Response, next: Next
 
     (req as any).agent = agent;
     next();
-  } catch (error) {
-    console.error('API Key Auth Error:', error);
-    res.status(500).json({ error: 'Internal server error during authentication' });
+  } catch (error: any) {
+    console.error('API Key Auth Error:', error?.message ?? error);
+    res.status(500).json({ error: `Internal server error during authentication: ${error?.message ?? 'Unknown error'}` });
   }
 };

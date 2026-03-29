@@ -10,15 +10,22 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
   const [status, setStatus] = useState<KioskStatus>("idle");
   const [memberName, setMemberName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const inputBuffer = useRef("");
+  const [agentConnected, setAgentConnected] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const agentConnectedRef = useRef(false);
 
   const resetKiosk = useCallback(() => {
     setStatus("idle");
     setMemberName("");
     setErrorMessage("");
-    inputBuffer.current = "";
   }, []);
+
+  // Keep ref in sync with agentConnected so keyboard fallback always reads current value
+  useEffect(() => { agentConnectedRef.current = agentConnected; }, [agentConnected]);
+
+  // Mark as mounted so WebSocket-driven UI only renders client-side
+  useEffect(() => { setMounted(true); }, []);
 
   const handleCheckin = useCallback(async (rfid: string) => {
     setStatus("scanning");
@@ -54,32 +61,107 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
   }, [resetKiosk]);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Avoid capturing shortcuts like F5, F11, etc.
-      if (e.key.length === 1 || e.key === "Enter") {
-        if (e.key === "Enter") {
-          if (inputBuffer.current.length > 0) {
-            handleCheckin(inputBuffer.current);
-          }
-        } else {
-          inputBuffer.current += e.key;
-        }
+    let ws: WebSocket;
+    let reconnectTimeout: NodeJS.Timeout;
 
-        // Auto-clear buffer if no typing for 500ms (to handle fast scans vs slow typing)
-        // Scanners usually dump the entire string in 10-50ms
-        const bufferTimeout = setTimeout(() => {
-           // If we haven't submitted, clear the buffer
-           // This prevents garbage from accumulating if someone accidentally types
-        }, 500);
+    const connectWebSocket = () => {
+      ws = new WebSocket("ws://localhost:4010");
+
+      ws.onopen = () => {
+        setAgentConnected(true);
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          
+          if (data.event === "scan") {
+            setStatus("scanning");
+          } else if (data.event === "scan_success") {
+            setStatus("success");
+            setMemberName(data.member?.name || "Member");
+            
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+            timeoutRef.current = setTimeout(resetKiosk, 3000);
+          } else if (data.event === "scan_error") {
+             if (data.error === "Member not found with this RFID") {
+               setStatus("not_found");
+             } else if (data.error === "Membership is not active" || data.error === "Membership expired") {
+               setStatus("expired");
+             } else {
+               setStatus("error");
+               setErrorMessage(data.error || "System synchronization error");
+             }
+             if (timeoutRef.current) clearTimeout(timeoutRef.current);
+             timeoutRef.current = setTimeout(resetKiosk, 3000);
+          } else if (data.event === "scan_offline") {
+             setStatus("error");
+             setErrorMessage("Agent is offline (Check-in queued locally)");
+             if (timeoutRef.current) clearTimeout(timeoutRef.current);
+             timeoutRef.current = setTimeout(resetKiosk, 3000);
+          }
+        } catch (err) {
+          console.error("WebSocket message parse error:", err);
+        }
+      };
+
+      ws.onclose = () => {
+        setAgentConnected(false);
+        // Try to reconnect every 3 seconds if agent died or hasn't started
+        reconnectTimeout = setTimeout(connectWebSocket, 3000);
+      };
+
+      ws.onerror = () => {
+         ws.close();
+      };
+    };
+
+    connectWebSocket();
+
+    // --- Browser Keyboard Fallback ---
+    // When the agent is disconnected / WinKeyServer.exe is unavailable,
+    // the browser itself captures RFID keystrokes (reader must type into this tab).
+    let kbBuffer = "";
+    let kbTimeout: NodeJS.Timeout | null = null;
+    const RFID_LENGTH = 10;
+    const RFID_TIMEOUT_MS = 500;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if the agent is connected — it drives the kiosk
+      if (agentConnectedRef.current) return;
+
+      const digit = /^[0-9]$/.test(e.key) ? e.key : null;
+
+      if (e.key === "Enter") {
+        if (kbBuffer.length === RFID_LENGTH) {
+          handleCheckin(kbBuffer);
+        }
+        kbBuffer = "";
+        if (kbTimeout) clearTimeout(kbTimeout);
+        return;
+      }
+
+      if (digit) {
+        if (kbTimeout) clearTimeout(kbTimeout);
+        kbBuffer += digit;
+        // Auto-reset buffer after idle period (distinguishes scanner burst from human typing)
+        kbTimeout = setTimeout(() => { kbBuffer = ""; }, RFID_TIMEOUT_MS);
+      } else {
+        // Non-digit resets buffer
+        kbBuffer = "";
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
+
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      clearTimeout(reconnectTimeout);
+      if (ws) ws.close();
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (kbTimeout) clearTimeout(kbTimeout);
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleCheckin]);
+  }, [resetKiosk, handleCheckin]);
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -174,8 +256,16 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
       </div>
 
       {/* Gym Name top right */}
-      <div className="fixed top-8 right-8 opacity-20 hover:opacity-100 transition-opacity">
+      <div className="fixed top-8 right-8 opacity-20 hover:opacity-100 transition-opacity flex flex-col items-end gap-2">
          <span className="font-display font-bold text-white tracking-widest text-md uppercase">{gymName}</span>
+         {mounted && (
+           <div className="flex items-center gap-2">
+             <div className={`w-2 h-2 rounded-full ${agentConnected ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-rose-500 shadow-[0_0_10px_#f43f5e] animate-pulse'}`} />
+             <span className="text-[10px] font-bold tracking-widest text-white/40 uppercase">
+               {agentConnected ? "Agent Connected" : "Agent Disconnected"}
+             </span>
+           </div>
+         )}
       </div>
 
       {/* Simulation Panel for Testing */}

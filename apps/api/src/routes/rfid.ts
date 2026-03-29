@@ -26,9 +26,16 @@ router.post('/checkin', requireAgentApiKey, async (req, res) => {
       return res.status(403).json({ error: 'Membership is not active', status: member.membershipStatus });
     }
 
-    if (member.membershipExpiry && new Date() > member.membershipExpiry) {
-      await prisma.member.update({ where: { id: member.id }, data: { membershipStatus: 'EXPIRED' } });
-      return res.status(403).json({ error: 'Membership expired' });
+    if (member.membershipExpiry) {
+      const now = new Date();
+      const expiry = new Date(member.membershipExpiry);
+      // Normalize to the end of the expiration day to handle old midnight-UTC entries
+      expiry.setUTCHours(23, 59, 59, 999);
+
+      if (now > expiry) {
+        await prisma.member.update({ where: { id: member.id }, data: { membershipStatus: 'EXPIRED' } });
+        return res.status(403).json({ error: 'Membership expired' });
+      }
     }
 
     const attendance = await prisma.attendance.create({

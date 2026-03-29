@@ -1,0 +1,49 @@
+{
+  "name": "gymcentrix-agent",
+  "version": "1.0.0",
+  "description": "GymCentrix Windows Agent — bridges USB RFID reader to the Gymcentrix cloud API",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "package": "pkg dist/index.js --targets node18-win-x64 --output GymcentrixAgent.exe",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "rfid",
+    "gym",
+    "kiosk",
+    "agent"
+  ],
+  "author": "Gymcentrix",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "node-global-key-listener": "^0.3.0",
+    "node-systray-v2": "github:Edgar-P-yan/node-systray-v2",
+    "winreg": "^1.2.4",
+    "winston": "^3.13.0",
+    "ws": "^8.17.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "@types/winreg": "^1.2.36",
+    "@types/ws": "^8.5.10",
+    "jimp": "^1.6.0",
+    "pkg": "^5.8.1",
+    "png-to-ico": "^3.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  },
+  "pkg": {
+    "assets": [
+      "assets/**",
+      "agent-config.json",
+      "../../node_modules/node-global-key-listener/bin/WinKeyServer.exe"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ]
+  }
+}

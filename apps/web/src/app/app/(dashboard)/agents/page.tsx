@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { Cpu, Wifi, WifiOff, MapPin, Building2, ChevronRight, BadgeCheck } from "lucide-react";
+import { Cpu, Wifi, WifiOff, MapPin, ChevronRight, BadgeCheck } from "lucide-react";
+import { CreateAgentModal } from "@/components/app/create-agent-modal";
 
 export default async function DashboardAgentsPage() {
   const session = await getServerSession(authOptions);
@@ -22,6 +23,12 @@ export default async function DashboardAgentsPage() {
     },
   });
 
+  const branches = await prisma.branch.findMany({
+    where: { gymId },
+    select: { id: true, name: true },
+    orderBy: { createdAt: "asc" }
+  });
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -29,6 +36,7 @@ export default async function DashboardAgentsPage() {
            <h2 className="text-3xl font-display font-bold text-white tracking-tight">Access Points</h2>
            <p className="text-sm text-white/40">Monitor the live status of RFID readers deployed across your facility.</p>
         </div>
+        <CreateAgentModal branches={branches} />
       </div>
 
       <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-x-auto">
@@ -37,8 +45,8 @@ export default async function DashboardAgentsPage() {
             <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-6">
                 <Cpu className="w-8 h-8 text-white/20" />
             </div>
-            <p className="text-xl font-bold text-white">No active agents</p>
-            <p className="text-white/40 mt-2 text-sm max-w-sm">Contact platform support to provision new hardware agents for your branches.</p>
+            <p className="text-xl font-bold text-white mb-6">No active agents</p>
+            <CreateAgentModal branches={branches} />
           </div>
         ) : (
           <table className="w-full text-left border-collapse">
