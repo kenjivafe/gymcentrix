@@ -169,8 +169,7 @@ export default async function AppPage() {
                            <UserCheck className={`w-6 h-6 transition-all ${index === 0 ? 'text-primary group-hover/stack:text-white/40 hover:!text-primary' : 'text-white/40 group-hover/card:text-primary'}`} />
                         </div>
                         <div className="flex-1 min-w-0">
-                           <p className={`font-display font-bold tracking-tight text-white transition-all truncate
-                              ${index === 0 ? 'text-2xl group-hover/stack:text-base hover:!text-2xl' : 'group-hover/card:text-2xl'}`}>{log.member.name}</p>
+                           <p className="font-display font-bold tracking-tight text-white text-lg transition-all truncate">{log.member.name}</p>
                            <div className="flex items-center gap-2 mt-0.5">
                               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
                               <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-black truncate">{log.branch.name}</p>
