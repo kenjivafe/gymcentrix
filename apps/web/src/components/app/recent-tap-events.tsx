@@ -48,7 +48,7 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                 setHoveredIndex(index);
                 setLastHoveredIndex(index);
               }}
-              className={`relative bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] transition-all duration-500 shadow-2xl group/card overflow-hidden aspect-[8/5] w-full cursor-pointer
+              className={`relative bg-[#0A0A0A] border border-white/10 rounded-3xl transition-all duration-500 shadow-2xl group/card overflow-hidden aspect-[8/5] w-full cursor-pointer
               ${index !== initialAttendance.length - 1 ? '-mb-[44%]' : ''}
               ${isActive
                 ? '-translate-y-4 -rotate-1 scale-[1.01] ring-1 ring-primary/20' 
