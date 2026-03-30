@@ -42,25 +42,40 @@ export default async function AppPage() {
     );
   }
 
-  const [memberCount, branchCount, activeToday, recentAttendance] = await Promise.all([
-    prisma.member.count({ where: { gymId } }),
-    prisma.branch.count({ where: { gymId } }),
-    prisma.attendance.count({ 
-      where: { 
-        branch: { gymId },
-        timestamp: { gte: new Date(new Date().setHours(0,0,0,0)) }
-      } 
-    }),
-    (prisma as any).accessLog.findMany({
-      where: { branch: { gymId } },
-      take: 10,
-      orderBy: { timestamp: "desc" },
-      include: {
-        member: true,
-        branch: true
-      }
-    }) as Promise<any[]>
-  ]);
+  let memberCount = 0;
+  let branchCount = 0;
+  let activeToday = 0;
+  let recentAttendance: any[] = [];
+
+  try {
+    const [mCount, bCount, aToday, rAttendance] = await Promise.all([
+      prisma.member.count({ where: { gymId } }),
+      prisma.branch.count({ where: { gymId } }),
+      prisma.attendance.count({ 
+        where: { 
+          branch: { gymId },
+          timestamp: { gte: new Date(new Date().setHours(0,0,0,0)) }
+        } 
+      }),
+      (prisma as any).accessLog.findMany({
+        where: { branch: { gymId } },
+        take: 10,
+        orderBy: { timestamp: "desc" },
+        include: {
+          member: true,
+          branch: true
+        }
+      }) as Promise<any[]>
+    ]);
+
+    memberCount = mCount;
+    branchCount = bCount;
+    activeToday = aToday;
+    recentAttendance = rAttendance;
+  } catch (error) {
+    console.error("[Dashboard] Database Fetch Failure:", error);
+    // Silent fail to allow UI to render with zeros
+  }
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">

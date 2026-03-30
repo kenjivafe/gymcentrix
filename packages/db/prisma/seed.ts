@@ -79,7 +79,21 @@ async function main() {
     },
   });
 
+  // Create a Test Agent
+  const testAgent = await prisma.agent.upsert({
+    where: { apiKey: "agent-1-key" },
+    update: {},
+    create: {
+      id: "test-agent-1",
+      branchId: testBranch.id,
+      name: "RFID Node 01",
+      apiKey: "agent-1-key",
+      status: "ONLINE",
+    },
+  });
+
   console.log("Users created/verified:", { admin: admin.email, owner: owner.email });
+  console.log("Agent created:", { name: testAgent.name, apiKey: testAgent.apiKey });
   console.log("Gym/Branch/Member created:", { gym: testGym.name, branch: testBranch.name, member: testMember.name, rfid: testMember.rfidUid });
 }
 

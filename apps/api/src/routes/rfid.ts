@@ -20,7 +20,7 @@ router.post('/checkin', requireAgentApiKey, async (req, res) => {
 
     // 1. UNKNOWN case (Tag doesn't belong to any member)
     if (!member) {
-      await (prisma as any).accessLog.create({
+      const log = await (prisma as any).accessLog.create({
         data: {
           branchId: agent.branchId,
           agentId: agent.id,
@@ -28,12 +28,13 @@ router.post('/checkin', requireAgentApiKey, async (req, res) => {
           rfidUid
         }
       });
+      console.log(`[RFID API] Unknown tag logged: ${rfidUid}`, log.id);
       return res.status(404).json({ error: 'Member not found with this RFID' });
     }
 
     // 2. DENIED case (Member exists but is Banned/Inactive/Frozen)
     if (member.membershipStatus !== 'ACTIVE' && member.membershipStatus !== 'EXPIRED') {
-      await (prisma as any).accessLog.create({
+      const log = await (prisma as any).accessLog.create({
         data: {
           memberId: member.id,
           branchId: agent.branchId,
@@ -42,6 +43,7 @@ router.post('/checkin', requireAgentApiKey, async (req, res) => {
           rfidUid
         }
       });
+      console.log(`[RFID API] Access denied for member ${member.name}`, log.id);
       return res.status(403).json({ error: 'Membership is not active', status: member.membershipStatus });
     }
 
@@ -53,7 +55,7 @@ router.post('/checkin', requireAgentApiKey, async (req, res) => {
 
       if (now > expiry) {
         await prisma.member.update({ where: { id: member.id }, data: { membershipStatus: 'EXPIRED' } });
-        await (prisma as any).accessLog.create({
+        const log = await (prisma as any).accessLog.create({
           data: {
             memberId: member.id,
             branchId: agent.branchId,
@@ -62,13 +64,14 @@ router.post('/checkin', requireAgentApiKey, async (req, res) => {
             rfidUid
           }
         });
+        console.log(`[RFID API] Access expired for member ${member.name}`, log.id);
         return res.status(403).json({ error: 'Membership expired' });
       }
     }
 
     // 4. AUTHORIZED case (Success)
     // Log the visit attempt
-    await (prisma as any).accessLog.create({
+    const log = await (prisma as any).accessLog.create({
       data: {
         memberId: member.id,
         branchId: agent.branchId,
@@ -77,6 +80,7 @@ router.post('/checkin', requireAgentApiKey, async (req, res) => {
         rfidUid
       }
     });
+    console.log(`[RFID API] Access authorized for member ${member.name}`, log.id);
 
     // Record the actual attendance metric
     const attendance = await prisma.attendance.create({

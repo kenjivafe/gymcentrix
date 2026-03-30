@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserCheck, Clock, ShieldAlert, AlertTriangle } from "lucide-react";
 
 type TapEvent = {
@@ -61,6 +61,11 @@ const STATUS_CONFIG = {
 export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapEvent[] }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [lastHoveredIndex, setLastHoveredIndex] = useState<number>(0);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const getZIndex = (index: number) => {
     const activeIndex = hoveredIndex !== null ? hoveredIndex : 0;
@@ -68,14 +73,16 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
   };
 
   return (
-    <div className="flex flex-col pb-8 pt-4 group/stack" 
-         onMouseLeave={() => setHoveredIndex(null)}>
+    <div 
+      suppressHydrationWarning
+      className="flex flex-col pb-8 pt-4 group/stack" 
+      onMouseLeave={() => setHoveredIndex(null)}>
       {initialAttendance.length === 0 ? (
         <p className="text-xs text-white/20 italic">No tap events recorded today.</p>
       ) : (
         initialAttendance.map((log, index) => {
           const status = log.status || "AUTHORIZED";
-          const config = STATUS_CONFIG[status as keyof typeof STATUS_CONFIG];
+          const config = STATUS_CONFIG[status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.UNKNOWN;
           const Icon = config.icon;
           
           const isActive = hoveredIndex === null ? index === 0 : hoveredIndex === index;
@@ -136,9 +143,11 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                    </div>
                    
                    <div className="pt-4 border-t border-white/5">
-                      <span className={`text-2xl font-display font-black transition-colors uppercase tracking-tighter
+                      <span 
+                        suppressHydrationWarning
+                        className={`text-2xl font-display font-black transition-colors uppercase tracking-tighter
                          ${isActive ? 'text-white/40' : 'text-white/10'}`}>
-                         {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                         {mounted ? new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '--:--:--'}
                       </span>
                    </div>
                  </div>
