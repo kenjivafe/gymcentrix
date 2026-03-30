@@ -21,7 +21,7 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
   };
 
   return (
-    <div className="flex flex-col pb-24 pt-4 group/stack" 
+    <div className="flex flex-col pb-8 pt-4 group/stack" 
          onMouseLeave={() => setHoveredIndex(null)}>
       {initialAttendance.length === 0 ? (
         <p className="text-xs text-white/20 italic">No tap events recorded today.</p>
