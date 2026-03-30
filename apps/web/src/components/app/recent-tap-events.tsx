@@ -30,6 +30,8 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
         initialAttendance.map((log, index) => {
           // Top card is active by default; otherwise follow hoveredIndex
           const isActive = hoveredIndex === null ? index === 0 : hoveredIndex === index;
+          const isBefore = hoveredIndex !== null && index < hoveredIndex;
+          const isAfter = hoveredIndex !== null && index > hoveredIndex;
           
           return (
             <div 
@@ -41,30 +43,47 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                 ? '-translate-y-8 -rotate-1 ring-1 ring-primary/20' 
                 : 'translate-y-0 rotate-0 ring-0 hover:-translate-y-8 hover:-rotate-1'}`}
             >
-              {/* TOP SECTION (Detailed status - slides in) */}
+              {/* TOP SECTION (Detailed status - slides in OR Identity for 'before' cards) */}
               <div className={`absolute top-8 left-8 right-8 flex flex-col gap-6 transition-all duration-500 delay-75 text-left
-                ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                 <div className="flex justify-between items-start">
-                    <div className="space-y-1">
-                       <p className="text-[10px] text-primary uppercase tracking-[0.3em] font-black">Authorized</p>
-                       <p className="text-sm font-bold text-white/40">Biometric Verification</p>
-                    </div>
-                    <div className={`px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest leading-none transition-colors
-                       ${isActive ? 'bg-primary/10 border-primary/20 text-primary' : 'bg-white/5 border-white/10 text-white/20'}`}>
-                       RFID Node 01
-                    </div>
-                 </div>
+                ${(isActive || isBefore) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                  
-                 <div className="pt-4 border-t border-white/5">
-                    <span className={`text-4xl font-display font-black transition-colors uppercase tracking-tighter
-                       ${isActive ? 'text-white/40' : 'text-white/10'}`}>
-                       {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                    </span>
-                 </div>
+                 {/* Show identity if it's a 'before' peek, else show auth details */}
+                 {isBefore && !isActive ? (
+                   <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
+                         <UserCheck className="w-5 h-5 text-white/40" />
+                      </div>
+                      <div className="min-w-0">
+                         <p className="font-display font-bold text-white text-base truncate">{log.member.name}</p>
+                         <p className="text-[9px] text-white/20 uppercase tracking-widest font-black truncate">{log.branch.name}</p>
+                      </div>
+                   </div>
+                 ) : (
+                   <>
+                     <div className="flex justify-between items-start">
+                        <div className="space-y-1">
+                           <p className="text-[10px] text-primary uppercase tracking-[0.3em] font-black">Authorized</p>
+                           <p className="text-sm font-bold text-white/40">Biometric Verification</p>
+                        </div>
+                        <div className={`px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest leading-none transition-colors
+                           ${isActive ? 'bg-primary/10 border-primary/20 text-primary' : 'bg-white/5 border-white/10 text-white/20'}`}>
+                           RFID Node 01
+                        </div>
+                     </div>
+                     
+                     <div className="pt-4 border-t border-white/5">
+                        <span className={`text-4xl font-display font-black transition-colors uppercase tracking-tighter
+                           ${isActive ? 'text-white/40' : 'text-white/10'}`}>
+                           {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                        </span>
+                     </div>
+                   </>
+                 )}
               </div>
 
-               {/* BOTTOM SECTION (Visible folder tab) */}
-              <div className="absolute bottom-6 left-8 right-8 flex items-center gap-5">
+               {/* BOTTOM SECTION (Visible for 'after' cards and 'active' card) */}
+              <div className={`absolute bottom-6 left-8 right-8 flex items-center gap-5 transition-all duration-500
+                 ${isBefore && !isActive ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 shadow-inner
                    ${isActive ? 'bg-primary/20 border-primary/20' : 'bg-white/5 border-white/5'}`}>
                    <UserCheck className={`w-6 h-6 transition-all ${isActive ? 'text-primary' : 'text-white/40'}`} />
