@@ -221,12 +221,7 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
             status === "success" ? "scale-110 shadow-[0_0_100px_rgba(255,255,255,0.4)]" : ""
           }`}>
             {status === "idle" && <Scan className="w-16 h-16 md:w-24 md:h-24 text-white/40 animate-pulse" />}
-            {status === "scanning" && (
-                <div className="relative flex items-center justify-center">
-                    <Scan className="w-16 h-16 md:w-24 md:h-24 text-primary animate-pulse" />
-                    <div className="absolute inset-0 bg-primary/20 rounded-full blur-3xl animate-ping scale-150" />
-                </div>
-            )}
+            {status === "scanning" && <Scan className="w-16 h-16 md:w-24 md:h-24 text-primary animate-ping" />}
             {status === "success" && <UserCheck className="w-16 h-16 md:w-24 md:h-24 text-white" />}
             {status === "expired" && <AlertCircle className="w-16 h-16 md:w-24 md:h-24 text-white" />}
             {status === "frozen" && <AlertCircle className="w-16 h-16 md:w-24 md:h-24 text-white" />}
@@ -242,7 +237,7 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
             status === "success" ? "scale-105" : ""
           }`}>
             {status === "idle" && "Tap to Entry"}
-            {status === "scanning" && <span className="animate-pulse text-primary tracking-widest italic font-medium">Validating Scan...</span>}
+            {status === "scanning" && "Validating..."}
             {status === "success" && memberName}
             {status === "expired" && "Membership Expired"}
             {status === "frozen" && "Account Frozen"}
