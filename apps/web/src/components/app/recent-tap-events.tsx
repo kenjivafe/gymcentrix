@@ -22,6 +22,7 @@ const STATUS_CONFIG = {
     border: "border-primary/20",
     ring: "ring-primary/20",
     glow: "shadow-[0_0_30px_rgba(135,241,0,0.2)]",
+    dot: "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]",
     icon: UserCheck,
     label: "Authorized"
   },
@@ -31,6 +32,7 @@ const STATUS_CONFIG = {
     border: "border-amber-400/20",
     ring: "ring-amber-400/20",
     glow: "shadow-[0_0_30px_rgba(251,191,36,0.2)]",
+    dot: "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]",
     icon: Clock,
     label: "Expired"
   },
@@ -40,6 +42,7 @@ const STATUS_CONFIG = {
     border: "border-rose-500/20",
     ring: "ring-rose-500/20",
     glow: "shadow-[0_0_30px_rgba(244,63,94,0.2)]",
+    dot: "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)]",
     icon: ShieldAlert,
     label: "Denied"
   },
@@ -49,6 +52,7 @@ const STATUS_CONFIG = {
     border: "border-zinc-500/20",
     ring: "ring-zinc-500/20",
     glow: "shadow-[0_0_30px_rgba(113,113,122,0.2)]",
+    dot: "bg-zinc-500 shadow-[0_0_8px_rgba(113,113,122,0.6)]",
     icon: AlertTriangle,
     label: "Unknown ID"
   }
@@ -111,7 +115,7 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                     <div className="min-w-0">
                        <p className="font-display font-bold text-white text-lg truncate tracking-tight">{memberName}</p>
                        <div className="flex items-center gap-2 mt-0.5">
-                          <span className={`w-1.5 h-1.5 rounded-full ${log.status === 'AUTHORIZED' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]' : 'bg-white/20'}`} />
+                          <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
                           <p className="text-[10px] text-white/20 uppercase tracking-[0.2em] font-black truncate">{log.branch.name}</p>
                        </div>
                     </div>
@@ -150,7 +154,7 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                 <div className="flex-1 min-w-0">
                    <p className="font-display font-bold tracking-tight text-white text-lg transition-all truncate">{memberName}</p>
                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className={`w-1.5 h-1.5 rounded-full ${status === 'AUTHORIZED' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]' : 'bg-white/20'}`} />
+                      <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
                       <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-black truncate">{log.branch.name}</p>
                    </div>
                 </div>
