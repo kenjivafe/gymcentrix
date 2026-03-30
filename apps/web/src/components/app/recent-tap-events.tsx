@@ -44,41 +44,42 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                 : 'rotate-0 ring-0 hover:-rotate-1'}`}
             >
               {/* TOP SECTION (Detailed status - slides in OR Identity for 'before' cards) */}
-              <div className={`absolute top-8 left-8 right-8 flex flex-col gap-6 transition-all duration-500 delay-75 text-left
-                ${(isActive || isBefore) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                 
-                 {/* Show identity if it's a 'before' peek, else show auth details */}
-                 {isBefore && !isActive ? (
-                   <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
-                         <UserCheck className="w-5 h-5 text-white/40" />
+              <div className="absolute top-8 left-8 right-8">
+                 {/* Member Identity (Top Peek Version) */}
+                 <div className={`absolute top-0 left-0 right-0 flex items-start gap-4 transition-all duration-300
+                    ${(isBefore && !isActive) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+                    style={{ transitionDelay: isActive ? '0ms' : '75ms' }}>
+                    <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
+                       <UserCheck className="w-5 h-5 text-white/40" />
+                    </div>
+                    <div className="min-w-0">
+                       <p className="font-display font-bold text-white text-base truncate">{log.member.name}</p>
+                       <p className="text-[9px] text-white/20 uppercase tracking-widest font-black truncate">{log.branch.name}</p>
+                    </div>
+                 </div>
+
+                 {/* Auth Details (Expanded Version) */}
+                 <div className={`absolute top-0 left-0 right-0 flex flex-col gap-6 transition-all duration-300
+                    ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+                    style={{ transitionDelay: isActive ? '75ms' : '0ms' }}>
+                   <div className="flex justify-between items-start">
+                      <div className="space-y-1">
+                         <p className="text-[10px] text-primary uppercase tracking-[0.3em] font-black">Authorized</p>
+                         <p className="text-sm font-bold text-white/40">Biometric Verification</p>
                       </div>
-                      <div className="min-w-0">
-                         <p className="font-display font-bold text-white text-base truncate">{log.member.name}</p>
-                         <p className="text-[9px] text-white/20 uppercase tracking-widest font-black truncate">{log.branch.name}</p>
+                      <div className={`px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest leading-none transition-colors
+                         ${isActive ? 'bg-primary/10 border-primary/20 text-primary' : 'bg-white/5 border-white/10 text-white/20'}`}>
+                         RFID Node 01
                       </div>
                    </div>
-                 ) : (
-                   <>
-                     <div className="flex justify-between items-start">
-                        <div className="space-y-1">
-                           <p className="text-[10px] text-primary uppercase tracking-[0.3em] font-black">Authorized</p>
-                           <p className="text-sm font-bold text-white/40">Biometric Verification</p>
-                        </div>
-                        <div className={`px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest leading-none transition-colors
-                           ${isActive ? 'bg-primary/10 border-primary/20 text-primary' : 'bg-white/5 border-white/10 text-white/20'}`}>
-                           RFID Node 01
-                        </div>
-                     </div>
-                     
-                     <div className="pt-4 border-t border-white/5">
-                        <span className={`text-4xl font-display font-black transition-colors uppercase tracking-tighter
-                           ${isActive ? 'text-white/40' : 'text-white/10'}`}>
-                           {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                        </span>
-                     </div>
-                   </>
-                 )}
+                   
+                   <div className="pt-4 border-t border-white/5">
+                      <span className={`text-4xl font-display font-black transition-colors uppercase tracking-tighter
+                         ${isActive ? 'text-white/40' : 'text-white/10'}`}>
+                         {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                      </span>
+                   </div>
+                 </div>
               </div>
 
                {/* BOTTOM SECTION (Visible for 'after' cards and 'active' card) */}
