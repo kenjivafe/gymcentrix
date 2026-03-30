@@ -257,7 +257,7 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
           </p>
 
           {!agentConnected && mounted && (
-            <div className="mt-8 flex flex-col items-center gap-2 animate-bounce">
+            <div className="mt-8 flex flex-col items-center gap-2">
               <div className="px-4 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2">
                 <AlertCircle className="w-3 h-3" />
                 Global Capture Disabled — Focus Required
