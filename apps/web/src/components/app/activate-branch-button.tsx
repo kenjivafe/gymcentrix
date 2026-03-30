@@ -84,7 +84,7 @@ export function ActivateBranchButton({ gymId, branchId, branchName, currentActiv
               <div className="space-y-6">
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-white/60">
-                    To confirm, type <span className="text-white select-none">"{branchName}"</span>
+                    To confirm, type <span className="text-white select-none">&quot;{branchName}&quot;</span>
                   </label>
                   <input
                     type="text"
