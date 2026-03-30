@@ -79,42 +79,42 @@ export default async function AppPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Users} label="Total Members" value={memberCount} trend="5.2%" trendUp />
-        <StatCard icon={UserCheck} label="Active Today" value={activeToday} trend="12" trendUp />
-        <StatCard icon={GitBranch} label="Branches" value={branchCount} trend="0" trendUp />
-        <StatCard icon={Activity} label="Scan Rate" value="98%" trend="1.2%" trendUp />
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        {/* Main Growth Chart (Placeholder) */}
-        <div className="lg:col-span-2 p-8 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-sm relative overflow-hidden group h-[450px]">
-          <div className="relative z-10 flex flex-col h-full">
-            <div className="flex items-center justify-between mb-12">
-              <div className="space-y-1">
-                <h5 className="text-lg font-bold text-white tracking-tight">Attendance Velocity</h5>
-                <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-black">Daily Synchronization Metrics</p>
-              </div>
-            </div>
-            <div className="flex-1 flex items-end gap-2.5 px-2 min-h-[200px]">
-              {[40, 60, 45, 80, 70, 90, 85].map((h, i) => (
-                <div key={i} className="flex-1 h-full flex items-end group/bar relative">
-                  <div 
-                    className={`w-full ${i === 6 ? 'bg-primary' : 'bg-white/10'} rounded-t-lg group-hover/bar:bg-primary transition-all duration-500 cursor-pointer relative shadow-glow-sm`} 
-                    style={{ height: `${Math.max(10, h)}%` }}
-                  >
-                  </div>
+        {/* Left Column: Stats & Chart */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 flex-1 gap-6">
+            <StatCard icon={Users} label="Total Members" value={memberCount} trend="5.2%" trendUp />
+            <StatCard icon={UserCheck} label="Active Today" value={activeToday} trend="12" trendUp />
+          </div>
+
+          {/* Main Growth Chart (Placeholder) */}
+          <div className="p-8 rounded-[2rem] border border-white/5 bg-white/[0.02] backdrop-blur-sm relative overflow-hidden group h-[450px]">
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="flex items-center justify-between mb-12">
+                <div className="space-y-1">
+                  <h5 className="text-lg font-bold text-white tracking-tight">Attendance Velocity</h5>
+                  <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-black">Daily Synchronization Metrics</p>
                 </div>
-              ))}
-            </div>
-            <div className="flex justify-between mt-6 px-2">
-              {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(m => (
-                <span key={m} className="text-[9px] text-white/20 uppercase font-black tracking-widest">{m}</span>
-              ))}
+              </div>
+              <div className="flex-1 flex items-end gap-2.5 px-2 min-h-[200px]">
+                {[40, 60, 45, 80, 70, 90, 85].map((h, i) => (
+                  <div key={i} className="flex-1 h-full flex items-end group/bar relative">
+                    <div 
+                      className={`w-full ${i === 6 ? 'bg-primary' : 'bg-white/10'} rounded-t-lg group-hover/bar:bg-primary transition-all duration-500 cursor-pointer relative shadow-glow-sm`} 
+                      style={{ height: `${Math.max(10, h)}%` }}
+                    >
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-between mt-6 px-2">
+                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(m => (
+                  <span key={m} className="text-[9px] text-white/20 uppercase font-black tracking-widest">{m}</span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-
 
         {/* Right column: Recent Activity */}
         <div className="space-y-6">
@@ -123,22 +123,60 @@ export default async function AppPage() {
                <h6 className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Recent Tap Events</h6>
                <Link href="/app/attendance" className="text-[10px] font-bold text-primary hover:underline">View All</Link>
              </div>
-             <div className="space-y-6 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
+             <div className="flex flex-col -space-y-[150px] pb-24 pt-4 group/stack">
                 {recentAttendance.length === 0 ? (
                   <p className="text-xs text-white/20 italic">No tap events recorded today.</p>
                 ) : (
-                  recentAttendance.map((log) => (
-                    <div key={log.id} className="flex items-center gap-4 group">
-                      <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
-                        <UserCheck className="w-5 h-5 text-white/20 group-hover:text-primary transition-colors" />
+                  recentAttendance.map((log, index) => (
+                    <div 
+                      key={log.id} 
+                      style={{ zIndex: index === 0 ? 60 : 50 - index }}
+                      className={`relative bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] transition-all duration-500 shadow-2xl group/card overflow-hidden h-[220px] w-full cursor-pointer
+                      ${index === 0 
+                        ? '-translate-y-8 -rotate-1 ring-1 ring-primary/20 group-hover/stack:translate-y-0 group-hover/stack:rotate-0 group-hover/stack:ring-0 group-hover/stack:z-[50] hover/card:!-translate-y-8 hover/card:!-rotate-1 hover/card:!ring-1 hover/card:!ring-primary/20 hover/card:!z-[70]' 
+                        : 'hover:-translate-y-8 hover:-rotate-1 hover:z-[70]'}`}
+                    >
+                      {/* TOP SECTION */}
+                      <div className={`absolute top-8 left-8 right-8 flex flex-col gap-6 transition-all duration-500 delay-75 text-left
+                        ${index === 0 
+                          ? 'opacity-100 translate-y-0 group-hover/stack:opacity-0 group-hover/stack:translate-y-4 hover/card:!opacity-100 hover/card:!translate-y-0' 
+                          : 'opacity-0 group-hover/card:opacity-100 translate-y-4 group-hover/card:translate-y-0'}`}>
+                         <div className="flex justify-between items-start">
+                            <div className="space-y-1">
+                               <p className="text-[10px] text-primary uppercase tracking-[0.3em] font-black">Authorized</p>
+                               <p className="text-sm font-bold text-white/40">Biometric Verification</p>
+                            </div>
+                            <div className={`px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest leading-none transition-colors
+                               ${index === 0 ? 'bg-primary/10 border-primary/20 text-primary group-hover/stack:bg-white/5 group-hover/stack:border-white/10 group-hover/stack:text-white/20 hover/card:!bg-primary/10 hover/card:!border-primary/20 hover/card:!text-primary' : 'bg-white/5 border-white/10 text-white/20 group-hover/card:text-primary group-hover/card:border-primary/20'}`}>
+                               RFID Node 01
+                            </div>
+                         </div>
+                         
+                         <div className="pt-4 border-t border-white/5">
+                            <span className={`text-4xl font-display font-black transition-colors uppercase tracking-tighter
+                               ${index === 0 ? 'text-white/40 group-hover/stack:text-white/10 hover/card:!text-white/40' : 'text-white/10 group-hover/card:text-white/20'}`}>
+                               {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                            </span>
+                         </div>
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-bold text-white truncate group-hover:text-primary transition-colors">{log.member.name}</p>
-                        <p className="text-[10px] text-white/30 truncate uppercase tracking-widest font-medium mt-0.5">{log.branch.name}</p>
+
+                       {/* BOTTOM SECTION (Always visible) */}
+                      <div className="absolute bottom-6 left-8 right-8 flex items-center gap-5">
+                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 shadow-inner
+                           ${index === 0 
+                             ? 'bg-primary/20 border-primary/20 group-hover/stack:bg-white/5 group-hover/stack:border-white/5 hover/card:!bg-primary/20 hover/card:!border-primary/20' 
+                             : 'bg-white/5 border-white/5 group-hover/card:bg-primary/20 group-hover/card:border-primary/20'}`}>
+                           <UserCheck className={`w-6 h-6 transition-all ${index === 0 ? 'text-primary group-hover/stack:text-white/40 hover/card:!text-primary' : 'text-white/40 group-hover/card:text-primary'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                           <p className={`font-display font-bold tracking-tight text-white transition-all truncate
+                              ${index === 0 ? 'text-2xl group-hover/stack:text-base hover/card:!text-2xl' : 'group-hover/card:text-2xl'}`}>{log.member.name}</p>
+                           <div className="flex items-center gap-2 mt-0.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
+                              <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-black truncate">{log.branch.name}</p>
+                           </div>
+                        </div>
                       </div>
-                      <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">
-                        {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
                     </div>
                   ))
                 )}
