@@ -12,12 +12,11 @@ interface TapEvent {
 
 export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapEvent[] }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [lastHoveredIndex, setLastHoveredIndex] = useState<number>(0);
 
   const getZIndex = (index: number) => {
     const activeIndex = hoveredIndex !== null ? hoveredIndex : 0;
     // Symmetrical mountain: Active card is the peak (100)
-    // Cards before decrease from peak to bottom (Index 0 is the most "underneath" of the 'before' set)
-    // Cards after decrease from peak to bottom (Last index is the most "underneath" of the 'after' set)
     return 100 - Math.abs(index - activeIndex);
   };
 
@@ -30,14 +29,24 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
         initialAttendance.map((log, index) => {
           // Top card is active by default; otherwise follow hoveredIndex
           const isActive = hoveredIndex === null ? index === 0 : hoveredIndex === index;
-          const isBefore = hoveredIndex !== null && index < hoveredIndex;
-          const isAfter = hoveredIndex !== null && index > hoveredIndex;
+          const isBefore = (hoveredIndex !== null ? index < hoveredIndex : false);
+          
+          // Calculate staggering delay for "unhovering" return animation
+          const returnDelay = hoveredIndex === null && index <= lastHoveredIndex 
+            ? `${(lastHoveredIndex - index) * 60}ms` 
+            : "0ms";
           
           return (
             <div 
               key={log.id} 
-              style={{ zIndex: getZIndex(index) }}
-              onMouseEnter={() => setHoveredIndex(index)}
+              style={{ 
+                zIndex: getZIndex(index),
+                transitionDelay: returnDelay 
+              }}
+              onMouseEnter={() => {
+                setHoveredIndex(index);
+                setLastHoveredIndex(index);
+              }}
               className={`relative bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] transition-all duration-500 shadow-2xl group/card overflow-hidden h-[220px] w-full cursor-pointer
               ${isActive
                 ? '-rotate-1 ring-1 ring-primary/20' 
