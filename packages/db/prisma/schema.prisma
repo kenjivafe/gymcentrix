@@ -13,6 +13,13 @@ enum Role {
   EMPLOYEE
 }
 
+enum AttendanceStatus {
+  AUTHORIZED
+  EXPIRED
+  DENIED
+  UNKNOWN
+}
+
 model Account {
   id                 String  @id @default(cuid())
   userId             String
@@ -98,6 +105,7 @@ model Branch {
   members   Member[]
   agents    Agent[]
   attendance Attendance[]
+  accessLogs AccessLog[]
 }
 
 model Member {
@@ -114,6 +122,7 @@ model Member {
   gym              Gym      @relation("GymMembers", fields: [gymId], references: [id], onDelete: Cascade)
   branch           Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
   attendance       Attendance[]
+  accessLogs       AccessLog[]
 }
 
 model Agent {
@@ -127,6 +136,7 @@ model Agent {
 
   branch    Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
   attendance Attendance[]
+  accessLogs AccessLog[]
 }
 
 model Attendance {
@@ -139,4 +149,18 @@ model Attendance {
   member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
   branch    Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
   agent     Agent?   @relation(fields: [agentId], references: [id], onDelete: SetNull)
+}
+
+model AccessLog {
+  id        String           @id @default(cuid())
+  status    AttendanceStatus @default(AUTHORIZED)
+  rfidUid   String
+  memberId  String?
+  branchId  String
+  agentId   String?
+  timestamp DateTime         @default(now())
+
+  member    Member?          @relation(fields: [memberId], references: [id], onDelete: SetNull)
+  branch    Branch           @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  agent     Agent?           @relation(fields: [agentId], references: [id], onDelete: SetNull)
 }
