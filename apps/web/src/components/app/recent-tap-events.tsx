@@ -105,8 +105,8 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                  <div className={`absolute top-0 left-0 right-0 flex items-start gap-4 transition-all duration-300
                     ${(isBefore && !isActive) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
                     style={{ transitionDelay: `${delayMs + (isActive ? 0 : 75)}ms` }}>
-                    <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
-                       <Icon className="w-5 h-5 text-white/40" />
+                    <div className={`w-10 h-10 rounded-xl bg-transparent border ${config.border} flex items-center justify-center shrink-0`}>
+                       <Icon className={`w-5 h-5 ${config.color}`} />
                     </div>
                     <div className="min-w-0">
                        <p className="font-display font-bold text-white text-base truncate">{memberName}</p>
@@ -141,8 +141,8 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                  ${isBefore && !isActive ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}
                  style={{ transitionDelay: returnDelay }}>
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 shadow-inner
-                   ${isActive ? `${config.theme} ${config.border}` : 'bg-white/5 border-white/5'}`}>
-                   <Icon className={`w-6 h-6 transition-all ${isActive ? config.color : 'text-white/40'}`} />
+                   ${isActive ? `${config.theme} ${config.border}` : `bg-transparent ${config.border}`}`}>
+                   <Icon className={`w-6 h-6 transition-all ${isActive ? config.color : `${config.color}`}`} />
                 </div>
                 <div className="flex-1 min-w-0">
                    <p className="font-display font-bold tracking-tight text-white text-lg transition-all truncate">{memberName}</p>
