@@ -49,8 +49,8 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
               }}
               className={`relative bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] transition-all duration-500 shadow-2xl group/card overflow-hidden h-[220px] w-full cursor-pointer
               ${isActive
-                ? '-rotate-1 ring-1 ring-primary/20' 
-                : 'rotate-0 ring-0 hover:-rotate-1'}`}
+                ? '-translate-y-4 -rotate-1 scale-[1.01] ring-1 ring-primary/20' 
+                : 'translate-y-0 rotate-0 scale-100 ring-0 hover:-translate-y-2 hover:-rotate-1'}`}
             >
               {/* TOP SECTION (Detailed status - slides in OR Identity for 'before' cards) */}
               <div className="absolute top-8 left-8 right-8">
