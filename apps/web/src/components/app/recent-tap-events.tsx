@@ -102,15 +102,15 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                 : 'translate-y-0 rotate-0 scale-100 ring-0 hover:-translate-y-2 hover:-rotate-1'}`}
             >
               <div className="absolute top-[15%] left-[8%] right-[8%]">
-                 <div className={`absolute top-0 left-0 right-0 flex items-start gap-4 transition-all duration-300
+                 <div className={`absolute top-0 left-0 right-0 flex items-start gap-5 transition-all duration-300
                     ${(isBefore && !isActive) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
                     style={{ transitionDelay: `${delayMs + (isActive ? 0 : 75)}ms` }}>
-                    <div className={`w-10 h-10 rounded-xl bg-transparent border ${config.border} flex items-center justify-center shrink-0`}>
-                       <Icon className={`w-5 h-5 ${config.color}`} />
+                    <div className={`w-12 h-12 rounded-2xl bg-transparent border ${config.border} flex items-center justify-center shrink-0`}>
+                       <Icon className={`w-6 h-6 ${config.color}`} />
                     </div>
                     <div className="min-w-0">
-                       <p className="font-display font-bold text-white text-base truncate">{memberName}</p>
-                       <p className="text-[9px] text-white/20 uppercase tracking-widest font-black truncate">{log.branch.name}</p>
+                       <p className="font-display font-bold text-white text-lg truncate tracking-tight">{memberName}</p>
+                       <p className="text-[10px] text-white/20 uppercase tracking-[0.2em] font-black truncate">{log.branch.name}</p>
                     </div>
                  </div>
 
