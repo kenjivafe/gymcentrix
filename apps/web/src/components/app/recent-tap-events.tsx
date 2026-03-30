@@ -22,7 +22,7 @@ const STATUS_CONFIG = {
     border: "border-primary/20",
     ring: "ring-primary/20",
     glow: "shadow-[0_0_30px_rgba(135,241,0,0.2)]",
-    dot: "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]",
+    dot: "bg-primary shadow-[0_0_8px_rgba(135,241,0,0.6)]",
     icon: UserCheck,
     label: "Authorized"
   },
