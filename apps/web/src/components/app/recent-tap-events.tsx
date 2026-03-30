@@ -21,6 +21,7 @@ const STATUS_CONFIG = {
     theme: "bg-primary/20",
     border: "border-primary/20",
     ring: "ring-primary/20",
+    glow: "shadow-[0_0_30px_rgba(135,241,0,0.2)]",
     icon: UserCheck,
     label: "Authorized"
   },
@@ -29,6 +30,7 @@ const STATUS_CONFIG = {
     theme: "bg-amber-400/20",
     border: "border-amber-400/20",
     ring: "ring-amber-400/20",
+    glow: "shadow-[0_0_30px_rgba(251,191,36,0.2)]",
     icon: Clock,
     label: "Expired"
   },
@@ -37,6 +39,7 @@ const STATUS_CONFIG = {
     theme: "bg-rose-500/20",
     border: "border-rose-500/20",
     ring: "ring-rose-500/20",
+    glow: "shadow-[0_0_30px_rgba(244,63,94,0.2)]",
     icon: ShieldAlert,
     label: "Denied"
   },
@@ -45,6 +48,7 @@ const STATUS_CONFIG = {
     theme: "bg-zinc-500/20",
     border: "border-zinc-500/20",
     ring: "ring-zinc-500/20",
+    glow: "shadow-[0_0_30px_rgba(113,113,122,0.2)]",
     icon: AlertTriangle,
     label: "Unknown ID"
   }
@@ -91,10 +95,10 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                 setHoveredIndex(index);
                 setLastHoveredIndex(index);
               }}
-              className={`relative bg-[#0A0A0A] border border-white/10 rounded-3xl transition-all duration-500 shadow-2xl group/card overflow-hidden aspect-[8/5] w-full cursor-pointer
+              className={`relative bg-[#0A0A0A] border ${config.border} rounded-3xl transition-all duration-500 group/card overflow-hidden aspect-[8/5] w-full cursor-pointer
               ${index !== initialAttendance.length - 1 ? '-mb-[44%]' : ''}
               ${isActive
-                ? `-translate-y-4 -rotate-1 scale-[1.01] ring-1 ${config.ring} ${config.border}` 
+                ? `-translate-y-4 -rotate-1 scale-[1.01] ring-1 ${config.ring} ${config.glow} shadow-2xl` 
                 : 'translate-y-0 rotate-0 scale-100 ring-0 hover:-translate-y-2 hover:-rotate-1'}`}
             >
               <div className="absolute top-[15%] left-[8%] right-[8%]">
