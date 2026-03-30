@@ -21,7 +21,7 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
   };
 
   return (
-    <div className="flex flex-col -space-y-[150px] pb-24 pt-4 group/stack" 
+    <div className="flex flex-col pb-24 pt-4 group/stack" 
          onMouseLeave={() => setHoveredIndex(null)}>
       {initialAttendance.length === 0 ? (
         <p className="text-xs text-white/20 italic">No tap events recorded today.</p>
@@ -48,13 +48,14 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                 setHoveredIndex(index);
                 setLastHoveredIndex(index);
               }}
-              className={`relative bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] transition-all duration-500 shadow-2xl group/card overflow-hidden h-[220px] w-full cursor-pointer
+              className={`relative bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] transition-all duration-500 shadow-2xl group/card overflow-hidden aspect-[8/5] w-full cursor-pointer
+              ${index !== initialAttendance.length - 1 ? '-mb-[44%]' : ''}
               ${isActive
                 ? '-translate-y-4 -rotate-1 scale-[1.01] ring-1 ring-primary/20' 
                 : 'translate-y-0 rotate-0 scale-100 ring-0 hover:-translate-y-2 hover:-rotate-1'}`}
             >
               {/* TOP SECTION (Detailed status - slides in OR Identity for 'before' cards) */}
-              <div className="absolute top-8 left-8 right-8">
+              <div className="absolute top-[15%] left-[8%] right-[8%]">
                  {/* Member Identity (Top Peek Version) */}
                  <div className={`absolute top-0 left-0 right-0 flex items-start gap-4 transition-all duration-300
                     ${(isBefore && !isActive) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
@@ -84,7 +85,7 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                    </div>
                    
                    <div className="pt-4 border-t border-white/5">
-                      <span className={`text-4xl font-display font-black transition-colors uppercase tracking-tighter
+                      <span className={`text-2xl font-display font-black transition-colors uppercase tracking-tighter
                          ${isActive ? 'text-white/40' : 'text-white/10'}`}>
                          {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                       </span>
@@ -93,10 +94,10 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
               </div>
 
                {/* BOTTOM SECTION (Visible for 'after' cards and 'active' card) */}
-              <div className={`absolute bottom-6 left-8 right-8 flex items-center gap-5 transition-all duration-500
+              <div className={`absolute bottom-[10%] left-[8%] right-[8%] flex items-center gap-5 transition-all duration-500
                  ${isBefore && !isActive ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}
                  style={{ transitionDelay: returnDelay }}>
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 shadow-inner
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 shadow-inner
                    ${isActive ? 'bg-primary/20 border-primary/20' : 'bg-white/5 border-white/5'}`}>
                    <UserCheck className={`w-6 h-6 transition-all ${isActive ? 'text-primary' : 'text-white/40'}`} />
                 </div>
