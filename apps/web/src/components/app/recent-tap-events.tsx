@@ -73,9 +73,12 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
     return 100 - Math.abs(index - activeIndex);
   };
 
+  if (!mounted) {
+     return <div className="flex flex-col pb-8 pt-4 min-h-[200px]" />;
+  }
+
   return (
     <div 
-      suppressHydrationWarning
       className="flex flex-col pb-8 pt-4 group/stack" 
       onMouseLeave={() => setHoveredIndex(null)}>
       {initialAttendance.length === 0 ? (

@@ -189,18 +189,22 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
     }
   };
 
+  if (!mounted) {
+    return (
+      <div className="fixed inset-0 bg-[#0A0A0A] flex flex-col items-center justify-center font-display" />
+    );
+  }
+  
   return (
     <div 
-      suppressHydrationWarning 
       className={`fixed inset-0 touch-none overscroll-none transition-colors duration-500 flex flex-col items-center justify-center p-8 overflow-hidden font-display ${
-        !mounted ? "bg-[#0A0A0A]" :
         status === "idle" ? "bg-[#0A0A0A]" :
         status === "success" ? "bg-emerald-600" :
         status === "expired" ? "bg-amber-500" :
         status === "frozen" ? "bg-amber-700" :
         status === "not_found" ? "bg-rose-600" :
         status === "banned" ? "bg-rose-800" :
-        status === "scanning" ? "bg-[#111]" : "bg-rose-900"
+        status === "scanning" ? "bg-[#050505]" : "bg-rose-900"
       }`}
     >
       {/* Background Pulse */}
@@ -217,7 +221,12 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
             status === "success" ? "scale-110 shadow-[0_0_100px_rgba(255,255,255,0.4)]" : ""
           }`}>
             {status === "idle" && <Scan className="w-16 h-16 md:w-24 md:h-24 text-white/40 animate-pulse" />}
-            {status === "scanning" && <Scan className="w-16 h-16 md:w-24 md:h-24 text-primary animate-ping" />}
+            {status === "scanning" && (
+                <div className="relative flex items-center justify-center">
+                    <Scan className="w-16 h-16 md:w-24 md:h-24 text-primary animate-pulse" />
+                    <div className="absolute inset-0 bg-primary/20 rounded-full blur-3xl animate-ping scale-150" />
+                </div>
+            )}
             {status === "success" && <UserCheck className="w-16 h-16 md:w-24 md:h-24 text-white" />}
             {status === "expired" && <AlertCircle className="w-16 h-16 md:w-24 md:h-24 text-white" />}
             {status === "frozen" && <AlertCircle className="w-16 h-16 md:w-24 md:h-24 text-white" />}
@@ -233,7 +242,7 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
             status === "success" ? "scale-105" : ""
           }`}>
             {status === "idle" && "Tap to Entry"}
-            {status === "scanning" && "Validating..."}
+            {status === "scanning" && <span className="animate-pulse text-primary tracking-widest italic font-medium">Validating Scan...</span>}
             {status === "success" && memberName}
             {status === "expired" && "Membership Expired"}
             {status === "frozen" && "Account Frozen"}
@@ -251,6 +260,16 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
             {status === "not_found" && "Invalid Token Card"}
             {status === "error" && errorMessage}
           </p>
+
+          {!agentConnected && mounted && (
+            <div className="mt-8 flex flex-col items-center gap-2 animate-bounce">
+              <div className="px-4 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2">
+                <AlertCircle className="w-3 h-3" />
+                Global Capture Disabled — Focus Required
+              </div>
+              <p className="text-[10px] text-white/20 font-medium lowercase italic">agent disconnected or win-service not running</p>
+            </div>
+          )}
         </div>
 
         {/* Footer Instruction */}

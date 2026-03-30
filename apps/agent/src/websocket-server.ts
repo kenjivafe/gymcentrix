@@ -29,7 +29,7 @@ let heartbeatInterval: NodeJS.Timeout | null = null;
  * Start the local WebSocket server on the configured port.
  */
 export function startWebSocketServer(): WebSocketServer {
-  wss = new WebSocketServer({ port: config.wsPort, host: "127.0.0.1" });
+  wss = new WebSocketServer({ port: config.wsPort });
 
   wss.on("listening", () => {
     logger.info(`WebSocket server listening on ws://localhost:${config.wsPort}`);
