@@ -132,13 +132,13 @@ export function MemberClient({ members, branches, gymId }: MemberClientProps) {
                        </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                       <div className="flex items-center justify-end gap-1 px-2">
                           {m.membershipStatus === 'ACTIVE' ? (
-                            <button onClick={() => updateMemberStatus(m.id, "FROZEN")} title="Freeze Access" className="p-2 text-white/20 hover:text-amber-400 hover:bg-amber-400/5 rounded-lg transition-all"><Snowflake className="w-4 h-4" /></button>
+                            <button onClick={() => updateMemberStatus(m.id, "FROZEN")} title="Freeze Access" className="p-2 text-white/10 hover:text-amber-400 hover:bg-amber-400/5 rounded-lg transition-all"><Snowflake className="w-4 h-4" /></button>
                           ) : (
-                            <button onClick={() => updateMemberStatus(m.id, "ACTIVE")} title="Unfreeze Access" className="p-2 text-white/20 hover:text-emerald-400 hover:bg-emerald-400/5 rounded-lg transition-all"><UserCheck className="w-4 h-4" /></button>
+                            <button onClick={() => updateMemberStatus(m.id, "ACTIVE")} title="Unfreeze Access" className="p-2 text-white/10 hover:text-emerald-400 hover:bg-emerald-400/5 rounded-lg transition-all"><UserCheck className="w-4 h-4" /></button>
                           )}
-                          <button onClick={() => updateMemberStatus(m.id, m.membershipStatus === 'BANNED' ? 'ACTIVE' : 'BANNED')} title={m.membershipStatus === 'BANNED' ? "Revoke Ban" : "Ban Member"} className={`p-2 transition-all rounded-lg ${m.membershipStatus === 'BANNED' ? 'text-rose-400 bg-rose-400/10 shadow-glow-sm' : 'text-white/20 hover:text-rose-500 hover:bg-rose-500/5'}`}><Ban className="w-4 h-4" /></button>
+                          <button onClick={() => updateMemberStatus(m.id, m.membershipStatus === 'BANNED' ? 'ACTIVE' : 'BANNED')} title={m.membershipStatus === 'BANNED' ? "Revoke Ban" : "Ban Member"} className={`p-2 transition-all rounded-lg ${m.membershipStatus === 'BANNED' ? 'text-rose-400 bg-rose-400/10 shadow-glow-sm' : 'text-white/10 hover:text-rose-500 hover:bg-rose-500/5'}`}><Ban className="w-4 h-4" /></button>
                           <div className="w-px h-4 bg-white/5 mx-1" />
                           <button onClick={() => setEditingMember(m)} className="p-2 text-white/10 hover:text-white hover:bg-white/5 rounded-lg transition-all"><Edit2 className="w-4 h-4" /></button>
                           <button onClick={() => handleDelete(m.id)} disabled={deletingId === m.id} className="p-2 text-white/10 hover:text-rose-400 hover:bg-rose-400/5 rounded-lg transition-all"><Trash2 className="w-4 h-4" /></button>
@@ -158,8 +158,8 @@ export function MemberClient({ members, branches, gymId }: MemberClientProps) {
                        <UserCheck className="w-6 h-6" />
                     </div>
                     <div className="flex items-center gap-1">
-                       <button onClick={() => updateMemberStatus(m.id, m.membershipStatus === 'ACTIVE' ? "FROZEN" : "ACTIVE")} className={`p-2 transition-all rounded-xl ${m.membershipStatus === 'FROZEN' ? 'text-amber-400 bg-amber-400/10' : 'text-white/10 hover:text-amber-400 hover:bg-white/5'}`}><Snowflake className="w-4 h-4" /></button>
-                       <button onClick={() => updateMemberStatus(m.id, m.membershipStatus === 'BANNED' ? 'ACTIVE' : 'BANNED')} className={`p-2 transition-all rounded-xl ${m.membershipStatus === 'BANNED' ? 'text-rose-400 bg-rose-400/10 shadow-glow-sm' : 'text-white/10 hover:text-rose-500 hover:bg-white/5'}`}><Ban className="w-4 h-4" /></button>
+                       <button onClick={() => updateMemberStatus(m.id, m.membershipStatus === 'ACTIVE' ? "FROZEN" : "ACTIVE")} className={`p-2 transition-all rounded-xl ${m.membershipStatus === 'FROZEN' ? 'text-amber-400 bg-amber-400/10' : 'text-white/20 hover:text-amber-400 hover:bg-white/5'}`}><Snowflake className="w-4 h-4" /></button>
+                       <button onClick={() => updateMemberStatus(m.id, m.membershipStatus === 'BANNED' ? 'ACTIVE' : 'BANNED')} className={`p-2 transition-all rounded-xl ${m.membershipStatus === 'BANNED' ? 'text-rose-400 bg-rose-400/10 shadow-glow-sm' : 'text-white/20 hover:text-rose-500 hover:bg-white/5'}`}><Ban className="w-4 h-4" /></button>
                        <button onClick={() => setEditingMember(m)} className="p-2 text-white/10 hover:text-white hover:bg-white/5 rounded-xl transition-all"><Edit2 className="w-4 h-4" /></button>
                        <button onClick={() => handleDelete(m.id)} disabled={deletingId === m.id} className="p-2 text-white/10 hover:text-rose-400 hover:bg-rose-400/5 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
                     </div>

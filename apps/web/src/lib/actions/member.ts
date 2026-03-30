@@ -9,7 +9,7 @@ const RegisterMemberSchema = z.object({
   gymId: z.string(),
   branchId: z.string(),
   rfidUid: z.string().optional().nullable(),
-  membershipStatus: z.string().default("ACTIVE"),
+  membershipStatus: z.enum(["ACTIVE", "FROZEN", "BANNED", "EXPIRED"]).default("ACTIVE"),
   membershipExpiry: z.string().optional().nullable(),
 });
 
@@ -29,7 +29,7 @@ export async function registerMember(data: z.infer<typeof RegisterMemberSchema>)
         gymId: validatedData.gymId,
         branchId: validatedData.branchId,
         rfidUid: validatedData.rfidUid || null,
-        membershipStatus: initialStatus,
+        membershipStatus: validatedData.membershipStatus || initialStatus,
         membershipExpiry: expiryDate,
       },
     });
@@ -50,6 +50,7 @@ const UpdateMemberSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   branchId: z.string(),
   rfidUid: z.string().optional().nullable(),
+  membershipStatus: z.enum(["ACTIVE", "FROZEN", "BANNED", "EXPIRED"]).optional(),
   membershipExpiry: z.string().optional().nullable(),
 });
 
@@ -58,17 +59,31 @@ export async function updateMember(data: any) {
     const validatedData = UpdateMemberSchema.parse(data);
     const { id, ...updateData } = validatedData;
     
+    const currentMember = await prisma.member.findUnique({ where: { id }, select: { membershipStatus: true } });
+    
     const expiryDate = updateData.membershipExpiry ? new Date(updateData.membershipExpiry) : null;
-    let newStatus = "ACTIVE";
+    let autoStatus = "ACTIVE";
     if (expiryDate && new Date() > expiryDate) {
-      newStatus = "EXPIRED";
+      autoStatus = "EXPIRED";
+    }
+
+    // Determine final status:
+    // 1. If a specific status was sent in the update, use it.
+    // 2. Otherwise, if current status is BANNED/FROZEN, KEEP IT.
+    // 3. Otherwise, use the calculated autoStatus (ACTIVE/EXPIRED).
+    let finalStatus = updateData.membershipStatus || currentMember?.membershipStatus || autoStatus;
+    
+    if (!updateData.membershipStatus) {
+      if (currentMember?.membershipStatus !== 'BANNED' && currentMember?.membershipStatus !== 'FROZEN') {
+        finalStatus = autoStatus;
+      }
     }
     
     const member = await prisma.member.update({
       where: { id },
       data: {
         ...updateData,
-        membershipStatus: newStatus,
+        membershipStatus: finalStatus,
         membershipExpiry: expiryDate,
       },
     });

@@ -54,6 +54,7 @@ export function EditMemberModal({ branches, gymId, initialData, onClose }: EditM
       gymId: gymId,
       branchId: formData.get("branchId") as string,
       rfidUid: formData.get("rfidUid") as string || null,
+      membershipStatus: formData.get("membershipStatus") as any,
       membershipExpiry: expiryDate ? expiryDate.toISOString() : initialData.membershipExpiry,
     };
 
@@ -147,6 +148,31 @@ export function EditMemberModal({ branches, gymId, initialData, onClose }: EditM
                        </div>
                     </div>
                   )}
+
+                  <div className="group space-y-2 pt-2">
+                     <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20 ml-1">Security & Access Status</label>
+                     <div className="flex items-center gap-2 p-1.5 bg-white/[0.03] border border-white/5 rounded-2xl">
+                        {(["ACTIVE", "FROZEN", "BANNED"] as const).map((s) => (
+                           <label key={s} className="flex-1 cursor-pointer group/label">
+                              <input 
+                                type="radio" 
+                                name="membershipStatus" 
+                                value={s} 
+                                defaultChecked={initialData?.membershipStatus === s} 
+                                className="sr-only peer" 
+                              />
+                              <div className={`py-3 rounded-xl text-[10px] font-black uppercase tracking-widest text-center transition-all 
+                                peer-checked:bg-white/10 peer-checked:text-white text-white/20 hover:text-white/40
+                                ${s === 'BANNED' ? 'peer-checked:!bg-rose-500 peer-checked:!text-black' : ''}
+                                ${s === 'FROZEN' ? 'peer-checked:!bg-amber-400 peer-checked:!text-black' : ''}
+                                ${s === 'ACTIVE' ? 'peer-checked:!bg-emerald-400 peer-checked:!text-black' : ''}
+                              `}>
+                                 {s}
+                              </div>
+                           </label>
+                        ))}
+                     </div>
+                  </div>
                </div>
 
                {error && <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[10px] font-black text-center uppercase tracking-widest">{error}</div>}
