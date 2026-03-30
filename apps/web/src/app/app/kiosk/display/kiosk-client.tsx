@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
-import { Monitor, UserCheck, XCircle, AlertCircle, Scan, Maximize } from "lucide-react";
+import { Monitor, UserCheck, XCircle, AlertCircle, Scan, Maximize, Settings, Save, X } from "lucide-react";
 
 type KioskStatus = "idle" | "scanning" | "success" | "expired" | "not_found" | "error" | "banned" | "frozen";
 
@@ -12,6 +12,8 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
   const [errorMessage, setErrorMessage] = useState("");
   const [agentConnected, setAgentConnected] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [agentAddress, setAgentAddress] = useState("localhost:4010");
+  const [showSettings, setShowSettings] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const agentConnectedRef = useRef(false);
 
@@ -25,7 +27,11 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
   useEffect(() => { agentConnectedRef.current = agentConnected; }, [agentConnected]);
 
   // Mark as mounted so WebSocket-driven UI only renders client-side
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => { 
+    setMounted(true); 
+    const savedAddress = localStorage.getItem("gx_agent_address");
+    if (savedAddress) setAgentAddress(savedAddress);
+  }, []);
 
   const handleCheckin = useCallback(async (rfid: string) => {
     setStatus("scanning");
@@ -74,7 +80,9 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
     let reconnectTimeout: NodeJS.Timeout;
 
     const connectWebSocket = () => {
-      ws = new WebSocket("ws://localhost:4010");
+      // Logic for address: ensure ws:// prefix and correct port
+      const wsUrl = agentAddress.includes("://") ? agentAddress : `ws://${agentAddress}`;
+      ws = new WebSocket(wsUrl);
 
       ws.onopen = () => {
         setAgentConnected(true);
@@ -170,6 +178,8 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
 
     window.addEventListener("keydown", handleKeyDown);
 
+    window.addEventListener("keydown", handleKeyDown);
+ 
     return () => {
       clearTimeout(reconnectTimeout);
       if (ws) ws.close();
@@ -177,7 +187,7 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
       if (kbTimeout) clearTimeout(kbTimeout);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [resetKiosk, handleCheckin]);
+  }, [resetKiosk, handleCheckin, agentAddress]);
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -277,13 +287,61 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
         )}
       </div>
 
-      {/* Fullscreen Button */}
-      <button 
-        onClick={toggleFullScreen}
-        className="fixed bottom-8 right-8 p-4 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white hover:bg-white/10 transition-all opacity-20 hover:opacity-100"
-      >
-        <Maximize className="w-6 h-6" />
-      </button>
+      {/* Fullscreen & Settings Buttons */}
+      <div className="fixed bottom-8 right-8 flex gap-3">
+        <button 
+          onClick={() => setShowSettings(true)}
+          className="p-4 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white hover:bg-white/10 transition-all opacity-20 hover:opacity-100"
+        >
+          <Settings className="w-6 h-6" />
+        </button>
+        <button 
+          onClick={toggleFullScreen}
+          className="p-4 rounded-full bg-white/5 border border-white/10 text-white/40 hover:text-white hover:bg-white/10 transition-all opacity-20 hover:opacity-100"
+        >
+          <Maximize className="w-6 h-6" />
+        </button>
+      </div>
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 backdrop-blur-xl bg-black/60">
+           <div className="w-full max-w-md bg-[#0A0A0A] border border-white/10 rounded-3xl p-8 shadow-2xl space-y-6">
+              <div className="flex justify-between items-center text-white">
+                 <h2 className="text-xl font-bold tracking-tight">Kiosk Connectivity</h2>
+                 <button onClick={() => setShowSettings(false)} className="text-white/40 hover:text-white transition-colors">
+                    <X className="w-6 h-6" />
+                 </button>
+              </div>
+
+              <div className="space-y-4">
+                 <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-white/40">Hardware Agent Address</label>
+                    <input 
+                       type="text" 
+                       value={agentAddress}
+                       onChange={(e) => setAgentAddress(e.target.value)}
+                       placeholder="e.g. 192.168.1.100:4010"
+                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-primary/40 transition-all font-display"
+                    />
+                    <p className="text-[10px] text-white/20 italic">Provide the IP and port of the PC running the Gymcentrix Agent.</p>
+                 </div>
+              </div>
+
+              <button 
+                onClick={() => {
+                   localStorage.setItem("gx_agent_address", agentAddress);
+                   setShowSettings(false);
+                   // WebSocket will auto-reconnect due to dependency array
+                }}
+                className="w-full bg-primary text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all"
+              >
+                <Save className="w-5 h-5" />
+                Apply & Synchronize
+              </button>
+           </div>
+        </div>
+      )}
 
       {/* Brand Watermark */}
       <div className="fixed top-8 left-8 flex items-center gap-3 opacity-20 hover:opacity-100 transition-opacity">
