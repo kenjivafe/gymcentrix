@@ -24,48 +24,64 @@ router.post('/checkin', requireAgentApiKey, async (req, res) => {
         data: {
           branchId: agent.branchId,
           agentId: agent.id,
-          status: 'UNKNOWN',
+          result: 'DENIED',
+          reason: 'UNKNOWN_CARD',
           rfidUid
         }
       });
-      console.log(`[RFID API] Unknown tag logged: ${rfidUid}`, log.id);
-      return res.status(404).json({ error: 'Member not found with this RFID' });
+      console.log(`[RFID API] Unknown card detected: ${rfidUid}`, log.id);
+      return res.status(404).json({ 
+        error: 'Member not found with this RFID',
+        result: 'DENIED',
+        reason: 'UNKNOWN_CARD'
+      });
     }
 
-    // 2. DENIED case (Member exists but is Banned/Inactive/Frozen)
-    if (member.membershipStatus !== 'ACTIVE' && member.membershipStatus !== 'EXPIRED') {
+    // 2. DENIED case (Member exists but is Banned/Frozen)
+    if (member.membershipStatus === 'BANNED' || member.membershipStatus === 'FROZEN') {
+      const reason = member.membershipStatus === 'BANNED' ? 'BANNED_MEMBER' : 'FROZEN_MEMBERSHIP';
       const log = await (prisma as any).accessLog.create({
         data: {
           memberId: member.id,
           branchId: agent.branchId,
           agentId: agent.id,
-          status: 'DENIED',
+          result: 'DENIED',
+          reason,
           rfidUid
         }
       });
       console.log(`[RFID API] Access denied for member ${member.name} (Status: ${member.membershipStatus})`, log.id);
-      return res.status(403).json({ error: `Membership is ${member.membershipStatus}` });
+      return res.status(403).json({ 
+        error: `Membership is ${member.membershipStatus}`,
+        result: 'DENIED',
+        reason
+      });
     }
 
     // 3. EXPIRED case (Member pass has run its course)
+    const now = new Date();
     if (member.membershipExpiry) {
-      const now = new Date();
       const expiry = new Date(member.membershipExpiry);
       expiry.setUTCHours(23, 59, 59, 999);
 
-      if (now > expiry) {
+      if (now > expiry || member.membershipStatus === 'EXPIRED') {
         await prisma.member.update({ where: { id: member.id }, data: { membershipStatus: 'EXPIRED' } });
         const log = await (prisma as any).accessLog.create({
           data: {
             memberId: member.id,
             branchId: agent.branchId,
             agentId: agent.id,
-            status: 'EXPIRED',
+            result: 'DENIED',
+            reason: 'EXPIRED_MEMBERSHIP',
             rfidUid
           }
         });
-        console.log(`[RFID API] Access expired for member ${member.name}`, log.id);
-        return res.status(403).json({ error: 'Membership expired' });
+        console.log(`[RFID API] Expired membership for ${member.name}`, log.id);
+        return res.status(403).json({ 
+          error: 'Membership expired', 
+          result: 'DENIED',
+          reason: 'EXPIRED_MEMBERSHIP'
+        });
       }
     }
 

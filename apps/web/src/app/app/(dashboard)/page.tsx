@@ -57,7 +57,7 @@ export default async function AppPage() {
           timestamp: { gte: new Date(new Date().setHours(0,0,0,0)) }
         } 
       }),
-      (prisma as any).accessLog.findMany({
+      prisma.accessLog.findMany({
         where: { branch: { gymId } },
         take: 10,
         orderBy: { timestamp: "desc" },
@@ -65,7 +65,7 @@ export default async function AppPage() {
           member: true,
           branch: true
         }
-      }) as Promise<any[]>
+      })
     ]);
 
     memberCount = mCount;

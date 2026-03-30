@@ -38,18 +38,23 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
 
       const data = await res.json();
 
-      if (data.status === "success") {
+      if (data.result === "AUTHORIZED") {
         setStatus("success");
         setMemberName(data.name);
-      } else if (data.status === "expired") {
-        setStatus("expired");
-        setMemberName(data.name);
-      } else if (data.status === "frozen") {
-        setStatus("frozen");
-      } else if (data.status === "banned") {
-        setStatus("banned");
-      } else if (data.status === "not_found") {
-        setStatus("not_found");
+      } else if (data.result === "DENIED") {
+        if (data.reason === "EXPIRED_MEMBERSHIP") {
+          setStatus("expired");
+          setMemberName(data.name || "Member");
+        } else if (data.reason === "FROZEN_MEMBERSHIP") {
+          setStatus("frozen");
+        } else if (data.reason === "BANNED_MEMBER") {
+          setStatus("banned");
+        } else if (data.reason === "UNKNOWN_CARD") {
+          setStatus("not_found");
+        } else {
+          setStatus("error");
+          setErrorMessage(data.error || "Access Denied");
+        }
       } else {
         setStatus("error");
         setErrorMessage(data.error || "System synchronization error");
@@ -81,24 +86,24 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
           
           if (data.event === "scan") {
             setStatus("scanning");
-          } else if (data.event === "scan_success") {
+          } else if (data.result === "AUTHORIZED") {
             setStatus("success");
-            setMemberName(data.member?.name || "Member");
+            setMemberName(data.member?.name || data.name || "Member");
             
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
             timeoutRef.current = setTimeout(resetKiosk, 3000);
-          } else if (data.event === "scan_error") {
-             if (data.error === "Member not found with this RFID") {
+          } else if (data.result === "DENIED") {
+             if (data.reason === "UNKNOWN_CARD") {
                setStatus("not_found");
-             } else if (data.error === "Membership is BANNED") {
+             } else if (data.reason === "BANNED_MEMBER") {
                setStatus("banned");
-             } else if (data.error === "Membership is FROZEN") {
+             } else if (data.reason === "FROZEN_MEMBERSHIP") {
                setStatus("frozen");
-             } else if (data.error === "Membership is not active" || data.error === "Membership expired") {
+             } else if (data.reason === "EXPIRED_MEMBERSHIP") {
                setStatus("expired");
              } else {
                setStatus("error");
-               setErrorMessage(data.error || "System synchronization error");
+               setErrorMessage(data.error || "Access Denied");
              }
              if (timeoutRef.current) clearTimeout(timeoutRef.current);
              timeoutRef.current = setTimeout(resetKiosk, 3000);

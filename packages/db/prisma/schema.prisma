@@ -151,16 +151,29 @@ model Attendance {
   agent     Agent?   @relation(fields: [agentId], references: [id], onDelete: SetNull)
 }
 
+enum AccessResult {
+  AUTHORIZED
+  DENIED
+}
+
+enum AccessReason {
+  EXPIRED_MEMBERSHIP
+  UNKNOWN_CARD
+  FROZEN_MEMBERSHIP
+  BANNED_MEMBER
+}
+
 model AccessLog {
-  id        String           @id @default(cuid())
-  status    AttendanceStatus @default(AUTHORIZED)
+  id        String        @id @default(cuid())
+  result    AccessResult  @default(AUTHORIZED)
+  reason    AccessReason?
   rfidUid   String
   memberId  String?
   branchId  String
   agentId   String?
-  timestamp DateTime         @default(now())
+  timestamp DateTime      @default(now())
 
-  member    Member?          @relation(fields: [memberId], references: [id], onDelete: SetNull)
-  branch    Branch           @relation(fields: [branchId], references: [id], onDelete: Cascade)
-  agent     Agent?           @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  member    Member?       @relation(fields: [memberId], references: [id], onDelete: SetNull)
+  branch    Branch        @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  agent     Agent?        @relation(fields: [agentId], references: [id], onDelete: SetNull)
 }

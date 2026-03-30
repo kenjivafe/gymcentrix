@@ -6,7 +6,8 @@ import { UserCheck, Clock, ShieldAlert, AlertTriangle } from "lucide-react";
 type TapEvent = {
   id: string;
   timestamp: Date | string;
-  status?: "AUTHORIZED" | "EXPIRED" | "DENIED" | "UNKNOWN";
+  result?: "AUTHORIZED" | "DENIED";
+  reason?: "EXPIRED_MEMBERSHIP" | "UNKNOWN_CARD" | "FROZEN_MEMBERSHIP" | "BANNED_MEMBER";
   member: {
     name: string;
   } | null;
@@ -81,8 +82,19 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
         <p className="text-xs text-white/20 italic">No tap events recorded today.</p>
       ) : (
         initialAttendance.map((log, index) => {
-          const status = log.status || "AUTHORIZED";
-          const config = STATUS_CONFIG[status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.UNKNOWN;
+          // Resolve config based on refined model
+          let config = STATUS_CONFIG.AUTHORIZED;
+          
+          if (log.result === 'DENIED') {
+            if (log.reason === 'EXPIRED_MEMBERSHIP') {
+              config = STATUS_CONFIG.EXPIRED;
+            } else if (log.reason === 'UNKNOWN_CARD') {
+              config = STATUS_CONFIG.UNKNOWN;
+            } else {
+              config = STATUS_CONFIG.DENIED; // Red for Banned/Frozen
+            }
+          }
+          
           const Icon = config.icon;
           
           const isActive = hoveredIndex === null ? index === 0 : hoveredIndex === index;
