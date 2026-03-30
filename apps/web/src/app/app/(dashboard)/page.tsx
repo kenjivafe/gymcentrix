@@ -133,13 +133,13 @@ export default async function AppPage() {
                       style={{ zIndex: index === 0 ? 60 : 50 - index }}
                       className={`relative bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] transition-all duration-500 shadow-2xl group/card overflow-hidden h-[220px] w-full cursor-pointer
                       ${index === 0 
-                        ? '-translate-y-8 -rotate-1 ring-1 ring-primary/20 group-hover/stack:translate-y-0 group-hover/stack:rotate-0 group-hover/stack:ring-0 group-hover/stack:z-[50] hover/card:!-translate-y-8 hover/card:!-rotate-1 hover/card:!ring-1 hover/card:!ring-primary/20 hover/card:!z-[70]' 
-                        : 'hover:-translate-y-8 hover:-rotate-1 hover:z-[70]'}`}
+                        ? '-translate-y-8 -rotate-1 ring-1 ring-primary/20 group-hover/stack:translate-y-0 group-hover/stack:rotate-0 group-hover/stack:ring-0 group-hover/stack:z-[50] hover:!z-[70] hover:!-translate-y-8 hover:!-rotate-1 hover:!ring-1 hover:!ring-primary/20' 
+                        : 'hover:-translate-y-8 hover:-rotate-1 hover:!z-[70]'}`}
                     >
                       {/* TOP SECTION */}
                       <div className={`absolute top-8 left-8 right-8 flex flex-col gap-6 transition-all duration-500 delay-75 text-left
                         ${index === 0 
-                          ? 'opacity-100 translate-y-0 group-hover/stack:opacity-0 group-hover/stack:translate-y-4 hover/card:!opacity-100 hover/card:!translate-y-0' 
+                          ? 'opacity-100 translate-y-0 group-hover/stack:opacity-0 group-hover/stack:translate-y-4 hover:!opacity-100 hover:!translate-y-0' 
                           : 'opacity-0 group-hover/card:opacity-100 translate-y-4 group-hover/card:translate-y-0'}`}>
                          <div className="flex justify-between items-start">
                             <div className="space-y-1">
@@ -147,14 +147,14 @@ export default async function AppPage() {
                                <p className="text-sm font-bold text-white/40">Biometric Verification</p>
                             </div>
                             <div className={`px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest leading-none transition-colors
-                               ${index === 0 ? 'bg-primary/10 border-primary/20 text-primary group-hover/stack:bg-white/5 group-hover/stack:border-white/10 group-hover/stack:text-white/20 hover/card:!bg-primary/10 hover/card:!border-primary/20 hover/card:!text-primary' : 'bg-white/5 border-white/10 text-white/20 group-hover/card:text-primary group-hover/card:border-primary/20'}`}>
+                               ${index === 0 ? 'bg-primary/10 border-primary/20 text-primary group-hover/stack:bg-white/5 group-hover/stack:border-white/10 group-hover/stack:text-white/20 hover:!bg-primary/10 hover:!border-primary/20 hover:!text-primary' : 'bg-white/5 border-white/10 text-white/20 group-hover/card:text-primary group-hover/card:border-primary/20'}`}>
                                RFID Node 01
                             </div>
                          </div>
                          
                          <div className="pt-4 border-t border-white/5">
                             <span className={`text-4xl font-display font-black transition-colors uppercase tracking-tighter
-                               ${index === 0 ? 'text-white/40 group-hover/stack:text-white/10 hover/card:!text-white/40' : 'text-white/10 group-hover/card:text-white/20'}`}>
+                               ${index === 0 ? 'text-white/40 group-hover/stack:text-white/10 hover:!text-white/40' : 'text-white/10 group-hover/card:text-white/20'}`}>
                                {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                             </span>
                          </div>
@@ -164,13 +164,13 @@ export default async function AppPage() {
                       <div className="absolute bottom-6 left-8 right-8 flex items-center gap-5">
                         <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 shadow-inner
                            ${index === 0 
-                             ? 'bg-primary/20 border-primary/20 group-hover/stack:bg-white/5 group-hover/stack:border-white/5 hover/card:!bg-primary/20 hover/card:!border-primary/20' 
+                             ? 'bg-primary/20 border-primary/20 group-hover/stack:bg-white/5 group-hover/stack:border-white/5 hover:!bg-primary/20 hover:!border-primary/20' 
                              : 'bg-white/5 border-white/5 group-hover/card:bg-primary/20 group-hover/card:border-primary/20'}`}>
-                           <UserCheck className={`w-6 h-6 transition-all ${index === 0 ? 'text-primary group-hover/stack:text-white/40 hover/card:!text-primary' : 'text-white/40 group-hover/card:text-primary'}`} />
+                           <UserCheck className={`w-6 h-6 transition-all ${index === 0 ? 'text-primary group-hover/stack:text-white/40 hover:!text-primary' : 'text-white/40 group-hover/card:text-primary'}`} />
                         </div>
                         <div className="flex-1 min-w-0">
                            <p className={`font-display font-bold tracking-tight text-white transition-all truncate
-                              ${index === 0 ? 'text-2xl group-hover/stack:text-base hover/card:!text-2xl' : 'group-hover/card:text-2xl'}`}>{log.member.name}</p>
+                              ${index === 0 ? 'text-2xl group-hover/stack:text-base hover:!text-2xl' : 'group-hover/card:text-2xl'}`}>{log.member.name}</p>
                            <div className="flex items-center gap-2 mt-0.5">
                               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
                               <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-black truncate">{log.branch.name}</p>
