@@ -177,6 +177,7 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
     <div 
       suppressHydrationWarning 
       className={`fixed inset-0 touch-none overscroll-none transition-colors duration-500 flex flex-col items-center justify-center p-8 overflow-hidden font-display ${
+        !mounted ? "bg-[#0A0A0A]" :
         status === "idle" ? "bg-[#0A0A0A]" :
         status === "success" ? "bg-emerald-600" :
         status === "expired" ? "bg-amber-500" :
@@ -259,7 +260,9 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
       </div>
 
       {/* Gym Name top right */}
-      <div className="fixed top-8 right-8 opacity-20 hover:opacity-100 transition-opacity flex flex-col items-end gap-2">
+      <div 
+        suppressHydrationWarning
+        className="fixed top-8 right-8 opacity-20 hover:opacity-100 transition-opacity flex flex-col items-end gap-2">
          <span className="font-display font-bold text-white tracking-widest text-md uppercase">{gymName}</span>
          {mounted && (
            <div className="flex items-center gap-2">

@@ -5,7 +5,7 @@ const http = require('http');
  * Use this tool to trigger tap-in events without physical hardware.
  */
 
-const API_URL = 'http://localhost:3001';
+const API_URL = 'http://gymcentrix-api.vercel.app';
 const AGENT_API_KEY = 'agent-1-key'; // Default from seed
 const RFID_UIDS = {
   AUTHORIZED: '1234567890',
