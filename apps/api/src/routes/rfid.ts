@@ -43,8 +43,8 @@ router.post('/checkin', requireAgentApiKey, async (req, res) => {
           rfidUid
         }
       });
-      console.log(`[RFID API] Access denied for member ${member.name}`, log.id);
-      return res.status(403).json({ error: 'Membership is not active', status: member.membershipStatus });
+      console.log(`[RFID API] Access denied for member ${member.name} (Status: ${member.membershipStatus})`, log.id);
+      return res.status(403).json({ error: `Membership is ${member.membershipStatus}` });
     }
 
     // 3. EXPIRED case (Member pass has run its course)

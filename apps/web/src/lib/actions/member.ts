@@ -96,3 +96,17 @@ export async function deleteMember(id: string) {
     return { error: "Failed to delete member." };
   }
 }
+export async function updateMemberStatus(id: string, status: string) {
+  try {
+    await prisma.member.update({
+      where: { id },
+      data: { membershipStatus: status },
+    });
+
+    revalidatePath("/app/members");
+    revalidatePath("/app");
+    return { success: true };
+  } catch (error) {
+    return { error: "Failed to update member status." };
+  }
+}

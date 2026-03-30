@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import { Monitor, UserCheck, XCircle, AlertCircle, Scan, Maximize } from "lucide-react";
 
-type KioskStatus = "idle" | "scanning" | "success" | "expired" | "not_found" | "error";
+type KioskStatus = "idle" | "scanning" | "success" | "expired" | "not_found" | "error" | "banned" | "frozen";
 
 export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName?: string }) {
   const [status, setStatus] = useState<KioskStatus>("idle");
@@ -44,6 +44,10 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
       } else if (data.status === "expired") {
         setStatus("expired");
         setMemberName(data.name);
+      } else if (data.status === "frozen") {
+        setStatus("frozen");
+      } else if (data.status === "banned") {
+        setStatus("banned");
       } else if (data.status === "not_found") {
         setStatus("not_found");
       } else {
@@ -86,6 +90,10 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
           } else if (data.event === "scan_error") {
              if (data.error === "Member not found with this RFID") {
                setStatus("not_found");
+             } else if (data.error === "Membership is BANNED") {
+               setStatus("banned");
+             } else if (data.error === "Membership is FROZEN") {
+               setStatus("frozen");
              } else if (data.error === "Membership is not active" || data.error === "Membership expired") {
                setStatus("expired");
              } else {
@@ -181,7 +189,9 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
         status === "idle" ? "bg-[#0A0A0A]" :
         status === "success" ? "bg-emerald-600" :
         status === "expired" ? "bg-amber-500" :
+        status === "frozen" ? "bg-amber-700" :
         status === "not_found" ? "bg-rose-600" :
+        status === "banned" ? "bg-rose-800" :
         status === "scanning" ? "bg-[#111]" : "bg-rose-900"
       }`}
     >
@@ -202,7 +212,9 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
             {status === "scanning" && <Scan className="w-16 h-16 md:w-24 md:h-24 text-primary animate-ping" />}
             {status === "success" && <UserCheck className="w-16 h-16 md:w-24 md:h-24 text-white" />}
             {status === "expired" && <AlertCircle className="w-16 h-16 md:w-24 md:h-24 text-white" />}
+            {status === "frozen" && <AlertCircle className="w-16 h-16 md:w-24 md:h-24 text-white" />}
             {status === "not_found" && <XCircle className="w-16 h-16 md:w-24 md:h-24 text-white" />}
+            {status === "banned" && <XCircle className="w-16 h-16 md:w-24 md:h-24 text-white" />}
             {status === "error" && <AlertCircle className="w-16 h-16 md:w-24 md:h-24 text-white" />}
           </div>
         </div>
@@ -216,6 +228,8 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
             {status === "scanning" && "Validating..."}
             {status === "success" && memberName}
             {status === "expired" && "Membership Expired"}
+            {status === "frozen" && "Account Frozen"}
+            {status === "banned" && "Access Banned"}
             {status === "not_found" && "Account Not Found"}
             {status === "error" && "System Error"}
           </h1>
@@ -224,6 +238,8 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
             {status === "idle" && "Gymcentrix Smart Access"}
             {status === "success" && "Access Granted • Welcome Back"}
             {status === "expired" && `${memberName} • Please see desk`}
+            {status === "frozen" && "Contact Facility Manager"}
+            {status === "banned" && "Access Revoked Profile Restriction"}
             {status === "not_found" && "Invalid Token Card"}
             {status === "error" && errorMessage}
           </p>

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, LayoutGrid, List, UserCheck, Search, Filter, CreditCard, Edit2, Trash2 } from "lucide-react";
-import { deleteMember } from "@/lib/actions/member";
+import { Plus, LayoutGrid, List, UserCheck, Search, Filter, CreditCard, Edit2, Trash2, Snowflake, Ban } from "lucide-react";
+import { deleteMember, updateMemberStatus } from "@/lib/actions/member";
 import { AddMemberModal } from "./add-member-modal";
 import { EditMemberModal } from "./edit-member-modal";
 
@@ -122,12 +122,24 @@ export function MemberClient({ members, branches, gymId }: MemberClientProps) {
                        )}
                     </td>
                     <td className="px-6 py-4">
-                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest ${m.membershipStatus === 'ACTIVE' ? 'bg-emerald-400/10 text-emerald-400 border border-emerald-400/20' : 'bg-rose-400/10 text-rose-400 border border-rose-400/20'}`}>
+                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                         m.membershipStatus === 'ACTIVE' ? 'bg-emerald-400/10 text-emerald-400 border-emerald-400/20' : 
+                         m.membershipStatus === 'FROZEN' ? 'bg-amber-400/10 text-amber-400 border-amber-400/20' :
+                         m.membershipStatus === 'EXPIRED' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                         'bg-rose-400/10 text-rose-400 border-rose-400/20'
+                       }`}>
                           {m.membershipStatus}
                        </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                       <div className="flex items-center justify-end gap-1">
+                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                          {m.membershipStatus === 'ACTIVE' ? (
+                            <button onClick={() => updateMemberStatus(m.id, "FROZEN")} title="Freeze Access" className="p-2 text-white/20 hover:text-amber-400 hover:bg-amber-400/5 rounded-lg transition-all"><Snowflake className="w-4 h-4" /></button>
+                          ) : (
+                            <button onClick={() => updateMemberStatus(m.id, "ACTIVE")} title="Unfreeze Access" className="p-2 text-white/20 hover:text-emerald-400 hover:bg-emerald-400/5 rounded-lg transition-all"><UserCheck className="w-4 h-4" /></button>
+                          )}
+                          <button onClick={() => updateMemberStatus(m.id, m.membershipStatus === 'BANNED' ? 'ACTIVE' : 'BANNED')} title={m.membershipStatus === 'BANNED' ? "Revoke Ban" : "Ban Member"} className={`p-2 transition-all rounded-lg ${m.membershipStatus === 'BANNED' ? 'text-rose-400 bg-rose-400/10 shadow-glow-sm' : 'text-white/20 hover:text-rose-500 hover:bg-rose-500/5'}`}><Ban className="w-4 h-4" /></button>
+                          <div className="w-px h-4 bg-white/5 mx-1" />
                           <button onClick={() => setEditingMember(m)} className="p-2 text-white/10 hover:text-white hover:bg-white/5 rounded-lg transition-all"><Edit2 className="w-4 h-4" /></button>
                           <button onClick={() => handleDelete(m.id)} disabled={deletingId === m.id} className="p-2 text-white/10 hover:text-rose-400 hover:bg-rose-400/5 rounded-lg transition-all"><Trash2 className="w-4 h-4" /></button>
                        </div>
@@ -141,15 +153,17 @@ export function MemberClient({ members, branches, gymId }: MemberClientProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
            {filteredMembers.map(m => (
              <div key={m.id} className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-primary/20 transition-all duration-300">
-                <div className="flex items-start justify-between mb-6">
-                   <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-white/20 shadow-glow-sm">
-                      <UserCheck className="w-6 h-6" />
-                   </div>
-                   <div className="flex items-center gap-1">
-                      <button onClick={() => setEditingMember(m)} className="p-2 text-white/10 hover:text-white hover:bg-white/5 rounded-xl transition-all"><Edit2 className="w-4 h-4" /></button>
-                      <button onClick={() => handleDelete(m.id)} disabled={deletingId === m.id} className="p-2 text-white/10 hover:text-rose-400 hover:bg-rose-400/5 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
-                   </div>
-                </div>
+                 <div className="flex items-start justify-between mb-6">
+                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-white/20 shadow-glow-sm">
+                       <UserCheck className="w-6 h-6" />
+                    </div>
+                    <div className="flex items-center gap-1">
+                       <button onClick={() => updateMemberStatus(m.id, m.membershipStatus === 'ACTIVE' ? "FROZEN" : "ACTIVE")} className={`p-2 transition-all rounded-xl ${m.membershipStatus === 'FROZEN' ? 'text-amber-400 bg-amber-400/10' : 'text-white/10 hover:text-amber-400 hover:bg-white/5'}`}><Snowflake className="w-4 h-4" /></button>
+                       <button onClick={() => updateMemberStatus(m.id, m.membershipStatus === 'BANNED' ? 'ACTIVE' : 'BANNED')} className={`p-2 transition-all rounded-xl ${m.membershipStatus === 'BANNED' ? 'text-rose-400 bg-rose-400/10 shadow-glow-sm' : 'text-white/10 hover:text-rose-500 hover:bg-white/5'}`}><Ban className="w-4 h-4" /></button>
+                       <button onClick={() => setEditingMember(m)} className="p-2 text-white/10 hover:text-white hover:bg-white/5 rounded-xl transition-all"><Edit2 className="w-4 h-4" /></button>
+                       <button onClick={() => handleDelete(m.id)} disabled={deletingId === m.id} className="p-2 text-white/10 hover:text-rose-400 hover:bg-rose-400/5 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
+                    </div>
+                 </div>
                 <div className="space-y-4">
                    <div>
                       <h4 className="text-lg font-display font-bold text-white tracking-tight">{m.name}</h4>
@@ -163,9 +177,14 @@ export function MemberClient({ members, branches, gymId }: MemberClientProps) {
                             <span className={`text-[10px] font-bold ${m.rfidUid ? 'text-white' : 'text-white/20 uppercase italic'}`}>{m.rfidUid || 'None'}</span>
                          </div>
                       </div>
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest ${m.membershipStatus === 'ACTIVE' ? 'bg-emerald-400/10 text-emerald-400' : 'bg-rose-400/10 text-rose-400'}`}>
-                         {m.membershipStatus}
-                      </span>
+                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                         m.membershipStatus === 'ACTIVE' ? 'bg-emerald-400/10 text-emerald-400 border-emerald-400/20' : 
+                         m.membershipStatus === 'FROZEN' ? 'bg-amber-400/10 text-amber-400 border-amber-400/20' :
+                         m.membershipStatus === 'EXPIRED' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                         'bg-rose-400/10 text-rose-400 border-rose-400/20'
+                       }`}>
+                          {m.membershipStatus}
+                       </span>
                    </div>
                 </div>
              </div>
