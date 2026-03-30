@@ -174,13 +174,16 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 flex flex-col items-center justify-center p-8 overflow-hidden font-display ${
-      status === "idle" ? "bg-[#0A0A0A]" :
-      status === "success" ? "bg-emerald-600" :
-      status === "expired" ? "bg-amber-500" :
-      status === "not_found" ? "bg-rose-600" :
-      status === "scanning" ? "bg-[#111]" : "bg-rose-900"
-    }`}>
+    <div 
+      suppressHydrationWarning 
+      className={`fixed inset-0 touch-none overscroll-none transition-colors duration-500 flex flex-col items-center justify-center p-8 overflow-hidden font-display ${
+        status === "idle" ? "bg-[#0A0A0A]" :
+        status === "success" ? "bg-emerald-600" :
+        status === "expired" ? "bg-amber-500" :
+        status === "not_found" ? "bg-rose-600" :
+        status === "scanning" ? "bg-[#111]" : "bg-rose-900"
+      }`}
+    >
       {/* Background Pulse */}
       <div className={`absolute inset-0 opacity-10 transition-opacity duration-1000 ${status !== "idle" ? 'opacity-20' : ''}`}>
         <div className="absolute inset-0 flex items-center justify-center">
