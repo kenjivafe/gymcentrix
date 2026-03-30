@@ -10,6 +10,8 @@ export interface CheckinPayload {
 
 export interface CheckinResponse {
   success: boolean;
+  result?: string;
+  reason?: string;
   member?: { name: string; [key: string]: any };
   message?: string;
   [key: string]: unknown;

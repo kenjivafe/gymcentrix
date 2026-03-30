@@ -13,6 +13,8 @@ export interface WsEvent {
   event: WsEventType;
   member?: { name: string };
   uid?: string;
+  result?: string;
+  reason?: string;
   error?: string;
   message?: string;
   timestamp?: number;

@@ -92,7 +92,7 @@ router.post('/checkin', requireAgentApiKey, async (req, res) => {
         memberId: member.id,
         branchId: agent.branchId,
         agentId: agent.id,
-        status: 'AUTHORIZED',
+        result: 'AUTHORIZED',
         rfidUid
       }
     });

@@ -55,11 +55,16 @@ rfid.on("rfid", async (uid: string) => {
     broadcast({
       event: "scan_success",
       uid,
-      member: { name: (result.member?.name as string) || (result.memberName as string) || "Member" },
+      result: result.result || "AUTHORIZED",
+      reason: result.reason,
+      member: { name: result.member?.name || (result as any).name || "Member" },
       message: result.message,
     });
   } catch (err: any) {
     const apiError = err.response?.data?.error || err.message || "Unknown error";
+    const apiResult = err.response?.data?.result || "DENIED";
+    const apiReason = err.response?.data?.reason;
+
     logger.error(`Check-in failed for UID ${uid}: ${apiError}`);
     
     // If the error was a 4xx, it means the API rejected it (not offline).
@@ -79,6 +84,8 @@ rfid.on("rfid", async (uid: string) => {
       broadcast({
         event: "scan_error",
         uid,
+        result: apiResult,
+        reason: apiReason,
         error: apiError,
       });
     }
