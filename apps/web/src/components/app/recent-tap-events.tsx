@@ -32,9 +32,10 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
           const isBefore = (hoveredIndex !== null ? index < hoveredIndex : false);
           
           // Calculate staggering delay for "unhovering" return animation
-          const returnDelay = hoveredIndex === null && index <= lastHoveredIndex 
-            ? `${(lastHoveredIndex - index) * 60}ms` 
-            : "0ms";
+           const delayMs = hoveredIndex === null && index <= lastHoveredIndex 
+            ? (lastHoveredIndex - index) * 60 
+            : 0;
+          const returnDelay = `${delayMs}ms`;
           
           return (
             <div 
@@ -57,7 +58,7 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                  {/* Member Identity (Top Peek Version) */}
                  <div className={`absolute top-0 left-0 right-0 flex items-start gap-4 transition-all duration-300
                     ${(isBefore && !isActive) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
-                    style={{ transitionDelay: isActive ? '0ms' : '75ms' }}>
+                    style={{ transitionDelay: `${delayMs + (isActive ? 0 : 75)}ms` }}>
                     <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
                        <UserCheck className="w-5 h-5 text-white/40" />
                     </div>
@@ -70,7 +71,7 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                  {/* Auth Details (Expanded Version) */}
                  <div className={`absolute top-0 left-0 right-0 flex flex-col gap-6 transition-all duration-300
                     ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
-                    style={{ transitionDelay: isActive ? '75ms' : '0ms' }}>
+                    style={{ transitionDelay: `${delayMs + (isActive ? 75 : 0)}ms` }}>
                    <div className="flex justify-between items-start">
                       <div className="space-y-1">
                          <p className="text-[10px] text-primary uppercase tracking-[0.3em] font-black">Authorized</p>
@@ -93,7 +94,8 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
 
                {/* BOTTOM SECTION (Visible for 'after' cards and 'active' card) */}
               <div className={`absolute bottom-6 left-8 right-8 flex items-center gap-5 transition-all duration-500
-                 ${isBefore && !isActive ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}>
+                 ${isBefore && !isActive ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}
+                 style={{ transitionDelay: returnDelay }}>
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 border transition-all duration-300 shadow-inner
                    ${isActive ? 'bg-primary/20 border-primary/20' : 'bg-white/5 border-white/5'}`}>
                    <UserCheck className={`w-6 h-6 transition-all ${isActive ? 'text-primary' : 'text-white/40'}`} />
