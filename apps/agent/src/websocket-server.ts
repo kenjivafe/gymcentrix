@@ -23,6 +23,7 @@ export interface WsEvent {
 const clients = new Set<WebSocket>();
 
 let wss: WebSocketServer | null = null;
+let heartbeatInterval: NodeJS.Timeout | null = null;
 
 /**
  * Start the local WebSocket server on the configured port.
@@ -57,6 +58,11 @@ export function startWebSocketServer(): WebSocketServer {
     logger.error(`WebSocket server error: ${err.message}`);
   });
 
+  // Start heartbeat to keep background tabs alive
+  heartbeatInterval = setInterval(() => {
+    broadcast({ event: "AGENT_STATUS", message: "heartbeat" });
+  }, 10000);
+
   return wss;
 }
 
@@ -86,6 +92,10 @@ function sendTo(ws: WebSocket, event: WsEvent): void {
 }
 
 export function stopWebSocketServer(): Promise<void> {
+  if (heartbeatInterval) {
+    clearInterval(heartbeatInterval);
+    heartbeatInterval = null;
+  }
   return new Promise((resolve, reject) => {
     if (!wss) return resolve();
     wss.close((err) => {

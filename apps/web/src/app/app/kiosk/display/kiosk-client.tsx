@@ -112,6 +112,9 @@ export default function KioskDisplayClient({ gymName = "GYMCENTRIX" }: { gymName
              setErrorMessage("Agent is offline (Check-in queued locally)");
              if (timeoutRef.current) clearTimeout(timeoutRef.current);
              timeoutRef.current = setTimeout(resetKiosk, 3000);
+          } else if (data.message === "heartbeat") {
+             // Silence heartbeat, just used to keep tab alive
+             return;
           }
         } catch (err) {
           console.error("WebSocket message parse error:", err);
