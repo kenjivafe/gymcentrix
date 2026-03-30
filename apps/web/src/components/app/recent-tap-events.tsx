@@ -110,7 +110,10 @@ export function RecentTapEvents({ initialAttendance }: { initialAttendance: TapE
                     </div>
                     <div className="min-w-0">
                        <p className="font-display font-bold text-white text-lg truncate tracking-tight">{memberName}</p>
-                       <p className="text-[10px] text-white/20 uppercase tracking-[0.2em] font-black truncate">{log.branch.name}</p>
+                       <div className="flex items-center gap-2 mt-0.5">
+                          <span className={`w-1.5 h-1.5 rounded-full ${log.status === 'AUTHORIZED' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]' : 'bg-white/20'}`} />
+                          <p className="text-[10px] text-white/20 uppercase tracking-[0.2em] font-black truncate">{log.branch.name}</p>
+                       </div>
                     </div>
                  </div>
 
