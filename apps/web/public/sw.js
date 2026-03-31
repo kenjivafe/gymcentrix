@@ -2,7 +2,7 @@
 // Scope: /app/
 // Strategy: Cache-first for static assets, network-first for API and pages
 
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 const STATIC_CACHE = `gymcentrix-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `gymcentrix-runtime-${CACHE_VERSION}`;
 
@@ -16,7 +16,7 @@ const PRECACHE_ASSETS = [
 ];
 
 // Routes that must NEVER be cached by this SW
-const EXCLUDED_PATHS = ["/login", "/super-admin"];
+const EXCLUDED_PATHS = ["/login", "/super-admin", "/app/kiosk"];
 
 function isExcluded(url) {
   const { pathname } = new URL(url);

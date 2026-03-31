@@ -18,6 +18,7 @@ import { enqueue, startRetryLoop } from "./queue";
 import { startWebSocketServer, broadcast, stopWebSocketServer } from "./websocket-server";
 import { createTray, killTray, setInternetStatus, setReaderStatus } from "./tray";
 import { registerAutoStart } from "./auto-start";
+import os from "os";
 
 // ─────────────────────────────────────────────
 // Boot
@@ -108,6 +109,36 @@ apiClient.isOnline().then(online => {
 createTray();
 
 logger.info("Gymcentrix Agent is running");
+ 
+// 7. Status Reporting Loop (Autonomous Discovery)
+function getLocalIp(): string {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name] || []) {
+      // Ignore internal (127.0.0.1) and non-ipv4 addresses
+      if (iface.family === "IPv4" && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return "127.0.0.1";
+}
+ 
+async function startStatusHeartbeat() {
+  const report = async () => {
+    const ip = getLocalIp();
+    logger.debug(`Reporting local IP to cloud: ${ip}`);
+    await apiClient.postStatus("ONLINE", ip);
+  };
+ 
+  // Initial report
+  await report();
+  
+  // Periodic report every 60 seconds
+  setInterval(report, 60_000);
+}
+ 
+startStatusHeartbeat();
 
 // ─────────────────────────────────────────────
 // Graceful shutdown

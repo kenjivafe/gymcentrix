@@ -13,12 +13,12 @@ export default async function KioskDisplayPage() {
 
   const gym = await prisma.gym.findUnique({
     where: { id: (session.user as any).gymId },
-    select: { name: true },
+    select: { name: true, activeBranchId: true },
   });
 
   if (!gym) {
     redirect("/login");
   }
 
-  return <KioskDisplayClient gymName={gym.name} />;
+  return <KioskDisplayClient gymName={gym.name} branchId={gym.activeBranchId || ""} />;
 }
