@@ -13,12 +13,26 @@ export default async function KioskDisplayPage() {
 
   const gym = await prisma.gym.findUnique({
     where: { id: (session.user as any).gymId },
-    select: { name: true, activeBranchId: true },
+    select: { 
+      name: true, 
+      activeBranchId: true,
+      branches: { select: { id: true }, orderBy: { createdAt: "asc" }, take: 1 }
+    },
   });
 
   if (!gym) {
     redirect("/login");
   }
 
-  return <KioskDisplayClient gymName={gym.name} branchId={gym.activeBranchId || ""} />;
+  const resolvedBranchId = gym.activeBranchId || gym.branches[0]?.id;
+
+  if (!resolvedBranchId) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center text-white p-8">
+        No facilities found. Please create a branch in your dashboard first.
+      </div>
+    );
+  }
+
+  return <KioskDisplayClient gymName={gym.name} branchId={resolvedBranchId} />;
 }
