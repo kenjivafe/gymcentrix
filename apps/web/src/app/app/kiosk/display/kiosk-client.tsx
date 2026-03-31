@@ -24,6 +24,7 @@ export default function KioskDisplayClient({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const agentConnectedRef = useRef(false);
   const lastProcessedScanRef = useRef<string | null>(null);
+  const [debugCloud, setDebugCloud] = useState<string>("Initializing...");
 
   const resetKiosk = useCallback(() => {
     setStatus("idle");
@@ -100,8 +101,11 @@ export default function KioskDisplayClient({
     if (!mounted) return;
 
     const interval = setInterval(async () => {
-      const scanData = await getLatestScan(branchId);
-      if (scanData && scanData.scanId) {
+      try {
+        const scanData = await getLatestScan(branchId);
+        setDebugCloud(JSON.stringify(scanData || "NULL"));
+
+        if (scanData && scanData.scanId) {
         if (lastProcessedScanRef.current !== scanData.scanId) {
           if (lastProcessedScanRef.current === null) {
             lastProcessedScanRef.current = scanData.scanId;
@@ -116,6 +120,9 @@ export default function KioskDisplayClient({
         }
       } else if (scanData === null && lastProcessedScanRef.current === null) {
         lastProcessedScanRef.current = "initialized";
+      }
+      } catch (e: any) {
+        setDebugCloud("Error: " + e.message);
       }
     }, 1500);
 
@@ -315,7 +322,9 @@ export default function KioskDisplayClient({
                     <AlertCircle className="w-3 h-3" />
                     Local Network Disconnected — Cloud Relay Active
                   </div>
-                  <p className="text-[10px] text-white/20 font-medium lowercase italic">events arriving via global capture polling</p>
+                  <p className="text-[10px] text-white/20 font-medium lowercase italic">
+                    DEBUG: {debugCloud}
+                  </p>
                 </div>
               )}
             </div>
