@@ -35,20 +35,22 @@ async function prepareIcon() {
   }
 
   try {
-    // 1. Resize the image to 64x64 square (windows tray optimal constraint)
+    // 1. Read and Resize the image
     const img = await Jimp.read(SRC);
-    img.resize({ w: 64, h: 64 });
+    console.log(`Original dimensions: ${img.width}x${img.height}`);
+    
+    // Force resize and contain within 64x64 square
+    img.contain({ w: 64, h: 64 });
     
     // 2. Save square image to a temp file
     const tempPng = path.join(os.tmpdir(), "gymcentrix-temp-icon.png");
-    await new Promise((resolve, reject) => {
-      img.write(tempPng, (err) => err ? reject(err) : resolve());
-    });
+    await img.write(tempPng);
 
     // 3. Convert temp square PNG to ICO
     const buf = await pngToIco(tempPng);
     fs.writeFileSync(DEST, buf);
     
+    console.log(`Dimensions after resize: 64x64`);
     console.log(`Icon converted successfully: ${SRC} → ${DEST}`);
   } catch (err) {
     console.error("Failed to convert icon:", err);

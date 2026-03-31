@@ -38,10 +38,10 @@ registerAutoStart();
 // 2. Start WebSocket server
 startWebSocketServer();
 
-// 3. Start offline retry loop
+// 4. Start offline retry loop
 startRetryLoop();
 
-// 4. Start RFID listener
+// 5. Start RFID listener
 const rfid = new RfidListener();
 
 rfid.on("rfid", async (uid: string) => {
@@ -110,35 +110,8 @@ createTray();
 
 logger.info("Gymcentrix Agent is running");
  
-// 7. Status Reporting Loop (Autonomous Discovery)
-function getLocalIp(): string {
-  const interfaces = os.networkInterfaces();
-  for (const name of Object.keys(interfaces)) {
-    for (const iface of interfaces[name] || []) {
-      // Ignore internal (127.0.0.1) and non-ipv4 addresses
-      if (iface.family === "IPv4" && !iface.internal) {
-        return iface.address;
-      }
-    }
-  }
-  return "127.0.0.1";
-}
- 
-async function startStatusHeartbeat() {
-  const report = async () => {
-    const ip = getLocalIp();
-    logger.debug(`Reporting local IP to cloud: ${ip}`);
-    await apiClient.postStatus("ONLINE", ip);
-  };
- 
-  // Initial report
-  await report();
-  
-  // Periodic report every 60 seconds
-  setInterval(report, 60_000);
-}
- 
-startStatusHeartbeat();
+// 7. Status Reporting Loop (Autonomous Discovery) - Disabled to avoid production 404s
+// startStatusHeartbeat();
 
 // ─────────────────────────────────────────────
 // Graceful shutdown

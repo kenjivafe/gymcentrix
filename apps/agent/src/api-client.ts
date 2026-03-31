@@ -99,13 +99,8 @@ class ApiClient {
    * Reports the current status and local IP of the agent.
    */
   async postStatus(status: string, localIp: string): Promise<boolean> {
-    try {
-      await this.client.post("/agent/status", { status, localIp });
-      return true;
-    } catch (error) {
-      logger.error("Failed to report agent status");
-      return false;
-    }
+    // Disabled to stop production 404s while in development
+    return true;
   }
 }
 

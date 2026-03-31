@@ -12,7 +12,7 @@ import * as fs from "fs";
 import { exec } from "child_process";
 import { logger } from "./logger";
 
-const ICON_PATH = path.resolve(__dirname, "../assets/icon.ico");
+const ICON_PATH = "d:\\Codes\\gymcentrix\\apps\\agent\\assets\\icon.ico";
 const CONFIG_PATH = path.resolve(process.cwd(), "agent-config.json");
 const LOG_PATH = path.resolve(process.cwd(), "logs/agent.log");
 
