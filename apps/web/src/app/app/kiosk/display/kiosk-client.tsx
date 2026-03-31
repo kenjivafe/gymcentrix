@@ -24,6 +24,8 @@ export default function KioskDisplayClient({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const agentConnectedRef = useRef(false);
   const lastProcessedScanRef = useRef<string | null>(null);
+  const lastRfidRef = useRef<string | null>(null);
+  const lastRfidTimeRef = useRef<number>(0);
 
   const resetKiosk = useCallback(() => {
     setStatus("idle");
@@ -54,6 +56,16 @@ export default function KioskDisplayClient({
   }, [branchId]);
 
   const handleCheckin = useCallback(async (rfid: string) => {
+    // Deduplication: Ignore same RFID within 3 seconds
+    const now = Date.now();
+    if (rfid === lastRfidRef.current && (now - lastRfidTimeRef.current) < 3000) {
+      console.log("Deduplicator: Ignoring duplicate scan for", rfid);
+      return;
+    }
+    
+    lastRfidRef.current = rfid;
+    lastRfidTimeRef.current = now;
+
     setStatus("scanning");
     try {
       const res = await fetch("/api/kiosk/checkin", {
@@ -97,7 +109,7 @@ export default function KioskDisplayClient({
 
   // --- Cloud Relay Polling ---
   useEffect(() => {
-    if (!mounted || agentConnected) return; // Skip cloud polling if we have a direct local connection
+    if (!mounted) return;
 
     const interval = setInterval(async () => {
       try {
