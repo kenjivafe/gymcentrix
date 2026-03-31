@@ -42,3 +42,61 @@ export async function createAgent(branchId: string, name: string) {
     return { error: "An unexpected error occurred while provisioning the agent." };
   }
 }
+
+export async function deleteAgent(id: string) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) return { error: "Unauthorized" };
+
+    const gymId = (session.user as any).gymId;
+    if (!gymId) return { error: "No gym associated with user" };
+
+    // Verify agent belongs to a branch of this gym
+    const agent = await prisma.agent.findUnique({
+      where: { id },
+      include: { branch: true }
+    });
+
+    if (!agent || agent.branch.gymId !== gymId) {
+      return { error: "Agent not found or unauthorized" };
+    }
+
+    await prisma.agent.delete({ where: { id } });
+
+    revalidatePath("/app/agents");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to delete agent:", error);
+    return { error: "An unexpected error occurred while deleting the agent." };
+  }
+}
+
+export async function updateAgent(id: string, name: string) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) return { error: "Unauthorized" };
+
+    const gymId = (session.user as any).gymId;
+    if (!gymId) return { error: "No gym associated with user" };
+
+    const agent = await prisma.agent.findUnique({
+      where: { id },
+      include: { branch: true }
+    });
+
+    if (!agent || agent.branch.gymId !== gymId) {
+      return { error: "Agent not found or unauthorized" };
+    }
+
+    await prisma.agent.update({
+      where: { id },
+      data: { name }
+    });
+
+    revalidatePath("/app/agents");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to update agent:", error);
+    return { error: "An unexpected error occurred while updating the agent." };
+  }
+}

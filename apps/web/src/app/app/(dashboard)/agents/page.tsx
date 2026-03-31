@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { Cpu, Wifi, WifiOff, MapPin, ChevronRight, BadgeCheck } from "lucide-react";
 import { CreateAgentModal } from "@/components/app/create-agent-modal";
+import { AgentActions } from "@/components/app/agent-actions";
 
 export default async function DashboardAgentsPage() {
   const session = await getServerSession(authOptions);
@@ -102,9 +103,7 @@ export default async function DashboardAgentsPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button className="text-white/20 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5">
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
+                    <AgentActions agent={agent} />
                   </td>
                 </tr>
               ))}

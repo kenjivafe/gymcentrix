@@ -131,6 +131,7 @@ model Agent {
   apiKey    String   @unique
   name      String
   status    String   @default("OFFLINE")
+  localIp   String?
   lastSeen  DateTime?
   createdAt DateTime @default(now())
 

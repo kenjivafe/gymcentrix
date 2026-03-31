@@ -55,4 +55,27 @@ router.post('/register', async (req, res) => {
   }
 });
 
+import { requireAgentApiKey } from '../middlewares/auth';
+
+// POST /agents/status - update agent status and local IP
+router.post('/status', requireAgentApiKey, async (req, res) => {
+  try {
+    const { status, localIp } = req.body;
+    const agent = (req as any).agent;
+
+    await prisma.agent.update({
+      where: { id: agent.id },
+      data: {
+        status: status || 'ONLINE',
+        localIp,
+        lastSeen: new Date()
+      } as any
+    });
+
+    res.status(200).json({ success: true });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;
