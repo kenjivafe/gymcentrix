@@ -36,3 +36,28 @@ export async function getAgentDiscovery(branchId: string) {
     return { error: "Failed to fetch agent location" };
   }
 }
+
+/**
+ * Fetches the latest global scan for the current branch.
+ * Enables kiosks to receive scans regardless of network location.
+ */
+export async function getLatestScan(branchId: string) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) return { error: "Unauthorized" };
+
+    const branch = await prisma.branch.findUnique({
+      where: { id: branchId },
+      select: { lastScanId: true, lastScanTime: true }
+    });
+
+    if (!branch || !(branch as any).lastScanId) return null;
+
+    return { 
+      scanId: (branch as any).lastScanId,
+      time: (branch as any).lastScanTime
+    };
+  } catch (error) {
+    return null;
+  }
+}

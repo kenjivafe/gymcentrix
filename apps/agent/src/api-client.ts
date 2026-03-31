@@ -107,6 +107,16 @@ class ApiClient {
       return false;
     }
   }
+
+  async postScan(tagId: string) {
+    try {
+      const response = await this.client.post("/agents/scan", { tagId });
+      return response.data;
+    } catch (error: any) {
+      logger.error(`API error [${error.response?.status}]: ${error.response?.data || error.message}`);
+      throw error;
+    }
+  }
 }
 
 // Singleton export

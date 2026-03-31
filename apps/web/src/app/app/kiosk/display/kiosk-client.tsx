@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import { Monitor, UserCheck, XCircle, AlertCircle, Scan, Maximize, Settings, Save, X } from "lucide-react";
-import { getAgentDiscovery } from "./agent-action";
+import { getAgentDiscovery, getLatestScan } from "./agent-action";
 
 type KioskStatus = "idle" | "scanning" | "success" | "expired" | "not_found" | "error" | "banned" | "frozen";
 
@@ -23,6 +23,7 @@ export default function KioskDisplayClient({
   const [showSettings, setShowSettings] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const agentConnectedRef = useRef(false);
+  const lastProcessedScanRef = useRef<string | null>(null);
 
   const resetKiosk = useCallback(() => {
     setStatus("idle");
@@ -93,6 +94,33 @@ export default function KioskDisplayClient({
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(resetKiosk, 3000);
   }, [resetKiosk]);
+
+  // --- Cloud Relay Polling ---
+  useEffect(() => {
+    if (!mounted) return;
+
+    const interval = setInterval(async () => {
+      const scanData = await getLatestScan(branchId);
+      if (scanData && scanData.scanId) {
+        if (lastProcessedScanRef.current !== scanData.scanId) {
+          if (lastProcessedScanRef.current === null) {
+            lastProcessedScanRef.current = scanData.scanId;
+            return;
+          }
+          lastProcessedScanRef.current = scanData.scanId;
+          const tagId = scanData.scanId.split("-")[0];
+          if (tagId) {
+             console.log("Global Capture: Received scan from cloud", tagId);
+             handleCheckin(tagId);
+          }
+        }
+      } else if (scanData === null && lastProcessedScanRef.current === null) {
+        lastProcessedScanRef.current = "initialized";
+      }
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [branchId, handleCheckin, mounted]);
 
   useEffect(() => {
     let ws: WebSocket;

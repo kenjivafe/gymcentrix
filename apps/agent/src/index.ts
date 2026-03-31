@@ -48,6 +48,9 @@ rfid.on("rfid", async (uid: string) => {
   // Broadcast raw scan to kiosk immediately
   broadcast({ event: "scan", uid });
 
+  // Relay scan to cloud for global capture (non-blocking)
+  apiClient.postScan(uid).catch(err => logger.warn(`Cloud scan relay failed: ${err.message}`));
+
   try {
     const result = await apiClient.postCheckin(uid);
     setInternetStatus("Online");
@@ -97,7 +100,7 @@ rfid.start();
 setReaderStatus("Active");
 
 // 5. Initial API connectivity check
-apiClient.isOnline().then(online => {
+apiClient.isOnline().then((online: boolean) => {
   setInternetStatus(online ? "Online" : "Offline");
   // The tray doesn't auto-refresh unless a new item is pushed,
   // but since createTray runs immediately after, it might catch it.

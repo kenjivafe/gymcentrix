@@ -78,4 +78,29 @@ router.post('/status', requireAgentApiKey, async (req, res) => {
   }
 });
 
+// POST /agents/scan - report an RFID scan for cloud relay
+router.post('/scan', requireAgentApiKey, async (req, res) => {
+  try {
+    const { tagId } = req.body;
+    if (!tagId) {
+      return res.status(400).json({ error: 'tagId is required' });
+    }
+
+    const agent = (req as any).agent;
+
+    // Update the branch with the new scan event
+    await prisma.branch.update({
+      where: { id: agent.branchId },
+      data: {
+        lastScanId: `${tagId}-${Date.now()}`, // Salted with timestamp to ensure SWR picks up "same tag" multiple times
+        lastScanTime: new Date()
+      }
+    });
+
+    res.status(200).json({ success: true, tagId });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;
