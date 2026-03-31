@@ -275,8 +275,11 @@ export default function KioskDisplayClient({
           <div className="relative z-10 w-full max-w-4xl flex flex-col items-center text-center space-y-6 md:space-y-12">
             {/* Status Icon */}
             <div className="relative">
-              <div className={`w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[3rem] bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-500 ${
-                status === "success" ? "scale-110 shadow-[0_0_100px_rgba(255,255,255,0.4)]" : ""
+              <div className={`w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[3rem] backdrop-blur-md flex items-center justify-center transition-all duration-500 ${
+                status === "idle" || status === "scanning" ? "bg-white/10 border border-white/20" :
+                status === "success" ? "bg-emerald-500/50 border border-emerald-400/50 scale-110 shadow-[0_0_100px_rgba(16,185,129,0.8)]" :
+                status === "expired" || status === "frozen" ? "bg-amber-500/50 border border-amber-400/50 scale-105 shadow-[0_0_80px_rgba(245,158,11,0.8)]" :
+                "bg-rose-500/50 border border-rose-400/50 scale-105 shadow-[0_0_80px_rgba(225,29,72,0.8)]"
               }`}>
                 {status === "idle" && <Scan className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 text-white/40 animate-pulse" />}
                 {status === "scanning" && <Scan className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 text-primary animate-ping" />}
