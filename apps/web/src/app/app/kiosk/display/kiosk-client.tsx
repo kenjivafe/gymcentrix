@@ -24,7 +24,6 @@ export default function KioskDisplayClient({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const agentConnectedRef = useRef(false);
   const lastProcessedScanRef = useRef<string | null>(null);
-  const [debugCloud, setDebugCloud] = useState<string>("Initializing...");
 
   const resetKiosk = useCallback(() => {
     setStatus("idle");
@@ -103,26 +102,25 @@ export default function KioskDisplayClient({
     const interval = setInterval(async () => {
       try {
         const scanData = await getLatestScan(branchId);
-        setDebugCloud(JSON.stringify(scanData || "NULL"));
 
         if (scanData && scanData.scanId) {
-        if (lastProcessedScanRef.current !== scanData.scanId) {
-          if (lastProcessedScanRef.current === null) {
+          if (lastProcessedScanRef.current !== scanData.scanId) {
+            if (lastProcessedScanRef.current === null) {
+              lastProcessedScanRef.current = scanData.scanId;
+              return;
+            }
             lastProcessedScanRef.current = scanData.scanId;
-            return;
+            const tagId = scanData.scanId.split("-")[0];
+            if (tagId) {
+               console.log("Global Capture: Received scan from cloud", tagId);
+               handleCheckin(tagId);
+            }
           }
-          lastProcessedScanRef.current = scanData.scanId;
-          const tagId = scanData.scanId.split("-")[0];
-          if (tagId) {
-             console.log("Global Capture: Received scan from cloud", tagId);
-             handleCheckin(tagId);
-          }
+        } else if (scanData === null && lastProcessedScanRef.current === null) {
+          lastProcessedScanRef.current = "initialized";
         }
-      } else if (scanData === null && lastProcessedScanRef.current === null) {
-        lastProcessedScanRef.current = "initialized";
-      }
       } catch (e: any) {
-        setDebugCloud("Error: " + e.message);
+        console.error("Cloud Relay Polling Error:", e.message);
       }
     }, 1500);
 
@@ -318,12 +316,12 @@ export default function KioskDisplayClient({
 
               {!agentConnected && (
                 <div className="mt-8 flex flex-col items-center gap-2">
-                  <div className="px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                    <AlertCircle className="w-3 h-3" />
-                    Local Network Disconnected — Cloud Relay Active
+                  <div className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2">
+                    <Scan className="w-3 h-3" />
+                    Global Capture Mode Active
                   </div>
                   <p className="text-[10px] text-white/20 font-medium lowercase italic">
-                    DEBUG: {debugCloud}
+                    receiving real-time events via cloud relay
                   </p>
                 </div>
               )}
