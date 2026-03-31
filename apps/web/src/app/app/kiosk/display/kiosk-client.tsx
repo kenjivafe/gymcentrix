@@ -97,7 +97,7 @@ export default function KioskDisplayClient({
 
   // --- Cloud Relay Polling ---
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || agentConnected) return; // Skip cloud polling if we have a direct local connection
 
     const interval = setInterval(async () => {
       try {
