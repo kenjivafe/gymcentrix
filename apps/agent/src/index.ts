@@ -45,31 +45,35 @@ startRetryLoop();
 const rfid = new RfidListener();
 
 rfid.on("rfid", async (uid: string) => {
-  // Broadcast raw scan to kiosk immediately
-  broadcast({ event: "scan", uid });
-
-  // Relay scan to cloud for global capture (non-blocking)
-  apiClient.postScan(uid).catch(err => logger.warn(`Cloud scan relay failed: ${err.message}`));
-
   try {
-    const result = await apiClient.postCheckin(uid);
+    // 1. Report scan to cloud AND perform atomic check-in
+    // The response now contains the AUTHORITATIVE result from the server.
+    const result = await apiClient.postScan(uid);
     setInternetStatus("Online");
-
-    // Broadcast check-in result to kiosk
-    broadcast({
-      event: "scan_success",
+    
+    // 2. Broadcast the official result to all local kiosks instantly
+    // Using event 'scan_success' to maintain compatibility with existing kiosk expectations
+    broadcast({ 
+      event: "scan_success", 
       uid,
-      result: result.result || "AUTHORIZED",
-      reason: result.reason,
-      member: { name: result.member?.name || (result as any).name || "Member" },
-      message: result.message,
+      success: result.success,
+      result: result.result || "AUTHORIZED", // 'AUTHORIZED' | 'DENIED'
+      reason: result.reason, // 'EXPIRED_MEMBERSHIP' etc.
+      member: { name: result.member?.name || "Member" },
+      message: result.message
     });
+
+    if (result.success) {
+      logger.info(`Access authorized for ${result.member?.name} via atomic cloud check-in`);
+    } else {
+      logger.warn(`Access denied (${result.reason}) via atomic cloud check-in`);
+    }
   } catch (err: any) {
     const apiError = err.response?.data?.error || err.message || "Unknown error";
     const apiResult = err.response?.data?.result || "DENIED";
     const apiReason = err.response?.data?.reason;
 
-    logger.error(`Check-in failed for UID ${uid}: ${apiError}`);
+    logger.error(`Atomic check-in failed for UID ${uid}: ${apiError}`);
     
     // If the error was a 4xx, it means the API rejected it (not offline).
     // If it's a 5xx or no response, the agent queues it for offline retry.

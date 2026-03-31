@@ -33,18 +33,15 @@ export default function KioskDisplayClient({
     setErrorMessage("");
   }, []);
 
-  // Keep ref in sync with agentConnected so keyboard fallback always reads current value
+  // Sync ref for keyboard captures
   useEffect(() => { agentConnectedRef.current = agentConnected; }, [agentConnected]);
 
-  // Mark as mounted and handle autonomous agent discovery
   useEffect(() => { 
     setMounted(true); 
-    
     const savedAddress = localStorage.getItem("gx_agent_address");
     if (savedAddress) {
       setAgentAddress(savedAddress);
     } else {
-      // If no manual address is set, try to discover the agent automatically
       getAgentDiscovery(branchId).then(result => {
         if (result && "localIp" in result) {
           const discoveredAddress = `${result.localIp}:4010`;
@@ -55,54 +52,48 @@ export default function KioskDisplayClient({
     }
   }, [branchId]);
 
-  const handleCheckin = useCallback(async (rfid: string) => {
-    // Deduplication: Ignore same RFID within 3 seconds
+  const handleCheckin = useCallback((payload: any) => {
+    // 1. Deduplication
+    const rfid = payload.tagId || payload.uid;
     const now = Date.now();
+    
     if (rfid === lastRfidRef.current && (now - lastRfidTimeRef.current) < 3000) {
-      console.log("Deduplicator: Ignoring duplicate scan for", rfid);
       return;
     }
     
     lastRfidRef.current = rfid;
     lastRfidTimeRef.current = now;
 
-    setStatus("scanning");
-    try {
-      const res = await fetch("/api/kiosk/checkin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rfid, device_type: "kiosk" }),
-      });
+    // 2. Process Authoritative Result
+    const { result, name, reason, error } = payload;
 
-      const data = await res.json();
-
-      if (data.result === "AUTHORIZED") {
-        setStatus("success");
-        setMemberName(data.name);
-      } else if (data.result === "DENIED") {
-        if (data.reason === "EXPIRED_MEMBERSHIP") {
-          setStatus("expired");
-          setMemberName(data.name || "Member");
-        } else if (data.reason === "FROZEN_MEMBERSHIP") {
-          setStatus("frozen");
-        } else if (data.reason === "BANNED_MEMBER") {
-          setStatus("banned");
-        } else if (data.reason === "UNKNOWN_CARD") {
-          setStatus("not_found");
-        } else {
-          setStatus("error");
-          setErrorMessage(data.error || "Access Denied");
-        }
+    if (result === "AUTHORIZED") {
+      setStatus("success");
+      setMemberName(name || "Member");
+    } else if (result === "DENIED") {
+      if (reason === "EXPIRED_MEMBERSHIP") {
+        setStatus("expired");
+        setMemberName(name || "Member");
+      } else if (reason === "FROZEN_MEMBERSHIP") {
+        setStatus("frozen");
+        setMemberName(name || "Member");
+      } else if (reason === "BANNED_MEMBER") {
+        setStatus("banned");
+        setMemberName(name || "Member");
+      } else if (reason === "UNKNOWN_CARD") {
+        setStatus("not_found");
       } else {
         setStatus("error");
-        setErrorMessage(data.error || "System synchronization error");
+        setErrorMessage(error || "Access Denied");
       }
-    } catch (err) {
+    } else if (result === "SCANNING") {
+      setStatus("scanning");
+    } else {
       setStatus("error");
-      setErrorMessage("Network connectivity failure");
+      setErrorMessage(error || "Synchronization Error");
     }
 
-    // Reset after 3 seconds
+    // 3. Auto-Reset
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(resetKiosk, 3000);
   }, [resetKiosk]);
@@ -113,151 +104,120 @@ export default function KioskDisplayClient({
 
     const interval = setInterval(async () => {
       try {
-        const scanData = await getLatestScan(branchId);
-
-        if (scanData && scanData.scanId) {
-          if (lastProcessedScanRef.current !== scanData.scanId) {
-            if (lastProcessedScanRef.current === null) {
-              lastProcessedScanRef.current = scanData.scanId;
-              return;
-            }
-            lastProcessedScanRef.current = scanData.scanId;
-            const tagId = scanData.scanId.split("-")[0];
-            if (tagId) {
-               console.log("Global Capture: Received scan from cloud", tagId);
-               handleCheckin(tagId);
-            }
+        const latest = await getLatestScan(branchId);
+        
+        if (latest && latest.lastScanId && latest.lastScanId !== lastProcessedScanRef.current) {
+          lastProcessedScanRef.current = latest.lastScanId;
+          
+          try {
+            const payload = JSON.parse(latest.lastScanId);
+            handleCheckin(payload);
+          } catch (e) {
+            // Legacy/fallback fallback
+            const tagId = latest.lastScanId.split("-")[0];
+            handleCheckin({ tagId, result: "SCANNING" });
           }
-        } else if (scanData === null && lastProcessedScanRef.current === null) {
-          lastProcessedScanRef.current = "initialized";
         }
-      } catch (e: any) {
-        console.error("Cloud Relay Polling Error:", e.message);
+      } catch (err) {
+        console.error("Polling failed", err);
       }
     }, 1500);
 
     return () => clearInterval(interval);
-  }, [branchId, handleCheckin, mounted]);
+  }, [mounted, branchId, handleCheckin]);
 
+  // --- WebSocket Listener (Local Sync) ---
   useEffect(() => {
-    let ws: WebSocket;
-    let reconnectTimeout: NodeJS.Timeout;
+    if (!mounted) return;
 
-    const connectWebSocket = () => {
-      // Logic for address: ensure ws:// prefix and correct port
-      const wsUrl = agentAddress.includes("://") ? agentAddress : `ws://${agentAddress}`;
-      ws = new WebSocket(wsUrl);
+    let socket: WebSocket | null = null;
+    let reconnectTimeout: NodeJS.Timeout | null = null;
 
-      ws.onopen = () => {
+    const connect = () => {
+      const url = `ws://${agentAddress}`;
+      socket = new WebSocket(url);
+
+      socket.onopen = () => {
         setAgentConnected(true);
+        if (reconnectTimeout) clearTimeout(reconnectTimeout);
       };
 
-      ws.onmessage = (event) => {
+      socket.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
           
-          if (data.event === "scan") {
-            setStatus("scanning");
-          } else if (data.result === "AUTHORIZED") {
-            setStatus("success");
-            setMemberName(data.member?.name || data.name || "Member");
-            
+          if (data.event === "scan_success" || data.event === "checkin-result") {
+            handleCheckin(data);
+          } else if (data.event === "scan") {
+            handleCheckin({ ...data, result: "SCANNING" });
+          } else if (data.event === "scan_error") {
+            handleCheckin({ ...data, result: "DENIED" });
+          } else if (data.event === "scan_offline") {
+            setStatus("error");
+            setErrorMessage("Agent is offline (Check-in queued locally)");
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
             timeoutRef.current = setTimeout(resetKiosk, 3000);
-          } else if (data.result === "DENIED") {
-             if (data.reason === "UNKNOWN_CARD") {
-               setStatus("not_found");
-             } else if (data.reason === "BANNED_MEMBER") {
-               setStatus("banned");
-             } else if (data.reason === "FROZEN_MEMBERSHIP") {
-               setStatus("frozen");
-             } else if (data.reason === "EXPIRED_MEMBERSHIP") {
-               setStatus("expired");
-             } else {
-               setStatus("error");
-               setErrorMessage(data.error || "Access Denied");
-             }
-             if (timeoutRef.current) clearTimeout(timeoutRef.current);
-             timeoutRef.current = setTimeout(resetKiosk, 3000);
-          } else if (data.event === "scan_offline") {
-             setStatus("error");
-             setErrorMessage("Agent is offline (Check-in queued locally)");
-             if (timeoutRef.current) clearTimeout(timeoutRef.current);
-             timeoutRef.current = setTimeout(resetKiosk, 3000);
-          } else if (data.message === "heartbeat") {
-             // Silence heartbeat, just used to keep tab alive
-             return;
           }
-        } catch (err) {
-          console.error("WebSocket message parse error:", err);
+        } catch (e) {
+          console.error("WS error", e);
         }
       };
 
-      ws.onclose = () => {
+      socket.onclose = () => {
         setAgentConnected(false);
-        // Try to reconnect every 3 seconds if agent died or hasn't started
-        reconnectTimeout = setTimeout(connectWebSocket, 3000);
+        reconnectTimeout = setTimeout(connect, 3000);
       };
 
-      ws.onerror = () => {
-         ws.close();
+      socket.onerror = () => {
+        if (socket) socket.close();
       };
     };
 
-    connectWebSocket();
+    connect();
 
-    // --- Browser Keyboard Fallback ---
-    // When the agent is disconnected / WinKeyServer.exe is unavailable,
-    // the browser itself captures RFID keystrokes (reader must type into this tab).
+    // --- Keyboard Fallback ---
     let kbBuffer = "";
     let kbTimeout: NodeJS.Timeout | null = null;
-    const RFID_LENGTH = 10;
-    const RFID_TIMEOUT_MS = 500;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore if the agent is connected — it drives the kiosk
       if (agentConnectedRef.current) return;
 
-      const digit = /^[0-9]$/.test(e.key) ? e.key : null;
-
       if (e.key === "Enter") {
-        if (kbBuffer.length === RFID_LENGTH) {
-          handleCheckin(kbBuffer);
+        if (kbBuffer.length === 10) {
+          // Keyboard fallback still needs to trigger a checkin because the hardware agent isn't doing it
+          fetch("/api/kiosk/checkin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ rfid: kbBuffer, device_type: "kiosk" }),
+          }).then(res => res.json()).then(handleCheckin);
         }
         kbBuffer = "";
-        if (kbTimeout) clearTimeout(kbTimeout);
         return;
       }
 
-      if (digit) {
+      if (/^[0-9]$/.test(e.key)) {
+        kbBuffer += e.key;
         if (kbTimeout) clearTimeout(kbTimeout);
-        kbBuffer += digit;
-        // Auto-reset buffer after idle period (distinguishes scanner burst from human typing)
-        kbTimeout = setTimeout(() => { kbBuffer = ""; }, RFID_TIMEOUT_MS);
-      } else {
-        // Non-digit resets buffer
-        kbBuffer = "";
+        kbTimeout = setTimeout(() => { kbBuffer = ""; }, 500);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      clearTimeout(reconnectTimeout);
-      if (ws) ws.close();
+      if (socket) socket.close();
+      if (reconnectTimeout) clearTimeout(reconnectTimeout);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       if (kbTimeout) clearTimeout(kbTimeout);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [resetKiosk, handleCheckin, agentAddress]);
+  }, [mounted, agentAddress, handleCheckin, resetKiosk]);
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
     }
   };
 
@@ -328,8 +288,6 @@ export default function KioskDisplayClient({
                 {status === "not_found" && "Invalid Token Card"}
                 {status === "error" && errorMessage}
               </p>
-
-
             </div>
 
             {/* Footer Instruction */}
@@ -360,15 +318,12 @@ export default function KioskDisplayClient({
 
           {/* Settings Modal */}
           {showSettings && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 backdrop-blur-xl bg-black/80 sm:bg-black/60">
-              <div className="w-full max-w-md bg-[#0A0A0A] border border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
-                  <div className="flex justify-between items-center text-white">
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 backdrop-blur-xl bg-black/80 sm:bg-black/60 text-white">
+              <div className="w-full max-w-md bg-[#0A0A0A] border border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6">
+                  <div className="flex justify-between items-center">
                     <h2 className="text-xl font-bold tracking-tight">Kiosk Connectivity</h2>
-                    <button onClick={() => setShowSettings(false)} className="text-white/40 hover:text-white transition-colors">
-                        <X className="w-6 h-6" />
-                    </button>
+                    <button onClick={() => setShowSettings(false)} className="text-white/40 hover:text-white"><X className="w-6 h-6" /></button>
                   </div>
-
                   <div className="space-y-4">
                     <div className="space-y-2">
                         <label className="text-[10px] font-black uppercase tracking-widest text-white/40">Hardware Agent Address</label>
@@ -376,51 +331,34 @@ export default function KioskDisplayClient({
                           type="text" 
                           value={agentAddress}
                           onChange={(e) => setAgentAddress(e.target.value)}
-                          placeholder="e.g. 192.168.1.100:4010"
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-1 focus:ring-primary/40 transition-all font-display"
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none"
                         />
-                        <p className="text-[10px] text-white/20 italic">Provide the IP and port of the PC running the Gymcentrix Agent.</p>
                     </div>
                   </div>
-
                   <button 
                     onClick={() => {
                       localStorage.setItem("gx_agent_address", agentAddress);
                       setShowSettings(false);
-                      // WebSocket will auto-reconnect due to dependency array
                     }}
-                    className="w-full bg-primary text-black font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                    className="w-full bg-primary text-black font-bold py-4 rounded-xl"
                   >
-                    <Save className="w-5 h-5" />
                     Apply & Synchronize
                   </button>
               </div>
             </div>
           )}
 
-          {/* Unified Header - Silos Branding and Status to prevent collisions */}
+          {/* Unified Header */}
           <div className="fixed top-4 left-4 right-4 md:top-8 md:left-8 md:right-8 z-50 flex items-start justify-between pointer-events-none">
-            {/* Brand Watermark - Visible only on Desktop (Lg) */}
             <div className="hidden lg:flex items-center gap-3 opacity-20 hover:opacity-100 transition-opacity pointer-events-auto">
-              <Image 
-                src="/app/gymcentrix-logo.png" 
-                alt="Logo" 
-                width={24} 
-                height={24} 
-                className="brightness-0 invert" 
-              />
+              <Image src="/app/gymcentrix-logo.png" alt="Logo" width={24} height={24} className="brightness-0 invert" />
               <span className="font-display font-bold text-white tracking-tighter text-lg uppercase">GYMCENTRIX</span>
             </div>
 
-            {/* Gym Name & Agent Status - Centered on mobile, Right-aligned on Desktop */}
-            <div 
-              suppressHydrationWarning
-              className="flex-1 lg:flex-none flex flex-col items-center lg:items-end gap-1 md:gap-2 opacity-60 md:opacity-20 hover:opacity-100 transition-opacity pointer-events-auto">
-              <span className="font-display font-bold text-white tracking-widest text-[10px] md:text-sm uppercase text-center leading-tight">
-                {gymName}
-              </span>
+            <div className="flex-1 lg:flex-none flex flex-col items-center lg:items-end gap-1 opacity-60 md:opacity-20 hover:opacity-100 transition-opacity pointer-events-auto">
+              <span className="font-display font-bold text-white tracking-widest text-[10px] md:text-sm uppercase text-center">{gymName}</span>
               <div className="flex items-center gap-2">
-                <div className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${agentConnected ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-primary shadow-[0_0_10px_#7c3aed]'}`} />
+                <div className={`w-1.5 h-1.5 rounded-full ${agentConnected ? 'bg-emerald-500' : 'bg-primary'}`} />
                 <span className="text-[8px] md:text-[10px] font-bold tracking-widest text-white/40 uppercase">
                   {agentConnected ? "Local Sync Active" : "Cloud Relay Active"}
                 </span>
@@ -428,22 +366,12 @@ export default function KioskDisplayClient({
             </div>
           </div>
 
-          {/* Simulation Panel for Testing */}
+          {/* Simulation Panel */}
           <div className="hidden sm:flex fixed bottom-8 left-8 flex-col gap-2 opacity-20 hover:opacity-100 transition-opacity">
             <p className="text-[8px] font-black uppercase tracking-widest text-white/40 mb-1 ml-1">Simulation Mode</p>
             <div className="flex gap-2">
-              <button 
-                onClick={() => handleCheckin("1234567890")}
-                className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-white/60 hover:text-emerald-400 hover:bg-emerald-400/10 hover:border-emerald-400/20 transition-all"
-              >
-                Simulate Valid Scan
-              </button>
-              <button 
-                onClick={() => handleCheckin("9999999999")}
-                className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-white/60 hover:text-rose-400 hover:bg-rose-400/10 hover:border-rose-400/20 transition-all"
-              >
-                Simulate Unknown
-              </button>
+              <button onClick={() => handleCheckin({ tagId: "1234567890", result: "AUTHORIZED", name: "Guest User" })} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-white/60 hover:text-emerald-400 transition-all">Simulate Valid</button>
+              <button onClick={() => handleCheckin({ tagId: "9999999999", result: "DENIED", reason: "UNKNOWN_CARD" })} className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-[10px] font-bold text-white/60 hover:text-rose-400 transition-all">Simulate Unknown</button>
             </div>
           </div>
         </>

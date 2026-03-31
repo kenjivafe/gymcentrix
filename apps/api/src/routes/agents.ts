@@ -78,6 +78,8 @@ router.post('/status', requireAgentApiKey, async (req, res) => {
   }
 });
 
+import { performCheckin } from '../utils/checkin';
+
 // POST /agents/scan - report an RFID scan for cloud relay
 router.post('/scan', requireAgentApiKey, async (req, res) => {
   try {
@@ -88,16 +90,29 @@ router.post('/scan', requireAgentApiKey, async (req, res) => {
 
     const agent = (req as any).agent;
 
+    // PERFORM ATOMIC CHECK-IN
+    const checkinResult = await performCheckin(tagId, agent);
+
+    // BUNDLE RESULT INTO BRANCH STATE
+    // We store the full JSON result in the lastScanId so Kiosks don't have to call the API themselves.
+    const eventPayload = {
+      tagId,
+      result: checkinResult.result,
+      reason: checkinResult.reason,
+      name: checkinResult.member?.name || (checkinResult.reason === 'UNKNOWN_CARD' ? 'Unknown' : 'Member'),
+      timestamp: Date.now()
+    };
+
     // Update the branch with the new scan event
     await prisma.branch.update({
       where: { id: agent.branchId },
       data: {
-        lastScanId: `${tagId}-${Date.now()}`, // Salted with timestamp to ensure SWR picks up "same tag" multiple times
+        lastScanId: JSON.stringify(eventPayload),
         lastScanTime: new Date()
       }
     });
 
-    res.status(200).json({ success: true, tagId });
+    res.status(200).json(checkinResult);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

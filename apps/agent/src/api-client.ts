@@ -108,14 +108,9 @@ class ApiClient {
     }
   }
 
-  async postScan(tagId: string) {
-    try {
-      const response = await this.client.post("/agents/scan", { tagId });
-      return response.data;
-    } catch (error: any) {
-      logger.error(`API error [${error.response?.status}]: ${error.response?.data || error.message}`);
-      throw error;
-    }
+  async postScan(tagId: string): Promise<CheckinResponse> {
+    const response = await this.client.post<CheckinResponse>("/agents/scan", { tagId });
+    return response.data;
   }
 }
 

@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { rfid, device_type } = await req.json();
+    const { rfid } = await req.json();
 
     if (!rfid) {
       return NextResponse.json({ error: "RFID required" }, { status: 400 });
@@ -32,7 +32,21 @@ export async function POST(req: Request) {
     });
 
     if (!member) {
+      // Update branch even for unknown scans so kiosks can show "Not Found"
+      const eventPayload = {
+        tagId: rfid,
+        result: 'DENIED',
+        reason: 'UNKNOWN_CARD',
+        name: 'Unknown',
+        timestamp: Date.now()
+      };
+      await (prisma as any).branch.update({
+        where: { id: user.activeBranchId || (member as any)?.branchId }, // Fallback if no member
+        data: { lastScanId: JSON.stringify(eventPayload), lastScanTime: new Date() }
+      }).catch(() => {}); // Ignore if activeBranchId is missing
+
       return NextResponse.json({ 
+        success: false,
         result: "DENIED", 
         reason: "UNKNOWN_CARD",
         error: "Account not found" 
@@ -53,7 +67,20 @@ export async function POST(req: Request) {
         }
       });
 
+      const eventPayload = {
+        tagId: rfid,
+        result: 'DENIED',
+        reason,
+        name: member.name,
+        timestamp: Date.now()
+      };
+      await (prisma as any).branch.update({
+        where: { id: member.branchId },
+        data: { lastScanId: JSON.stringify(eventPayload), lastScanTime: new Date() }
+      });
+
       return NextResponse.json({ 
+        success: false,
         result: "DENIED", 
         reason,
         name: member.name,
@@ -80,7 +107,20 @@ export async function POST(req: Request) {
           }
         });
 
+        const eventPayload = {
+          tagId: rfid,
+          result: 'DENIED',
+          reason: 'EXPIRED_MEMBERSHIP',
+          name: member.name,
+          timestamp: Date.now()
+        };
+        await (prisma as any).branch.update({
+          where: { id: member.branchId },
+          data: { lastScanId: JSON.stringify(eventPayload), lastScanTime: new Date() }
+        });
+
         return NextResponse.json({ 
+          success: false,
           result: "DENIED", 
           reason: "EXPIRED_MEMBERSHIP",
           name: member.name 
@@ -103,8 +143,18 @@ export async function POST(req: Request) {
       data: {
         memberId: member.id,
         branchId: member.branchId,
-        // agentId is null for kiosk (self-checkin)
       }
+    });
+
+    const eventPayload = {
+      tagId: rfid,
+      result: 'AUTHORIZED',
+      name: member.name,
+      timestamp: Date.now()
+    };
+    await (prisma as any).branch.update({
+      where: { id: member.branchId },
+      data: { lastScanId: JSON.stringify(eventPayload), lastScanTime: new Date() }
     });
 
     // 5. Revalidate attendance pages
@@ -112,6 +162,7 @@ export async function POST(req: Request) {
     revalidatePath("/app");
 
     return NextResponse.json({ 
+      success: true,
       result: "AUTHORIZED", 
       name: member.name,
       branch: member.branch.name

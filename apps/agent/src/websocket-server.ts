@@ -7,10 +7,12 @@ export type WsEventType =
   | "scan_error"
   | "scan_offline"
   | "scan"
+  | "checkin-result"
   | "AGENT_STATUS";
 
 export interface WsEvent {
   event: WsEventType;
+  success?: boolean;
   member?: { name: string };
   uid?: string;
   result?: string;

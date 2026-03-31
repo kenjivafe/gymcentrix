@@ -63,7 +63,7 @@ export async function getLatestScan(branchId: string) {
     }
 
     return { 
-      scanId: branch.lastScanId,
+      lastScanId: branch.lastScanId,
       time: branch.lastScanTime
     };
   } catch (error: any) {
