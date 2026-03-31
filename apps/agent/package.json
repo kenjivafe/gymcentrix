@@ -39,7 +39,7 @@
   "pkg": {
     "assets": [
       "assets/**",
-      "agent-config.json",
+      "scripts/**",
       "../../node_modules/node-global-key-listener/bin/WinKeyServer.exe"
     ],
     "targets": [

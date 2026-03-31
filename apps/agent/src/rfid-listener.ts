@@ -4,6 +4,8 @@ import * as readline from "readline";
 import { spawn, ChildProcess } from "child_process";
 import { logger } from "./logger";
 import { config } from "./config";
+import * as fs from "fs";
+import * as os from "os";
 
 /**
  * RfidListener
@@ -20,14 +22,25 @@ export class RfidListener extends EventEmitter {
     if (this.isRunning) return;
     this.isRunning = true;
 
-    const scriptPath = path.resolve(__dirname, "../scripts/rfid-hook.ps1");
+    // Binary Safety: Extract the PowerShell script to a temp file
+    // because pkg's internal filesystem is not visible to external powershell.exe
+    const internalScriptPath = path.join(__dirname, "../scripts/rfid-hook.ps1");
+    const externalScriptPath = path.join(os.tmpdir(), "gymcentrix-rfid-hook.ps1");
+
+    try {
+      const scriptContent = fs.readFileSync(internalScriptPath, "utf8");
+      fs.writeFileSync(externalScriptPath, scriptContent);
+    } catch (e: any) {
+      logger.error(`Failed to extract RFID hook script: ${e.message}`);
+      return;
+    }
 
     this.process = spawn(
       "powershell.exe",
       [
         "-NoProfile",
         "-ExecutionPolicy", "Bypass",
-        "-File", scriptPath,
+        "-File", externalScriptPath,
       ],
       {
         env: {
