@@ -13,6 +13,7 @@ import {
   Terminal
 } from "lucide-react";
 import { deleteAgent, updateAgent } from "@/app/actions/agent";
+import { DownloadConfigButton } from "./download-config-button";
 
 interface Agent {
   id: string;
@@ -105,6 +106,7 @@ export function AgentActions({ agent }: { agent: Agent }) {
           <Settings className="w-4 h-4" />
           Edit Properties
         </button>
+        <DownloadConfigButton agent={agent} />
         <div className="h-px bg-white/5" />
         <button 
           onClick={() => { setModal("delete"); setShowMenu(false); }}

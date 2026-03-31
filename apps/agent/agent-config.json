@@ -1,8 +1,8 @@
 {
-  "agentId": "cmnb5711c00051217yxeqkre9",
+  "agentId": "cmnei213n0001s4qwps5el79w",
   "branchId": "test-branch-1",
   "apiUrl": "https://gymcentrix-api.vercel.app",
-  "apiKey": "sk_c00de8d205ec4aad8b89cb28c64b53b2e0d8656d6d64d356",
+  "apiKey": "sk_87d591bbf7f07845c890a4e9a09ed2db14f7dffc8f90cf0d",
   "wsPort": 4010,
   "retryIntervalMs": 30000,
   "rfidTimeoutMs": 500,
