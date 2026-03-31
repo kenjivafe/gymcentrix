@@ -317,17 +317,7 @@ export default function KioskDisplayClient({
                 {status === "error" && errorMessage}
               </p>
 
-              {!agentConnected && (
-                <div className="mt-8 flex flex-col items-center gap-2">
-                  <div className="px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-400 text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                    <Scan className="w-3 h-3" />
-                    Global Capture Mode Active
-                  </div>
-                  <p className="text-[10px] text-white/20 font-medium lowercase italic">
-                    receiving real-time events via cloud relay
-                  </p>
-                </div>
-              )}
+
             </div>
 
             {/* Footer Instruction */}
@@ -418,9 +408,9 @@ export default function KioskDisplayClient({
                 {gymName}
               </span>
               <div className="flex items-center gap-2">
-                <div className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${agentConnected ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-rose-500 shadow-[0_0_10px_#f43f5e] animate-pulse'}`} />
+                <div className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${agentConnected ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-primary shadow-[0_0_10px_#7c3aed]'}`} />
                 <span className="text-[8px] md:text-[10px] font-bold tracking-widest text-white/40 uppercase">
-                  {agentConnected ? "Agent Connected" : "Agent Disconnected"}
+                  {agentConnected ? "Local Sync Active" : "Cloud Relay Active"}
                 </span>
               </div>
             </div>
