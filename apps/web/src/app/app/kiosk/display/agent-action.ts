@@ -46,18 +46,27 @@ export async function getLatestScan(branchId: string) {
     const session = await getServerSession(authOptions);
     if (!session) return { error: "Unauthorized" };
 
-    const branch = await prisma.branch.findUnique({
-      where: { id: branchId },
-      select: { lastScanId: true, lastScanTime: true }
-    });
+    if (!branchId) return { error: "No branchId provided" };
 
-    if (!branch || !(branch as any).lastScanId) return null;
+    // Use raw query to completely bypass Vercel's Prisma Client cache
+    // since the client might not be aware of the new lastScanId columns yet.
+    const result: any[] = await prisma.$queryRaw`SELECT "lastScanId", "lastScanTime" FROM "Branch" WHERE id = ${branchId}`;
+    
+    if (!result || result.length === 0) {
+      return { error: "Branch not found in DB via raw query" };
+    }
+
+    const branch = result[0];
+
+    if (!branch.lastScanId) {
+       return { error: "No scans recorded for this branch yet." };
+    }
 
     return { 
-      scanId: (branch as any).lastScanId,
-      time: (branch as any).lastScanTime
+      scanId: branch.lastScanId,
+      time: branch.lastScanTime
     };
-  } catch (error) {
-    return null;
+  } catch (error: any) {
+    return { error: error.message || "Catch block hit" };
   }
 }
