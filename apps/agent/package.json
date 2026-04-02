@@ -41,7 +41,7 @@
       "assets/**",
       "scripts/**",
       "../../node_modules/node-global-key-listener/bin/WinKeyServer.exe",
-      "../../node_modules/node-systray-v2/traybin/**"
+      "node_modules/node-systray-v2/traybin/**"
     ],
     "targets": [
       "node18-win-x64"
