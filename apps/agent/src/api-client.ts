@@ -100,7 +100,7 @@ class ApiClient {
    */
   async postStatus(status: string, localIp: string): Promise<boolean> {
     try {
-      await this.client.post("/agents/status", { status, localIp });
+      await this.client.post("/api/agents/status", { status, localIp });
       return true;
     } catch (error) {
       logger.error("Failed to report agent status");
@@ -109,7 +109,7 @@ class ApiClient {
   }
 
   async postScan(tagId: string): Promise<CheckinResponse> {
-    const response = await this.client.post<CheckinResponse>("/agents/scan", { tagId });
+    const response = await this.client.post<CheckinResponse>("/api/agents/scan", { tagId });
     return response.data;
   }
 }

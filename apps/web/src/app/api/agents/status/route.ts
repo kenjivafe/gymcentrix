@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+/**
+ * POST /api/agents/status
+ *
+ * Heartbeat endpoint for the hardware agent.
+ * Authenticated via x-api-key header.
+ */
 export async function POST(req: Request) {
   try {
     const apiKey = req.headers.get("x-api-key");
@@ -23,14 +29,14 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       agent: {
         id: agent.id,
         name: agent.name,
         branchId: agent.branchId,
-        gymId: agent.branch.gymId
-      }
+        gymId: agent.branch.gymId,
+      },
     });
   } catch (error) {
     console.error("[AGENT_STATUS_ERROR]", error);
